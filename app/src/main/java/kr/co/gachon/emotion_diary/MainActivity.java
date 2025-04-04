@@ -17,11 +17,24 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.Calendar;
+import java.util.List;
+
+import kr.co.gachon.emotion_diary.data.Diary;
+import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
+    /** @noinspection FieldCanBeLocal*/
     private ActivityMainBinding binding;
+
+
+    // --------- Assign FOR DB TEST START---------
+    /** @noinspection FieldCanBeLocal*/
+    private DiaryRepository diaryRepository;
+    private List<Diary> allDiariesList;
+    // --------- Assign FOR DB TEST END-----------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +53,25 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+
+
+        // --------- DB TEST START ---------
+        diaryRepository = new DiaryRepository(getApplication());
+
+        diaryRepository.insertDummyData();
+
+        diaryRepository.getAllDiaries().observe(this, diaries -> {
+            Log.d("RoomExample", "모든 일기 (Repository - ExecutorService):");
+            allDiariesList = diaries;
+
+            for (Diary diary : diaries) {
+                Log.d("RoomExample", "ID: " + diary.getId() + ", 제목: " + diary.getTitle() + ", 내용: " + diary.getContent() + ", 날짜: " + diary.getDate());
+            }
+        });
+
+        Diary newDiary = new Diary("title", "content", "emotion", Calendar.getInstance().getTime());
+        diaryRepository.insert(newDiary);
+        // --------- DB TEST END ----------
 
     }
 }

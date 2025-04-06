@@ -32,6 +32,7 @@ public class RemindActivity extends AppCompatActivity {
     private Boolean isMonthly;
 
     private DiaryRepository diaryRepository;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,7 @@ public class RemindActivity extends AppCompatActivity {
         setupCircleGraphView();
 
     }
+
     private void rateOfWrite(boolean isMonthly, Consumer<Float> callback) {
         float days = getLastDayOfCurrentMonth();
         TextView day = findViewById(R.id.rateText);
@@ -58,24 +60,24 @@ public class RemindActivity extends AppCompatActivity {
             if (diaryDao == null) {
                 Log.e("rateOfWrite", "DiaryDao is null");
                 runOnUiThread(() -> callback.accept(0f));
-                day.setText((int)days+ "일 중 총 n일 작성했어요");
+                day.setText((int) days + "일 중 총 n일 작성했어요");
                 return;
             }
 
-            if (isMonthly == true){ //월간
+            if (isMonthly == true) { //월간
 
                 int count = diaryDao.getDiaryCountPerDay("2025-03-01", "2025-04-07"); // diaryDao가 null이 아니므로  //데이터 추가
 
 
-                day.setText((int)days+ "일 중 총 "+ (int)count + "일 작성했어요");
+                day.setText((int) days + "일 중 총 " + (int) count + "일 작성했어요");
                 float rate = (count / days) * 100f;
 
                 runOnUiThread(() -> callback.accept(rate));
-            }else{//연간
+            } else {//연간
                 int count = diaryDao.getDiaryCountPerDay("2024-04-07", "2025-04-07"); // diaryDao가 null이 아니므로  //데이터 추가
 
 
-                day.setText("365일 중 총 "+ (int)count + "일 작성했어요");
+                day.setText("365일 중 총 " + (int) count + "일 작성했어요");
                 float rate = (count / 365) * 100f;
 
                 runOnUiThread(() -> callback.accept(rate));
@@ -89,19 +91,19 @@ public class RemindActivity extends AppCompatActivity {
 
         return lastDay;
     }
+
     private void setupCircleGraphView() {
         circleGraphView = binding.circle;
         rateOfWrite(isMonthly, rate -> {
             float roundedRate = Math.round(rate);
-            if (roundedRate < 1){ // 너무 작으면 최소값 0.1 단위로 표시
+            if (roundedRate < 1) { // 너무 작으면 최소값 0.1 단위로 표시
                 circleGraphView.animateSection(0, 0f, rate);         // 작성한 비율
                 circleGraphView.animateSection(1, 0f, 100f - rate);    // 작성 안 한 비율
-            }else {
+            } else {
                 circleGraphView.animateSection(0, 0f, roundedRate);         // 작성한 비율
                 circleGraphView.animateSection(1, 0f, 100f - roundedRate);    // 작성 안 한 비율
             }
         });
     }
 
-    }
 }

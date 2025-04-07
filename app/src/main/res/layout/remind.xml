@@ -13,7 +13,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    android:layout_marginTop="150dp"
+    android:layout_marginTop="200dp"
     android:text="30일 중 총 25일 일기를 작서하셨어요!"
     android:textSize="25sp"
     android:textColor="@color/white"/>

@@ -24,4 +24,8 @@ public interface DiaryDao {
 
     @Delete
     void deleteDiary(Diary diary);
+
+    @Query("SELECT COUNT(*) FROM diaries WHERE DATE(date) BETWEEN :startDate AND :endDate") //하루에 하나씩만 카운트되게하고 시작 날짜와 끝 날짜 정함
+    int getDiaryCountPerDay(String startDate, String endDate);
+
 }

@@ -2,6 +2,7 @@ package kr.co.gachon.emotion_diary.ui.myPage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.databinding.FragmentMypageBinding;
 import kr.co.gachon.emotion_diary.ui.Remind.RemindActivity;
 
 public class MyPageFragment extends Fragment {
 
     private FragmentMypageBinding binding;
+    private DiaryDao diaryDao;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class MyPageFragment extends Fragment {
 
         yearRemindButton.setOnClickListener(view -> {
             Intent intent = new Intent(getActivity(), RemindActivity.class);
-
+            intent.putExtra("isMonthly", false);
             startActivity(intent);
         });
 
@@ -39,9 +42,10 @@ public class MyPageFragment extends Fragment {
 
         monthRemindButton.setOnClickListener(view -> {
             Intent intent = new Intent(getActivity(), RemindActivity.class);
-
+            intent.putExtra("isMonthly", true);
             startActivity(intent);
         });
+
 
 
         return root;

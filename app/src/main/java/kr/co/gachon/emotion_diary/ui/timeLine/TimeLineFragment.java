@@ -33,8 +33,7 @@ public class TimeLineFragment extends Fragment implements MonthlyDiaryAdapter.On
     private FragmentTimelineBinding binding;
     private final String logTitle = "TimeLineFragment";
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         TimeLineViewModel timeLineViewModel =
                 new ViewModelProvider(this).get(TimeLineViewModel.class);

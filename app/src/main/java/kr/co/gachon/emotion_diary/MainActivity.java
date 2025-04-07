@@ -2,36 +2,22 @@ package kr.co.gachon.emotion_diary;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import java.util.Calendar;
-import java.util.List;
-
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    /** @noinspection FieldCanBeLocal*/
+    /** @noinspection FieldCanBeLocal */
     private ActivityMainBinding binding;
 
-
     // --------- Assign FOR DB TEST START---------
-    /** @noinspection FieldCanBeLocal*/
+    /** @noinspection FieldCanBeLocal */
     private DiaryRepository diaryRepository;
     // --------- Assign FOR DB TEST END-----------
 
@@ -42,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        BottomNavigationView navView = findViewById(R.id.nav_view);
+        // BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -51,9 +37,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
-
-
 
         // --------- DB TEST START ---------
         diaryRepository = new DiaryRepository(getApplication());
@@ -68,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        Diary newDiary = new Diary("title", "content", "emotion", Calendar.getInstance().getTime());
-//        diaryRepository.insert(newDiary);
+        // Diary newDiary = new Diary("title", "content", "emotion", Calendar.getInstance().getTime());
+        // diaryRepository.insert(newDiary);
         // --------- DB TEST END ----------
 
     }

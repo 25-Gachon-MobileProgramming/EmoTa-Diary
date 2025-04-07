@@ -1,5 +1,6 @@
 package kr.co.gachon.emotion_diary.ui.timeLine;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -13,21 +14,24 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.FragmentTimelineBinding;
 
 public class TimeLineFragment extends Fragment {
 
     private FragmentTimelineBinding binding;
-    private RecyclerView monthlyDiaryRecyclerView;
-    private MonthlyDiaryAdapter adapter;
-
-    private DiaryRepository diaryRepository;
+    private final String logTitle = "TimeLineFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -38,36 +42,50 @@ public class TimeLineFragment extends Fragment {
         binding = FragmentTimelineBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        monthlyDiaryRecyclerView = binding.monthlyDiaryRecyclerView;
+        RecyclerView monthlyDiaryRecyclerView = binding.monthlyDiaryRecyclerView;
         monthlyDiaryRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // 임시 데이터 (실제 데이터는 데이터베이스나 파일 등에서 가져와야 합니다.)
-        List<MonthlyDiaryEntry> diaryData = new ArrayList<>();
-        diaryData.add(new MonthlyDiaryEntry("2023-10-05", "10월 5일 일기"));
-        diaryData.add(new MonthlyDiaryEntry("2023-10-15", "10월 15일 일기"));
-        diaryData.add(new MonthlyDiaryEntry("2023-10-26", "10월 26일 일기"));
-        diaryData.add(new MonthlyDiaryEntry("2023-11-01", "11월 1일 일기"));
-        diaryData.add(new MonthlyDiaryEntry("2023-11-20", "11월 20일 일기"));
 
-        // 월별로 그룹화하는 로직 (Java 8 이상)
-        Map<String, List<MonthlyDiaryEntry>> groupedDiaryDataMap = diaryData.stream()
-                .collect(Collectors.groupingBy(entry -> entry.getDate().substring(0, 7)));
+        // DB 연결
+        DiaryRepository diaryRepository = new DiaryRepository(requireActivity().getApplication());
 
+        diaryRepository.getAllDiaries().observe(getViewLifecycleOwner(), diaries -> {
+            Log.d(logTitle, "recycler 모든 일기 (Repository - ExecutorService):");
+            for (Diary diary : diaries) {
+                Log.d(logTitle, "ID: " + diary.getId() + ", 제목: " + diary.getTitle() + ", 내용: " + diary.getContent() + ", 날짜: " + diary.getDate());
+            }
+            Log.d(logTitle, "===========================================================");
 
-        // Map을 어댑터에 넘길 수 있는 List<Pair<String, List<DiaryEntry>>> 형태로 변환 및 정렬
-        List<Pair<String, List<MonthlyDiaryEntry>>> groupedDiaryData = new ArrayList<>();
+            // 월별로 그룹화하는 로직 (Date 객체 직접 사용)
+            Map<String, List<Diary>> groupedDiaryDataMap = diaries.stream()
+                    .collect(Collectors.groupingBy(diary -> {
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM");
+                        return outputFormat.format(diary.getDate());
+                    }));
 
-        for (Map.Entry<String, List<MonthlyDiaryEntry>> entry : groupedDiaryDataMap.entrySet()) {
-            groupedDiaryData.add(new Pair<>(entry.getKey(), entry.getValue()));
-        }
+            // Map을 어댑터에 넘길 수 있는 List<Pair<String, List<MonthlyDiaryEntry>>> 형태로 변환
+            List<Pair<String, List<MonthlyDiaryEntry>>> groupedDiaryData = new ArrayList<>();
+            for (Map.Entry<String, List<Diary>> entry : groupedDiaryDataMap.entrySet()) {
+                String month = entry.getKey();
+                List<Diary> diaryList = entry.getValue();
+                List<MonthlyDiaryEntry> entriesForMonth = new ArrayList<>();
 
-        // 최신 월부터 표시하기 위해 정렬
-        groupedDiaryData.sort((pair1, pair2) -> pair2.first.compareTo(pair1.first));
+                for (Diary diary : diaryList) {
+                    entriesForMonth.add(new MonthlyDiaryEntry(diary.getDate().toString(), diary.getContent()));
+                }
 
-        Log.d("TimeLineFragment", "groupedDiaryData: " + groupedDiaryData);
+                groupedDiaryData.add(new Pair<>(month, entriesForMonth));
+            }
 
-        adapter = new MonthlyDiaryAdapter(groupedDiaryData);
-        monthlyDiaryRecyclerView.setAdapter(adapter);
+            // 최신 월부터 표시하기 위해 정렬
+            groupedDiaryData.sort((pair1, pair2) -> pair2.first.compareTo(pair1.first));
+
+            Log.d("TimeLineFragment", "groupedDiaryData from DB: " + groupedDiaryData);
+
+            // 어댑터에 새로운 데이터 설정
+            MonthlyDiaryAdapter adapter = new MonthlyDiaryAdapter(groupedDiaryData);
+            monthlyDiaryRecyclerView.setAdapter(adapter);
+        });
 
         return root;
     }

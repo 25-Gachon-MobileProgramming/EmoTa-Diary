@@ -1,6 +1,7 @@
 package kr.co.gachon.emotion_diary.ui.timeLine;
 
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Pair;
 import java.util.List;
+import java.util.Locale;
+
 import kr.co.gachon.emotion_diary.R;
 
 public class MonthlyDiaryAdapter extends RecyclerView.Adapter<MonthlyDiaryAdapter.MonthlyDiaryViewHolder> {
@@ -41,11 +44,15 @@ public class MonthlyDiaryAdapter extends RecyclerView.Adapter<MonthlyDiaryAdapte
     @Override
     public void onBindViewHolder(@NonNull MonthlyDiaryViewHolder holder, int position) {
         Pair<String, List<MonthlyDiaryEntry>> monthData = monthlyDiaryData.get(position);
-        String month = monthData.first;
+        String dateString = monthData.first; // 2025-02
         List<MonthlyDiaryEntry> diaryList = monthData.second;
 
-        holder.monthTextView.setText(month);
-        holder.diaryCountTextView.setText("작성된 일기: " + diaryList.size() + "개");
+        String[] parts = dateString.split("-");
+        String strYear = parts[0];
+        String strMonth = parts[1];
+
+        holder.monthTextView.setText(String.format("%s년 %s월", strYear, strMonth));
+        holder.diaryCountTextView.setText(String.format(Locale.KOREA, "작성된 일기: %d개", diaryList.size()));
     }
 
     @Override

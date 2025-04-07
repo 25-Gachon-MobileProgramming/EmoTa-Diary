@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Diary newDiary = new Diary("title", "content", "emotion", Calendar.getInstance().getTime());
-        diaryRepository.insert(newDiary);
+//        Diary newDiary = new Diary("title", "content", "emotion", Calendar.getInstance().getTime());
+//        diaryRepository.insert(newDiary);
         // --------- DB TEST END ----------
 
     }

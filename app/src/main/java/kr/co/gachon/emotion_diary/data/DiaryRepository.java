@@ -50,8 +50,7 @@ public class DiaryRepository {
                 insert(new Diary("과제를함", "하루종일과제를함", "미침", calendar.getTime()));
 
                 calendar.set(2025, Calendar.APRIL, 2, 10, 30);
-                insert(new Diary("즐거운 하루", "오2 날씨가 정말 좋았어요!", "행복", calendar.getTime()));
-
+                insert(new Diary("즐거운 하루", "오늘 날씨가 정말 좋았어요!", "행복", calendar.getTime()));
                 calendar.set(2025, Calendar.MARCH, 3, 15, 0);
                 insert(new Diary("힘든 날", "회사에서 어려운 일이 있었어요.", "슬픔", calendar.getTime()));
 

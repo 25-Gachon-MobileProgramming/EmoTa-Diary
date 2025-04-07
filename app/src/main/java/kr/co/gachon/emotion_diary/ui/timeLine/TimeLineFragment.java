@@ -70,10 +70,11 @@ public class TimeLineFragment extends Fragment implements MonthlyDiaryAdapter.On
                 List<Diary> diaryList = entry.getValue();
                 List<MonthlyDiaryEntry> entriesForMonth = new ArrayList<>();
 
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 for (Diary diary : diaryList) {
-                    entriesForMonth.add(new MonthlyDiaryEntry(diary.getDate().toString(), diary.getContent()));
+                    String formattedDate = dateFormat.format(diary.getDate());
+                    entriesForMonth.add(new MonthlyDiaryEntry(formattedDate, diary.getContent()));
                 }
-
                 groupedDiaryData.add(new Pair<>(month, entriesForMonth));
             }
 

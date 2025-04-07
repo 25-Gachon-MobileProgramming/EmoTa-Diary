@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     // --------- Assign FOR DB TEST START---------
     /** @noinspection FieldCanBeLocal*/
     private DiaryRepository diaryRepository;
-    private List<Diary> allDiariesList;
     // --------- Assign FOR DB TEST END-----------
 
     @Override
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+//        BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         // --------- DB TEST START ---------
         diaryRepository = new DiaryRepository(getApplication());
 
@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         diaryRepository.getAllDiaries().observe(this, diaries -> {
             Log.d("RoomExample", "모든 일기 (Repository - ExecutorService):");
-            allDiariesList = diaries;
 
             for (Diary diary : diaries) {
                 Log.d("RoomExample", "ID: " + diary.getId() + ", 제목: " + diary.getTitle() + ", 내용: " + diary.getContent() + ", 날짜: " + diary.getDate());

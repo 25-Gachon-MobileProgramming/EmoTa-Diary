@@ -28,7 +28,7 @@ import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.FragmentTimelineBinding;
 
-public class TimeLineFragment extends Fragment {
+public class TimeLineFragment extends Fragment implements MonthlyDiaryAdapter.OnMonthlyDiaryClickListener {
 
     private FragmentTimelineBinding binding;
     private final String logTitle = "TimeLineFragment";
@@ -83,11 +83,17 @@ public class TimeLineFragment extends Fragment {
             Log.d("TimeLineFragment", "groupedDiaryData from DB: " + groupedDiaryData);
 
             // 어댑터에 새로운 데이터 설정
-            MonthlyDiaryAdapter adapter = new MonthlyDiaryAdapter(groupedDiaryData);
+            MonthlyDiaryAdapter adapter = new MonthlyDiaryAdapter(groupedDiaryData, this);
             monthlyDiaryRecyclerView.setAdapter(adapter);
         });
 
         return root;
+    }
+
+    @Override
+    public void onMonthlyDiaryClick(String month, List<MonthlyDiaryEntry> diaryList) {
+        // 클릭 이벤트 처리 ㄱㄱ
+        Log.d("RecyclerViewClick", "Clicked on month: " + month + ", Diary count: " + diaryList.size());
     }
 
     @Override

@@ -16,6 +16,7 @@ import kr.co.gachon.emotion_diary.R;
 
 public class MonthlyDiaryAdapter extends RecyclerView.Adapter<MonthlyDiaryAdapter.MonthlyDiaryViewHolder> {
     private final List<Pair<String, List<MonthlyDiaryEntry>>> monthlyDiaryData;
+    private final OnMonthlyDiaryClickListener listener;
 
     public static class MonthlyDiaryViewHolder extends RecyclerView.ViewHolder {
         public final TextView monthTextView;
@@ -28,8 +29,9 @@ public class MonthlyDiaryAdapter extends RecyclerView.Adapter<MonthlyDiaryAdapte
         }
     }
 
-    public MonthlyDiaryAdapter(List<Pair<String, List<MonthlyDiaryEntry>>> monthlyDiaryData) {
+    public MonthlyDiaryAdapter(List<Pair<String, List<MonthlyDiaryEntry>>> monthlyDiaryData, OnMonthlyDiaryClickListener listener) {
         this.monthlyDiaryData = monthlyDiaryData;
+        this.listener = listener;
     }
 
     @NonNull
@@ -53,10 +55,21 @@ public class MonthlyDiaryAdapter extends RecyclerView.Adapter<MonthlyDiaryAdapte
 
         holder.monthTextView.setText(String.format("%s년 %s월", strYear, strMonth));
         holder.diaryCountTextView.setText(String.format(Locale.KOREA, "작성된 일기: %d개", diaryList.size()));
+
+        holder.itemView.setOnClickListener(v -> {
+            if (position != RecyclerView.NO_POSITION && listener != null) {
+                Pair<String, List<MonthlyDiaryEntry>> clickedItem = monthlyDiaryData.get(position);
+                listener.onMonthlyDiaryClick(clickedItem.first, clickedItem.second);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return monthlyDiaryData.size();
+    }
+
+    public interface OnMonthlyDiaryClickListener {
+        void onMonthlyDiaryClick(String month, List<MonthlyDiaryEntry> diaryList);
     }
 }

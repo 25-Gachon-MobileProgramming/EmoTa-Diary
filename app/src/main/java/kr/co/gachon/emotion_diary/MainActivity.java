@@ -1,5 +1,6 @@
 package kr.co.gachon.emotion_diary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import java.util.List;
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.ActivityMainBinding;
+import kr.co.gachon.emotion_diary.write.DiaryWriteActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,6 +56,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 
+        // 버튼이 작동했을 때 화면 변화하게 바꿔주는 코드
+        Button imageButton = (Button) findViewById(R.id.diary_write_button);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+
+            // INTENT를 사용해서 넘어가게 사용
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
+                intent.putExtra("selectedDate", System.currentTimeMillis());
+                startActivity(intent);
+            }
+        });
 
         // --------- DB TEST START ---------
         diaryRepository = new DiaryRepository(getApplication());

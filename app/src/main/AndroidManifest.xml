@@ -23,6 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<!--        intent 이동하려면 필요하다해서 추가했습니다-->
+        <activity android:name=".write.DiaryWriteActivity"/>
     </application>
 
 </manifest>

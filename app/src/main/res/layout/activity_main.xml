@@ -8,6 +8,17 @@
     android:paddingTop="?attr/actionBarSize"
     tools:context=".MainActivity">
 
+<!--    이 버튼이 fragment_diary_write로 넘어가는 버튼-->
+    <Button
+        android:id="@+id/diary_write_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="diary_write"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="80dp" />
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"

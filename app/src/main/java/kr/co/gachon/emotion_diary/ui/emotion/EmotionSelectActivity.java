@@ -1,0 +1,41 @@
+package kr.co.gachon.emotion_diary.ui.emotion;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+import kr.co.gachon.emotion_diary.R;
+
+public class EmotionSelectActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_diary_emotion);
+
+        Intent intent = getIntent();
+
+        String CurrentDate = intent.getStringExtra("date");
+        String title = intent.getStringExtra("title");
+        String content = intent.getStringExtra("content");
+
+        Log.wtf("getTest",CurrentDate);
+        Log.wtf("getTest",title);
+        Log.wtf("getTest",content);
+
+        TextView dateView = findViewById(R.id.emotionDate);      // 날짜 표시용
+        TextView titleView = findViewById(R.id.emotionTitle);    // 제목 표시용
+        TextView contentView = findViewById(R.id.emotionContent); // 내용 표시용
+
+        if (dateView != null) dateView.setText(CurrentDate);
+        if (titleView != null) titleView.setText(title);
+        if (contentView != null) contentView.setText(content);
+
+        Log.wtf("newTest", title);
+        Log.wtf("newTest", content);
+        Log.wtf("newTest", CurrentDate);
+
+
+    }
+}

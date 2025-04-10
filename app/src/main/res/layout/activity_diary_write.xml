@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="50dp"
         android:text="날짜" />
 
@@ -33,13 +33,13 @@
 
 
     <Button
-        android:id="@+id/insertDummyData"
+        android:id="@+id/nextPage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="emtion select" />
 
     <Button
-        android:id="@+id/back_button"
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"

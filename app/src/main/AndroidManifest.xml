@@ -24,6 +24,7 @@
 
         <activity android:name=".ui.Remind.RemindActivity" />
         <activity android:name=".ui.writePage.DiaryWriteActivity"/>
+        <activity android:name=".ui.emotion.EmotionSelectActivity"/>
     </application>
 
 </manifest>

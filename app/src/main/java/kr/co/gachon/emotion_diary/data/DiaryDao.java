@@ -16,13 +16,6 @@ public interface DiaryDao {
     @Query("SELECT * FROM diaries ORDER BY date DESC")
     LiveData<List<Diary>> getAllDiaries();
 
-    //더미 1행 정보 가져오기 데이터가 잘 넘어오는지 썼던 quary 지우셔도 되는데
-    //또 오류 터지면 경로 봐야해서 놔두었습니다
-    @Query("SELECT * FROM diaries ORDER BY date ASC LIMIT 1 OFFSET 1")
-    LiveData<Diary> getFirstDiaryLive();
-
-
-
     @Insert
     void insertDiary(Diary diary);
 

@@ -3,28 +3,21 @@ package kr.co.gachon.emotion_diary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import java.util.Calendar;
 import java.util.List;
 
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.ActivityMainBinding;
-import kr.co.gachon.emotion_diary.write.DiaryWriteActivity;
+import kr.co.gachon.emotion_diary.ui.writePage.DiaryWriteActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,17 +49,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 
-        // 버튼이 작동했을 때 화면 변화하게 바꿔주는 코드
-        Button imageButton = (Button) findViewById(R.id.diary_write_button);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        Button imageButton = findViewById(R.id.diary_write_button);
 
-            // INTENT를 사용해서 넘어가게 사용
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
-                intent.putExtra("selectedDate", System.currentTimeMillis());
-                startActivity(intent);
-            }
+        imageButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
+            intent.putExtra("selectedDate", System.currentTimeMillis());
+            startActivity(intent);
         });
 
         // --------- DB TEST START ---------

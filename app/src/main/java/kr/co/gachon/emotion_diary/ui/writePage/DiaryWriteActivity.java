@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Date;
 
+import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.ui.emotion.EmotionSelectActivity;
 
@@ -36,6 +37,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
         Log.wtf("Test", selectedDate.toString());
 
         // 가공후 포멧으로 값 가져옴
+        //가공후 포멧으로 값 가져옴
         String CurrentDate = CurrentDate(selectedDate);
 
         TextView textView = findViewById(R.id.dateTextView);
@@ -47,6 +49,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
         EditText content = findViewById(R.id.contentTextView);
 
         // 현재 시간 제목 내용을 다음 Emotionactivity로 보냄
+        //현재 시간 제목 내용을 다음 Emotionactivity로 보냄
         Button button = findViewById(R.id.nextPage);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,5 +70,13 @@ public class DiaryWriteActivity extends AppCompatActivity {
                 }
             }
         });
+        Button backbutton = findViewById(R.id.backButton);
+        backbutton.setOnClickListener((new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        }));
     }
 }

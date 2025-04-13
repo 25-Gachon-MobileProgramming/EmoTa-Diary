@@ -6,14 +6,6 @@
     android:orientation="vertical"
     android:layout_marginTop="30dp">
 
-    <TextView
-        android:id="@+id/emotionDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:textSize="30dp"
-        android:text="날짜" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,35 +49,19 @@
             android:text="감정4" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/emotionTitle"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="제목"
-        android:textSize="20sp" />
-
-
-    <TextView
-        android:id="@+id/emotionContent"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:hint="내용" />
-
-
     <Button
-        android:id="@+id/insertData"
+        android:id="@+id/nextPageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="emotion select"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"/>
 
     <Button
         android:id="@+id/backButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="back button"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -21,10 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.Remind.RemindActivity" />
         <activity android:name=".ui.writePage.DiaryWriteActivity"/>
         <activity android:name=".ui.emotion.EmotionSelectActivity"/>
+        <activity android:name=".ui.answerPage.AnswerActivity"/>
     </application>
-
+<!--    핸드폰 wifi 상태 접근-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>

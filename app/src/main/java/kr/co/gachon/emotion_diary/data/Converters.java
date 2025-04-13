@@ -22,10 +22,6 @@ import java.util.Locale;
 public class Converters {
     private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
-    // 참조하려고 format 함
-    public static String CurrentDate(Date date){
-        return formatter.format(date);
-    }
     @TypeConverter
     public static Date fromString(String value) {
         try {

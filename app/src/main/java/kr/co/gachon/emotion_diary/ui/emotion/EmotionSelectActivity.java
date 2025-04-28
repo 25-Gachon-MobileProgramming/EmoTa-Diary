@@ -45,7 +45,7 @@ public class EmotionSelectActivity extends AppCompatActivity {
                 if (pressButton != null) {
                     pressButton.setBackgroundColor(Color.BLACK);
                 }
-                // button을 view를 버튼처럼 사용
+                // button을 view처럼 사용
                 pressButton = (Button) view;
                 pressButton.setBackgroundColor(Color.WHITE);
             }
@@ -77,17 +77,13 @@ public class EmotionSelectActivity extends AppCompatActivity {
                 }}
         });
 
-        // 백버튼 잠시 보류
         // DiaryWriteActivity로 돌아가는 버튼
-//        Button backbutton2 = findViewById(R.id.backButton2);
-//        backbutton2.setOnClickListener((new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
-//                intent.putExtra("date", CurrentDate);
-//                intent.putExtra("title", title);
-//                intent.putExtra("content", content);
-//            }}));
+        Button backbutton2 = findViewById(R.id.backButton2);
+        backbutton2.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }}));
     }
 
 }

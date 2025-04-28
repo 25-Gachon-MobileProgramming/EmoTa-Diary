@@ -37,10 +37,6 @@ public class DiaryWriteActivity extends AppCompatActivity {
         String title = intent.getStringExtra("title");
         String content = intent.getStringExtra("content");
 
-//        Log.wtf("Test", CurrentDate);
-//        Log.wtf("Test", title);
-//        Log.wtf("Test", content);
-
         TextView textView = findViewById(R.id.dateTextView);
         textView.setText(CurrentDate);
 
@@ -72,15 +68,14 @@ public class DiaryWriteActivity extends AppCompatActivity {
             }
         });
 
-        // 백버튼 잠시 보류
         // MainActivity로 화면 이동
-//        Button backbutton = findViewById(R.id.backButton);
-//        backbutton.setOnClickListener((new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view){
-//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                startActivity(intent);
-//            }
-//        }));
+        Button backbutton = findViewById(R.id.backButton);
+        backbutton.setOnClickListener((new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        }));
     }
 }

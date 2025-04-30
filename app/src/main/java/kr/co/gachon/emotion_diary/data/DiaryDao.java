@@ -6,6 +6,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 import androidx.room.Delete;
+
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -30,4 +32,7 @@ public interface DiaryDao {
 
     @Query("SELECT emotion, COUNT(*) as count FROM diaries GROUP BY emotion")
     List<EmotionCount> getEmotionCounts();
+
+    @Query("SELECT date FROM DIARIES")
+    List<Date> getAllDiaryDates();
 }

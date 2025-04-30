@@ -3,11 +3,15 @@ package kr.co.gachon.emotion_diary.ui.Remind.timeGraph;
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.animation.ValueAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import androidx.core.content.res.ResourcesCompat;
 
 import java.util.List;
+
+import kr.co.gachon.emotion_diary.R;
 
 public class TimeGraph extends View {
     private Paint paint;
@@ -17,6 +21,8 @@ public class TimeGraph extends View {
     private ValueAnimator animator;
 
     private int viewWidth, viewHeight;
+
+    private Point labelPoint = null;  // 최빈값 위치
 
     public TimeGraph(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -40,6 +46,13 @@ public class TimeGraph extends View {
 
     public void setTimePoints(List<Point> points) {
         this.timePoints = points;
+        int maxCount = 0;
+        for (Point p : points) {
+            if (p.y > maxCount) {
+                maxCount = p.y;
+                labelPoint = p;  // 최빈값 위치 저장
+            }
+        }
         buildPath();
 
         animator = ValueAnimator.ofFloat(0f, 1f);
@@ -129,6 +142,30 @@ public class TimeGraph extends View {
                 labelPaint.setTextAlign(Paint.Align.CENTER);
                 canvas.drawText(label, x, viewHeight - 30f, labelPaint);
             }
+        }
+        if (labelPoint != null) {
+            Paint highlightPaint = new Paint();
+            highlightPaint.setColor(Color.WHITE);
+            highlightPaint.setTextSize(30f);
+            highlightPaint.setAntiAlias(true);
+            highlightPaint.setTextAlign(Paint.Align.CENTER);
+            Typeface customFont = ResourcesCompat.getFont(getContext(), R.font.temp);
+            if (customFont != null) {
+                highlightPaint.setTypeface(customFont);
+            }
+
+
+            float maxY = 1f;
+            for (Point p : timePoints) {
+                if (p.y > maxY) maxY = p.y;
+            }
+            if (maxY < 5f) maxY = 5f;
+
+            float x = (labelPoint.x / maxX) * viewWidth;
+            float y = viewHeight - (labelPoint.y / maxY) * viewHeight;
+
+            String label = String.format("%02d:%02d", labelPoint.x / 60, labelPoint.x % 60);
+            canvas.drawText(label, x + 20f, y + 70f, highlightPaint);
         }
     }
 }

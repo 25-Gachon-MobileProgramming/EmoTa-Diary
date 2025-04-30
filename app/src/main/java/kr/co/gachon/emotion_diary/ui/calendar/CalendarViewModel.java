@@ -4,16 +4,54 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class CalendarViewModel extends ViewModel {
+import java.util.Calendar;
 
-    private final MutableLiveData<String> mText;
+public class CalendarViewModel extends ViewModel {
+    private final MutableLiveData<Integer> _currentYear = new MutableLiveData<>();
+    private final MutableLiveData<Integer> _currentMonth = new MutableLiveData<>();
+
+    public final LiveData<Integer> currentYear = _currentYear;
+    public final LiveData<Integer> currentMonth = _currentMonth;
 
     public CalendarViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is calendar fragment");
+        Calendar calendar = Calendar.getInstance();
+
+        _currentYear.setValue(calendar.get(Calendar.YEAR));
+        _currentMonth.setValue(calendar.get(Calendar.MONTH) + 1); // It's 0-based
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void goToNextMonth() {
+        Integer year = _currentYear.getValue();
+        Integer month = _currentMonth.getValue();
+
+        if (year != null && month != null) {
+            if (month == 12) {
+                // In the last month of the year
+                _currentYear.setValue(year + 1);
+                _currentMonth.setValue(1);
+            } else {
+                _currentMonth.setValue(month + 1);
+            }
+        }
+    }
+
+    public void goToPreviousMonth() {
+        Integer year = _currentYear.getValue();
+        Integer month = _currentMonth.getValue();
+
+        if (year != null && month != null) {
+            if (month == 1) {
+                // In the first month of the year
+                _currentYear.setValue(year - 1);
+                _currentMonth.setValue(12);
+            } else {
+                _currentMonth.setValue(month - 1);
+            }
+        }
+    }
+
+    public void goToMonth(int year, int month) {
+        _currentYear.setValue(year);
+        _currentMonth.setValue(month);
     }
 }

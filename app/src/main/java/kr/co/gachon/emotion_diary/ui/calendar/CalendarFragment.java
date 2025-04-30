@@ -1,12 +1,12 @@
 package kr.co.gachon.emotion_diary.ui.calendar;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -14,12 +14,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.databinding.FragmentCalendarBinding;
@@ -28,14 +30,22 @@ public class CalendarFragment extends Fragment {
 
     private FragmentCalendarBinding binding;
     private TableLayout calendarTable;
+    private TextView monthYearText;
+    private Button prevMonthButton;
+    private Button nextMonthButton;
+
+    private CalendarViewModel calendarViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        CalendarViewModel calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
+        calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
 
         binding = FragmentCalendarBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         calendarTable = binding.calendar;
+        monthYearText = binding.monthYearText;
+        prevMonthButton = binding.prevMonthButton;
+        nextMonthButton = binding.nextMonthButton;
 
         // Set cell size dynamically
         calendarTable.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -46,37 +56,85 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        createCalendar();
+        observeViewModel();
+        setEventListeners();
 
         return root;
     }
 
+    // Execute when data changed
+    private void observeViewModel() {
+        calendarViewModel.currentYear.observe(getViewLifecycleOwner(), year -> {
+            updateMonthYearText(year, calendarViewModel.currentMonth.getValue());
+            recreateCalendar(year, calendarViewModel.currentMonth.getValue());
+        });
 
-    private void createCalendar() {
-        // Get the current date
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1; // cause Zero-Based Indexing
+        calendarViewModel.currentMonth.observe(getViewLifecycleOwner(), month -> {
+            updateMonthYearText(calendarViewModel.currentYear.getValue(), month);
+            recreateCalendar(calendarViewModel.currentYear.getValue(), month);
+        });
+    }
 
+    private void setEventListeners() {
+        prevMonthButton.setOnClickListener(v -> calendarViewModel.goToPreviousMonth());
+        nextMonthButton.setOnClickListener(v -> calendarViewModel.goToNextMonth());
+    }
+
+    private void updateMonthYearText(Integer year, Integer month) {
+        if (year != null && month != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.set(year, month - 1, 1); // -1 cause zero-based month
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 M월", Locale.getDefault());
+            monthYearText.setText(sdf.format(cal.getTime()));
+        }
+    }
+
+    private void recreateCalendar(Integer year, Integer month) {
+        if (year != null && month != null) {
+            int childCount = calendarTable.getChildCount();
+
+            // start: 1 => "day of the week" doesn't need to be removed
+            if (childCount > 1) calendarTable.removeViews(1, childCount - 1);
+
+            createCalendar(year, month);
+            updateCellSizes();
+        }
+    }
+
+    private void createCalendar(int year, int month) {
         // Get the first day of the month
         Calendar firstDayCalendar = Calendar.getInstance();
-        firstDayCalendar.set(year, month - 1, 1);
+        firstDayCalendar.set(year, month - 1, 1); // -1 cause zero-based month
         int dayOfWeekNumber = firstDayCalendar.get(Calendar.DAY_OF_WEEK); // sun(1) ~ sat(7)
         int daysInMonth = firstDayCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        // Add the row for the day names
-        TableRow dayNamesRow = new TableRow(getContext());
-        String[] dayNames = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        for (String dayName : dayNames) {
-            TextView dayNameTextView = createEmotionTextView(dayName);
-            dayNameTextView.setTextSize(Dimension.SP, 24);
-            dayNamesRow.addView(dayNameTextView);
+        // First time running
+        if (calendarTable.getChildCount() == 0) {
+            TableRow dayNamesRow = new TableRow(getContext());
+            String[] dayNames = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+
+            for (String dayName : dayNames) {
+                TextView dayNameTextView = createEmotionTextView(dayName);
+                dayNameTextView.setTextSize(Dimension.SP, 16);
+                dayNameTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
+                dayNamesRow.addView(dayNameTextView);
+            }
+
+            calendarTable.addView(dayNamesRow);
+
+            TableRow.LayoutParams dayOfTheWeekParams = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+            dayOfTheWeekParams.setMargins(0, 0, 0, dpToPx(8));
+
+            for (int j = 0; j < dayNamesRow.getChildCount(); j++) {
+                View cell = dayNamesRow.getChildAt(j);
+                cell.setLayoutParams(dayOfTheWeekParams);
+            }
         }
-        calendarTable.addView(dayNamesRow);
 
         TableRow currentRow = new TableRow(getContext());
 
-        // Add empty cells for the days before the first day of the month
+        // TODO: Instead of empty, fill prev month? -> but with emoji, calendar may change in the future
+        // Before the first day of the month, add empty cells
         for (int i = 1; i < dayOfWeekNumber; i++) {
             TextView emptyTextView = createEmotionTextView("");
             currentRow.addView(emptyTextView);
@@ -88,33 +146,29 @@ public class CalendarFragment extends Fragment {
         while (currentDayOfMonth <= daysInMonth) {
             TextView dayTextView = createEmotionTextView(String.valueOf(currentDayOfMonth));
 
-            // for remove warning: variable used in lambda expression should be final
-            int finalCurrentDayOfMonth = currentDayOfMonth;
-
-            // TODO: Add click listener to show something...
-            dayTextView.setOnClickListener(v -> Toast.makeText(getContext(), "Clicked on " + finalCurrentDayOfMonth, Toast.LENGTH_SHORT).show());
+            int finalCurrentDayOfMonth = currentDayOfMonth; // For the lambda wtf
+            dayTextView.setOnClickListener(v -> Toast.makeText(getContext(), year + "년 " + month + "월 " + finalCurrentDayOfMonth + "일 클릭", Toast.LENGTH_SHORT).show());
             currentRow.addView(dayTextView);
 
             int currentTableNumber = dayOfWeekNumber + currentDayOfMonth - 1;
             boolean isLastDayOfWeek = currentTableNumber % 7 == 0;
 
+
+            // Last day of the month
+            if (!isLastDayOfWeek && currentDayOfMonth == daysInMonth) {
+                // Fill the rest of the row with empty cells
+                while (currentRow.getChildCount() < 7) {
+                    TextView emptyTextView = createEmotionTextView("");
+                    currentRow.addView(emptyTextView);
+                }
+
+                calendarTable.addView(currentRow);
+            }
+
+            // Last day of the week
             if (isLastDayOfWeek) {
                 calendarTable.addView(currentRow);
                 currentRow = new TableRow(getContext());
-            }
-
-            // fill the rest of the row with empty cells
-            if (!isLastDayOfWeek && currentDayOfMonth == daysInMonth) {
-                if (currentRow.getChildCount() > 0) {
-                    while (currentRow.getChildCount() < 7) {
-                        TextView emptyTextView = createEmotionTextView("");
-                        currentRow.addView(emptyTextView);
-                    }
-
-                    calendarTable.addView(currentRow);
-                }
-
-                break;
             }
 
             currentDayOfMonth++;

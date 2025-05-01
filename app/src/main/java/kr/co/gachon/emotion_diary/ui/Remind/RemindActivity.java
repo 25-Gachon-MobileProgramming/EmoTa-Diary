@@ -2,8 +2,9 @@ package kr.co.gachon.emotion_diary.ui.Remind;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -20,7 +21,6 @@ import java.util.function.Consumer;
 
 import kr.co.gachon.emotion_diary.data.AppDatabase;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
-import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.RemindBinding;
 
 
@@ -31,7 +31,7 @@ public class RemindActivity extends AppCompatActivity {
 
     private Boolean isMonthly;
 
-    private DiaryRepository diaryRepository;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +46,16 @@ public class RemindActivity extends AppCompatActivity {
         isMonthly = intent.getBooleanExtra("isMonthly", false);
 
         setupCircleGraphView();
+
+        Button nextButton = findViewById(R.id.nextButton);
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RemindActivity.this, EmotionStatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

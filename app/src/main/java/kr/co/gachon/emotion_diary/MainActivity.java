@@ -7,6 +7,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import java.util.Calendar;
+
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.ActivityMainBinding;
@@ -51,8 +54,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Diary newDiary = new Diary("title", "content", "emotion", Calendar.getInstance().getTime());
-        // diaryRepository.insert(newDiary);
+//         Diary newDiary = new Diary("title", "content", "행복", Calendar.getInstance().getTime());
+//         diaryRepository.insert(newDiary);
+
+
         // --------- DB TEST END ----------
 
     }

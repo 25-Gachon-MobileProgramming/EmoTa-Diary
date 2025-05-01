@@ -3,8 +3,7 @@ package kr.co.gachon.emotion_diary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-
+import android.widget.ImageButton;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 
-        Button imageButton = findViewById(R.id.diary_write_button);
+        ImageButton imageButton = findViewById(R.id.diary_write_button);
 
         imageButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);

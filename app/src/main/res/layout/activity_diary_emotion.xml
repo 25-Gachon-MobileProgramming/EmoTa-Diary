@@ -4,28 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="30dp">
+    android:background="@drawable/background"
+    >
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
+        <ImageButton
             android:id="@+id/btn1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="감정1" />
+            android:tint="#ffff"
+            android:background="@android:color/transparent"
+            android:src="@drawable/happy"
+            />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="감정2" />
+            android:tint="#ffff"
+            android:background="@android:color/transparent"
+            android:src="@drawable/angry" />
     </LinearLayout>
 
     <LinearLayout
@@ -33,42 +40,34 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="30dp">
 
-        <Button
+        <ImageButton
             android:id="@+id/btn3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="감정3" />
+            android:tint="#ffff"
+            android:background="@android:color/transparent"
+            android:src="@drawable/sad" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="감정4" />
+            android:tint="#ffff"
+            android:background="@android:color/transparent"
+            android:src="@drawable/tired" />
     </LinearLayout>
 
     <Button
         android:id="@+id/nextPageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="emotion select"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/backButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="back button"
-        android:layout_marginTop="16dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
-    </LinearLayout>
+        android:layout_gravity="right"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/font"
+        android:text="emotion select" />
 
 </LinearLayout>

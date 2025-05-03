@@ -2,6 +2,7 @@ package kr.co.gachon.emotion_diary.ui.OnBoarding;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -23,7 +24,7 @@ import java.util.Calendar;
 import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
 
-public class AvataActivity extends AppCompatActivity {
+public class AvatarActivity extends AppCompatActivity {
     Button button;
     EditText editText;
     private Context context;
@@ -41,7 +42,7 @@ public class AvataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_avata);
+        setContentView(R.layout.activity_avatar);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -129,8 +130,9 @@ public class AvataActivity extends AppCompatActivity {
                 }
 
                 // 생년월일이 모두 선택되었는지 확인 (초기값으로 설정한 1도 선택된 것으로 간주하므로,
-                // 실제 사용자가 스크롤했는지 여부를 추가적으로 확인하는 것이 더 robust할 수 있습니다.)
-                // 간단하게 초기값과 다르면 선택된 것으로 간주합니다.
+                // 실제 사용자가 스크롤했는지 여부를 추가적으로 확인하는 것이 더 좋음.)
+                // 간단하게 초기값과 다르면 선택된 것으로 간주
+                // 수정필요 !!!
                 if (selectedYear == 2000 && selectedMonth == 1 && selectedDay == 1) {
                     Toast.makeText(context, "Please select your birth date", Toast.LENGTH_SHORT).show();
                     return;
@@ -141,10 +143,20 @@ public class AvataActivity extends AppCompatActivity {
                 // 데이터가 잘 입력되었는지 확인하는 용도
                 Toast.makeText(context, "Welcome, " + input + "! Birth Date: " + birthDate + ", Gender: " + gender, Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(AvataActivity.this, MainActivity.class);
+                // Avatar 중복 설정 방지
+                SharedPreferences prefs = getSharedPreferences("avatar_pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("isAvatarCompleted", true);  // Avatar 설정 완료 여부
+                editor.putString("nickname", input);
+                editor.putString("gender", gender);
+                editor.putString("birthDate", birthDate);
+                editor.apply();  // 반드시 apply() 또는 commit() 호출
+
+                Intent intent = new Intent(AvatarActivity.this, MainActivity.class);
                 intent.putExtra("nickname", input); // 닉네임 데이터 전달
                 intent.putExtra("gender", gender); // 성별 데이터 전달
                 intent.putExtra("birthDate", birthDate); // 생년월일 데이터 전달
+
                 startActivity(intent);
             }
         });

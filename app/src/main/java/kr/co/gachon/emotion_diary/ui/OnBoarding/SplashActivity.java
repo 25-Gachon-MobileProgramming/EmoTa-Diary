@@ -1,6 +1,7 @@
 package kr.co.gachon.emotion_diary.ui.OnBoarding;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.animation.Animation;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -49,8 +52,16 @@ public class SplashActivity extends AppCompatActivity {
                         logoImageView.setVisibility(ImageView.INVISIBLE);
                         titleTextView.setVisibility(TextView.INVISIBLE);
 
-                        Intent intent = new Intent(SplashActivity.this, AvataActivity.class);
-                        startActivity(intent);
+                        // SharedPreferences로 값 확인 (Avatar가 중복 설정되지 않게)
+                        SharedPreferences prefs = getSharedPreferences("avatar_pref", MODE_PRIVATE);
+                        boolean isAvatarCompleted = prefs.getBoolean("isAvatarCompleted", false);
+
+                        Intent intent;
+                        if (isAvatarCompleted) {
+                            intent = new Intent(SplashActivity.this, MainActivity.class);
+                        } else {
+                            intent = new Intent(SplashActivity.this, AvatarActivity.class);
+                        }startActivity(intent);
                         finish(); // SplashActivity 종료
                     }
 

@@ -1,5 +1,6 @@
 package kr.co.gachon.emotion_diary.ui.calendar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import java.util.Locale;
 
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.databinding.FragmentCalendarBinding;
+import kr.co.gachon.emotion_diary.ui.Remind.RemindActivity;
 
 public class CalendarFragment extends Fragment {
 
@@ -33,6 +35,7 @@ public class CalendarFragment extends Fragment {
     private TextView monthYearText;
     private Button prevMonthButton;
     private Button nextMonthButton;
+    private Button showMonthlyStat;
 
     private CalendarViewModel calendarViewModel;
 
@@ -46,9 +49,15 @@ public class CalendarFragment extends Fragment {
         monthYearText = binding.monthYearText;
         prevMonthButton = binding.prevMonthButton;
         nextMonthButton = binding.nextMonthButton;
+        showMonthlyStat = binding.showMonthlyStat;
 
         monthYearText.setOnClickListener(v -> calendarViewModel.goToCurrentMonth());
-
+        showMonthlyStat.setOnClickListener(v -> {
+            // TODO: isMonthly 대신 어떤 달의 통계를 보여줄지 바꿔야 함
+            Intent intent = new Intent(getActivity(), RemindActivity.class);
+            intent.putExtra("isMonthly", true);
+            startActivity(intent);
+        });
         // Set cell size dynamically
         calendarTable.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -136,6 +145,8 @@ public class CalendarFragment extends Fragment {
         TableRow currentRow = new TableRow(getContext());
 
         // TODO: Instead of empty, fill prev month? -> but with emoji, calendar may change in the future
+        // Calendar의 형태를 유지하기 위해서 감정 이모지를 넣고 나서 이전 달 이후 달을 잘 보여주는 방식을 고민.
+ㅁㄴ
         // Before the first day of the month, add empty cells
         for (int i = 1; i < dayOfWeekNumber; i++) {
             TextView emptyTextView = createEmotionTextView("");
@@ -149,12 +160,21 @@ public class CalendarFragment extends Fragment {
             TextView dayTextView = createEmotionTextView(String.valueOf(currentDayOfMonth));
 
             int finalCurrentDayOfMonth = currentDayOfMonth; // For the lambda wtf
-            dayTextView.setOnClickListener(v -> Toast.makeText(getContext(), year + "년 " + month + "월 " + finalCurrentDayOfMonth + "일 클릭", Toast.LENGTH_SHORT).show());
+            dayTextView.setOnClickListener(v -> {
+                // Toast.makeText(getContext(), year + "년 " + month + "월 " + finalCurrentDayOfMonth + "일 클릭", Toast.LENGTH_SHORT).show();
+                // 일기 작성했는지 판단하는 로직 => DB에서 불러올때 처리하는게 좋을 듯?
+
+                // Intent intent = new Intent(getActivity(), WriteDiaryActivity.class);
+                // intent.putExtra("year", year);
+                // intent.putExtra("month", month);
+                // intent.putExtra("day", finalCurrentDayOfMonth);
+                // startActivity(intent);
+
+            });
             currentRow.addView(dayTextView);
 
             int currentTableNumber = dayOfWeekNumber + currentDayOfMonth - 1;
             boolean isLastDayOfWeek = currentTableNumber % 7 == 0;
-
 
             // Last day of the month
             if (!isLastDayOfWeek && currentDayOfMonth == daysInMonth) {

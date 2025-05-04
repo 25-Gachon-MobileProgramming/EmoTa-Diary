@@ -30,6 +30,12 @@
             android:layout_height="wrap_content"
             android:text="다음" />
 
+        <Button
+            android:id="@+id/showMonthlyStat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="통계" />
+
     </LinearLayout>
 
     <TableLayout

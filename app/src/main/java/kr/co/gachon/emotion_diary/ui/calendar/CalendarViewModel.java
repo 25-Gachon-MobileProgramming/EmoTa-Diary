@@ -54,4 +54,12 @@ public class CalendarViewModel extends ViewModel {
         _currentYear.setValue(year);
         _currentMonth.setValue(month);
     }
+
+    public void goToCurrentMonth() {
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+
+        goToMonth(currentYear, currentMonth);
+    }
 }

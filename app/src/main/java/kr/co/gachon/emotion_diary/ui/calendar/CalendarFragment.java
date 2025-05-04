@@ -47,6 +47,8 @@ public class CalendarFragment extends Fragment {
         prevMonthButton = binding.prevMonthButton;
         nextMonthButton = binding.nextMonthButton;
 
+        monthYearText.setOnClickListener(v -> calendarViewModel.goToCurrentMonth());
+
         // Set cell size dynamically
         calendarTable.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

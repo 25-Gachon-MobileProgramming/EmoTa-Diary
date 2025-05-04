@@ -12,9 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EmotionDiary"
         tools:targetApi="31">
+      
         <activity android:name=".ui.Remind.RemindActivity" />
-        <activity android:name=".ui.OnBoarding.AvatarActivity"
-            android:exported="false"/>
+        <activity android:name=".ui.Remind.EmotionStatisticsActivity" />
+        <activity android:name=".ui.OnBoarding.AvatarActivity"/>
+      
         <activity
             android:name=".MainActivity"
             android:exported="false" />

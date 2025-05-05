@@ -34,7 +34,7 @@ public interface DiaryDao {
     List<EmotionCount> getEmotionCounts();
 
 
-    @Query("SELECT date FROM DIARIES")
+    @Query("SELECT date FROM diaries")
     List<Date> getAllDiaryDates();
 
 }

@@ -40,47 +40,51 @@ public class TimeZoneActivity extends AppCompatActivity {
         TimeGraph graphView = findViewById(R.id.timeGraph);
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
-            List<Date> dates = diaryDao.getAllDiaryDates();
+        try {
+            executor.execute(() -> {
+                List<Date> dates = diaryDao.getAllDiaryDates();
 
-            // 정확한 분 단위로 시간 변환
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            Map<Integer, Integer> countMap = new HashMap<>();
-            for (Date date : dates) {
-                String timeStr = sdf.format(date);
-                String[] parts = timeStr.split(":");
-                int totalMinutes = Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
-                countMap.put(totalMinutes, countMap.getOrDefault(totalMinutes, 0) + 1);
-            }
-
-            // 분 단위 key를 정렬해서 Point 리스트 생성
-            List<Point> points = new ArrayList<>();
-            List<Integer> sortedMinutes = new ArrayList<>(countMap.keySet());
-            Collections.sort(sortedMinutes);  // 시간순 정렬
-
-            for (int minute : sortedMinutes) {
-                int count = countMap.get(minute);
-                points.add(new Point(minute, count));
-            }
-            points.add(new Point(1350, 1)); // 그래프 마지막까지 유지하기 위해 더미 넣음... 실제로 무의미한 값이라 넣어도 그래프상의 높낮이 변화는  없음
-
-            // 가장 많이 나온 시간 계산
-            int maxMinute = 0, maxCount = 0;
-            for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
-                if (entry.getValue() > maxCount) {
-                    maxMinute = entry.getKey();
-                    maxCount = entry.getValue();
+                // 정확한 분 단위로 시간 변환
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                Map<Integer, Integer> countMap = new HashMap<>();
+                for (Date date : dates) {
+                    String timeStr = sdf.format(date);
+                    String[] parts = timeStr.split(":");
+                    int totalMinutes = Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
+                    countMap.put(totalMinutes, countMap.getOrDefault(totalMinutes, 0) + 1);
                 }
-            }
-            String mostFrequentTime = String.format("%02d:%02d", maxMinute / 60, maxMinute % 60);
 
-            // UI에 적용
-            runOnUiThread(() -> {
-                graphView.setTimePoints(points);
-                TextView textView = findViewById(R.id.time);
-                textView.setText(mostFrequentTime);
+                // 분 단위 key를 정렬해서 Point 리스트 생성
+                List<Point> points = new ArrayList<>();
+                List<Integer> sortedMinutes = new ArrayList<>(countMap.keySet());
+                Collections.sort(sortedMinutes);  // 시간순 정렬
+
+                for (int minute : sortedMinutes) {
+                    int count = countMap.get(minute);
+                    points.add(new Point(minute, count));
+                }
+                points.add(new Point(1350, 1)); // 그래프 마지막까지 유지하기 위해 더미 넣음... 실제로 무의미한 값이라 넣어도 그래프상의 높낮이 변화는  없음
+
+                // 가장 많이 나온 시간 계산
+                int maxMinute = 0, maxCount = 0;
+                for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
+                    if (entry.getValue() > maxCount) {
+                        maxMinute = entry.getKey();
+                        maxCount = entry.getValue();
+                    }
+                }
+                String mostFrequentTime = String.format("%02d:%02d", maxMinute / 60, maxMinute % 60);
+
+                // UI에 적용
+                runOnUiThread(() -> {
+                    graphView.setTimePoints(points);
+                    TextView textView = findViewById(R.id.time);
+                    textView.setText(mostFrequentTime);
+                });
             });
-        });
+        } finally {
+            executor.shutdown();
+        }
     }
 
 

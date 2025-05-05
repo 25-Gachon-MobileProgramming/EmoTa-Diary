@@ -1,7 +1,12 @@
 package kr.co.gachon.emotion_diary.ui.Remind;
 
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -20,6 +25,9 @@ import kr.co.gachon.emotion_diary.data.AppDatabase;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.data.EmotionCount;
 
+import kr.co.gachon.emotion_diary.ui.Remind.timeGraph.TimeZoneActivity;
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -28,10 +36,9 @@ import java.util.concurrent.Executors;
 public class EmotionStatisticsActivity extends AppCompatActivity {
 
     private BarChart barChart;
-    private int emotionSize = 0;
     private static final String SET_LABEL = "감정별 통계";
 
-    private List<EmotionCount> emotion = new ArrayList<>();
+    private List<EmotionCount> emotions = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,17 +55,24 @@ public class EmotionStatisticsActivity extends AppCompatActivity {
         // 백그라운드에서 DB 조회 후 UI 업데이트
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
-            List<EmotionCount> emotions = diaryDao.getEmotionCounts();  // DAO 메서드 호출
+            emotions = diaryDao.getEmotionCounts();
 
             runOnUiThread(() -> {
-                this.emotion = emotions;
-                this.emotionSize = emotions.size();
-
                 configureChartAppearance();
+
                 BarData data = createChartData();
                 prepareChartData(data);
             });
         });
+
+
+        Button nextButton = findViewById(R.id.nextButton);
+
+        nextButton.setOnClickListener(view -> {
+            Intent intent = new Intent(EmotionStatisticsActivity.this, TimeZoneActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private void configureChartAppearance() {
@@ -81,8 +95,8 @@ public class EmotionStatisticsActivity extends AppCompatActivity {
             @Override
             public String getFormattedValue(float value) {
                 int index = (int) value;
-                if (index >= 0 && index < emotion.size()) {
-                    return emotion.get(index).emotion;
+                if (index >= 0 && index < emotions.size()) {
+                    return emotions.get(index).emotion;
                 } else {
                     return "";
                 }
@@ -106,8 +120,8 @@ public class EmotionStatisticsActivity extends AppCompatActivity {
 
     private BarData createChartData() {
         ArrayList<BarEntry> values = new ArrayList<>();
-        for (int i = 0; i < emotionSize; i++) {
-            values.add(new BarEntry(i, emotion.get(i).count));
+        for (int i = 0; i < emotions.size(); i++) {
+            values.add(new BarEntry(i, emotions.get(i).count));
         }
 
         BarDataSet set = new BarDataSet(values, SET_LABEL);

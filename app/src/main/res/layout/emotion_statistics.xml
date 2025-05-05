@@ -18,4 +18,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/chart"
+        app:layout_constraintStart_toStartOf="@id/chart"
+        android:layout_marginLeft="280dp"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

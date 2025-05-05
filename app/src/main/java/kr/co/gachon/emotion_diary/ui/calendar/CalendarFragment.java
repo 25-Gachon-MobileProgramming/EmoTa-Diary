@@ -146,7 +146,7 @@ public class CalendarFragment extends Fragment {
 
         // TODO: Instead of empty, fill prev month? -> but with emoji, calendar may change in the future
         // Calendar의 형태를 유지하기 위해서 감정 이모지를 넣고 나서 이전 달 이후 달을 잘 보여주는 방식을 고민.
-ㅁㄴ
+
         // Before the first day of the month, add empty cells
         for (int i = 1; i < dayOfWeekNumber; i++) {
             TextView emptyTextView = createEmotionTextView("");

@@ -5,14 +5,13 @@
     android:background="@drawable/background"
     android:orientation="vertical">
 
-
     <TextView
         android:id="@+id/answer"
         android:layout_width="match_parent"
         android:layout_marginTop="100dp"
-        android:textSize="50dp"
+        android:textSize="30dp"
         android:background="#ffd"
-        android:layout_height="100dp"
+        android:layout_height="150dp"
         android:text="@string/answer"/>
 
     <Button
@@ -20,8 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_gravity="right"
-        android:text="send gpt"
+        android:layout_gravity="end"
+        android:text="send room"
         />
 
 </LinearLayout>

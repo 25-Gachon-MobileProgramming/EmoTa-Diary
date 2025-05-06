@@ -8,28 +8,20 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.ArrayList;
-import java.util.List;
 import kr.co.gachon.emotion_diary.R;
-import kr.co.gachon.emotion_diary.ui.Gpt.GptApiService;
-import kr.co.gachon.emotion_diary.ui.Gpt.GptRequest;
-import kr.co.gachon.emotion_diary.ui.Gpt.GptResponse;
 import kr.co.gachon.emotion_diary.ui.answerPage.AnswerActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EmotionSelectActivity extends AppCompatActivity {
 
+    // 버튼 상태 확인 버튼
     ImageButton pressButton = null;
 
+    // 감정 선택을 위한 변수 추가
     String selectedEmotion = null;
 
+    // 이전 선택된 버튼 저장
     private ImageButton previousButton = null;
     private Integer originalTint = null;
 
@@ -40,6 +32,7 @@ public class EmotionSelectActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        // DiaryWriteActivity에서 보낸 정보 받기
         String CurrentDate = intent.getStringExtra("date");
         String title = intent.getStringExtra("title");
         String content = intent.getStringExtra("content");
@@ -73,6 +66,8 @@ public class EmotionSelectActivity extends AppCompatActivity {
                 titleTextView.setText("Emotion");
             }
 
+
+            // 각 버튼의 원래 tint 색상이 하양이라고 저장
             originalTint = getColor(R.color.white);
 
             // 감정 버튼 클릭 시, 이전 버튼 초기화 후 새로운 버튼 상태 변경 logic
@@ -80,11 +75,14 @@ public class EmotionSelectActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
+                    // tint 바꾸기 위한 변수
                     ImageButton currentButton = (ImageButton) view;
 
+                    // 새로운 버튼 상태 변경
                     pressButton = (ImageButton) view;
                     pressButton.setImageTintList(android.content.res.ColorStateList.valueOf(Color.GREEN));
 
+                    // 감정 값 설정
                     if (view.getId() == R.id.btn1) {
                         selectedEmotion = "기쁨";
                     } else if (view.getId() == R.id.btn2) {
@@ -98,16 +96,19 @@ public class EmotionSelectActivity extends AppCompatActivity {
                     if (previousButton != null && previousButton != currentButton && originalTint != null) {
                         previousButton.setImageTintList(android.content.res.ColorStateList.valueOf(originalTint));
                     }
+                    // 현재 상태 갱신
                     previousButton = currentButton;
                     pressButton = currentButton;
                 }
             };
 
+            // 감정 버튼
             btn1.setOnClickListener(buttonClickListener);
             btn2.setOnClickListener(buttonClickListener);
             btn3.setOnClickListener(buttonClickListener);
             btn4.setOnClickListener(buttonClickListener);
 
+            // AnswerActivity로 넘어가는 버튼
             Button nextPage = findViewById(R.id.nextPageButton);
             nextPage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -115,49 +116,15 @@ public class EmotionSelectActivity extends AppCompatActivity {
                     if (pressButton == null) {
                         Toast.makeText(EmotionSelectActivity.this, "감정 선택하세요", Toast.LENGTH_SHORT).show();
                     } else {
-                        String prompt = "내가 보낸 감정과 내용을 기반으로 사람이 진심으로 위로해주는 3문장 정도 글좀 적어줘 .\n내용: " + content + "\n감정: " + selectedEmotion;
 
-                        List<GptRequest.Message> messages = new ArrayList<>();
-                        messages.add(new GptRequest.Message("user", prompt));
-
-                        // temperature이 0은 보수적이고 정확한거, 1에 가까울 수록 이상한 답변해줌 0.7이 표준
-                        GptRequest request = new GptRequest("gpt-3.5-turbo", messages, 0.7);
-
-                        // 서버의 응답을 json과 java로 변환해주는 것
-                        Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl("https://api.openai.com/")
-                                .addConverterFactory(GsonConverterFactory.create())
-                                .build();
-
-                        GptApiService apiService = retrofit.create(GptApiService.class);
-
-                        Call<GptResponse> call = apiService.getGptMessage(request);
-                        call.enqueue(new Callback<GptResponse>() {
-                            @Override
-                            public void onResponse(@NonNull Call<GptResponse> call, @NonNull Response<GptResponse> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-
-                                    // 첫 번째 본문 텍스트를 추출하여 변수에 저장하는 logic
-                                    String gptResult = response.body().choices.get(0).message.content;
-
-                                    Intent intent = new Intent(EmotionSelectActivity.this, AnswerActivity.class);
-                                    intent.putExtra("gptReply", gptResult);
-                                    intent.putExtra("date", CurrentDate);
-                                    intent.putExtra("title", title);
-                                    intent.putExtra("content", content);
-                                    intent.putExtra("emotion", selectedEmotion);
-
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(EmotionSelectActivity.this, "GPT 응답 실패", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(@NonNull Call<GptResponse> call, @NonNull Throwable t) {
-                                Toast.makeText(EmotionSelectActivity.this, "API 호출 실패: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        // AnswerActivity로 데이터 전송
+                        Intent intent = new Intent(EmotionSelectActivity.this, AnswerActivity.class);
+                        intent.putExtra("date", CurrentDate);
+                        intent.putExtra("title", title);
+                        intent.putExtra("content", content);
+                        // 선택된 감정 전송
+                        intent.putExtra("emotion", selectedEmotion);
+                        startActivity(intent);
                     }
                 }
             });

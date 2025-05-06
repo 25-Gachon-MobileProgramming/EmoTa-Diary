@@ -55,15 +55,10 @@ public class AnswerActivity extends AppCompatActivity {
 
         }
 
-        // GPT 응답 받기
-        String gptReply = intent.getStringExtra("gptReply");
-
-        Log.wtf("Testanwer",gptReply);
-
         TextView textView = findViewById(R.id.answer);
-        textView.setText(gptReply);
 
 
+        // Toast로 wifi 연결 상태 보여줌 - 작동은 맨 아래 코드
         if (wifiConnected(AnswerActivity.this)) {
             Toast.makeText(AnswerActivity.this, "Wi-Fi가 연결되었습니다", Toast.LENGTH_SHORT).show();
         } else {

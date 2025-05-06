@@ -60,10 +60,10 @@ public class SplashActivity extends AppCompatActivity {
                         if (isAvatarCompleted) {
                             intent = new Intent(SplashActivity.this, MainActivity.class);
                         } else {
-                            intent = new Intent(SplashActivity.this, AvatarActivity.class);
+                            intent = new Intent(SplashActivity.this, OnBoardingActivity.class);
                         }
                         startActivity(intent);
-                        finish(); // SplashActivity 종료
+                        finish();
                     }
 
                     @Override

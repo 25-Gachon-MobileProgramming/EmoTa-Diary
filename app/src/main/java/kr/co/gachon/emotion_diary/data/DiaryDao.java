@@ -30,7 +30,7 @@ public interface DiaryDao {
     @Query("SELECT COUNT(*) FROM diaries WHERE DATE(date) BETWEEN :startDate AND :endDate") //하루에 하나씩만 카운트되게하고 시작 날짜와 끝 날짜 정함
     int getDiaryCountPerDay(String startDate, String endDate);
 
-    @Query("SELECT emotion, COUNT(*) as count FROM diaries GROUP BY emotion")
+    @Query("SELECT emotion_id, COUNT(*) as count FROM diaries GROUP BY emotion_id")
     List<EmotionCount> getEmotionCounts();
 
 

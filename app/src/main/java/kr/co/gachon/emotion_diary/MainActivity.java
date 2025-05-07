@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 //         diaryRepository.insert(newDiary);
 
 
+
         // --------- DB TEST END ----------
 
     }

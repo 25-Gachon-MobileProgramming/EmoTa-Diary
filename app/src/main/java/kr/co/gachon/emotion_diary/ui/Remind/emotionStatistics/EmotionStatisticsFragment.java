@@ -1,16 +1,16 @@
-package kr.co.gachon.emotion_diary.ui.Remind;
-
+package kr.co.gachon.emotion_diary.ui.Remind.emotionStatistics;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
-import android.util.Log;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -20,60 +20,51 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
-import kr.co.gachon.emotion_diary.R;
-import kr.co.gachon.emotion_diary.data.AppDatabase;
-import kr.co.gachon.emotion_diary.data.DiaryDao;
-import kr.co.gachon.emotion_diary.data.EmotionCount;
-
-import kr.co.gachon.emotion_diary.ui.Remind.timeGraph.TimeZoneActivity;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class EmotionStatisticsActivity extends AppCompatActivity {
+import kr.co.gachon.emotion_diary.R;
+import kr.co.gachon.emotion_diary.data.AppDatabase;
+import kr.co.gachon.emotion_diary.data.DiaryDao;
+import kr.co.gachon.emotion_diary.data.EmotionCount;
+import kr.co.gachon.emotion_diary.ui.Remind.timeGraph.TimeZoneActivity;
+
+public class EmotionStatisticsFragment extends Fragment {
 
     private BarChart barChart;
     private static final String SET_LABEL = "감정별 통계";
-
     private List<EmotionCount> emotions = new ArrayList<>();
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.emotion_statistics);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_emotion_statistics, container, false);
+    }
 
-        barChart = findViewById(R.id.chart);
-        barChart.setDrawBarShadow(false);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        // DB 접근 준비
-        AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
+        barChart = view.findViewById(R.id.chart);
+        AppDatabase db = AppDatabase.getDatabase(requireContext());
         DiaryDao diaryDao = db.diaryDao();
 
-        // 백그라운드에서 DB 조회 후 UI 업데이트
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             emotions = diaryDao.getEmotionCounts();
 
-            runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 configureChartAppearance();
-
                 BarData data = createChartData();
                 prepareChartData(data);
             });
         });
-
-
-        Button nextButton = findViewById(R.id.nextButton);
-
-        nextButton.setOnClickListener(view -> {
-            Intent intent = new Intent(EmotionStatisticsActivity.this, TimeZoneActivity.class);
-            startActivity(intent);
-        });
-
     }
+
 
     private void configureChartAppearance() {
         barChart.getDescription().setEnabled(false);
@@ -90,16 +81,11 @@ public class EmotionStatisticsActivity extends AppCompatActivity {
         xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 int index = (int) value;
-                if (index >= 0 && index < emotions.size()) {
-                    return emotions.get(index).emotion;
-                } else {
-                    return "";
-                }
+                return (index >= 0 && index < emotions.size()) ? emotions.get(index).emotion : "";
             }
         });
 

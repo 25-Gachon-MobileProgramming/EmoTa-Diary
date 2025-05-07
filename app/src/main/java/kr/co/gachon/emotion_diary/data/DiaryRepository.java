@@ -58,6 +58,7 @@ public class DiaryRepository {
                 insert(new Diary("평범한 저녁", "맛있는 저녁을 먹고 휴식했어요.", calendar.getTime(), Emotions.getEmotionIdByText("편안")));
 
                 calendar.set(2025, Calendar.APRIL, 5, 9, 0);
+                // "신남" is not defined in Emotions, just for error test
                 insert(new Diary("신나는 아침", "새로운 아이디어가 떠올랐어요!", calendar.getTime(), Emotions.getEmotionIdByText("신남")));
 
                 Log.d("RoomExample", "더미 데이터 삽입 완료");

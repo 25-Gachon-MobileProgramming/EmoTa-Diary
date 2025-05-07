@@ -19,7 +19,7 @@
         <activity android:name=".ui.Remind.EmotionStatisticsActivity" />
         <activity android:name=".ui.Remind.timeGraph.TimeZoneActivity" />
 
-        <activity android:name=".ui.OnBoarding.AvataActivity"
+        <activity android:name=".ui.OnBoarding.AvatarActivity"
             android:exported="false"/>
 
         <activity

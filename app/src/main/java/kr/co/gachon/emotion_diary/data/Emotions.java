@@ -41,7 +41,7 @@ public final class Emotions {
                 {"행복", "\uD83D\uDE00"}, // 😀
                 {"뿌듯", "\uD83E\uDD79"}, // 🥹
                 {"편안", "\uD83D\uDE0C"}, // 😌
-                {"설렘", "\uD83D\uDE0C"}, // 💓
+                {"설렘", "\uD83D\uDC93"}, // 💓
                 {"감사", "\uD83D\uDE4F"}, // 🙏
                 {"상쾌", "\uD83E\uDDFC"}, // 🧼
                 {"무난", "\uD83D\uDE10"}, // 😐

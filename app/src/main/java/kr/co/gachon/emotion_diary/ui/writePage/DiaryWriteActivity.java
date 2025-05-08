@@ -34,7 +34,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
         Log.wtf("Test", selectedDate.toString());
 
         // 나짜 데이터 연도 월 일로 바꿔서 @stirng으로 받게 한 뒤 화면에 뜨게 만듬
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // Locale 설정 필요
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = formatter.format(selectedDate);
         Log.wtf("Test", formattedDate);
 
@@ -73,7 +73,6 @@ public class DiaryWriteActivity extends AppCompatActivity {
             EditText contentView = findViewById(R.id.contentTextView);
             contentView.setText(content);
 
-            // 시간 제목 내용을 Emotionactivity로 보냄
             Button nextPageButton = findViewById(R.id.nextPage); // ImageButton 대신 MaterialButton으로 변경
             nextPageButton.setOnClickListener(new View.OnClickListener() {
                 @Override

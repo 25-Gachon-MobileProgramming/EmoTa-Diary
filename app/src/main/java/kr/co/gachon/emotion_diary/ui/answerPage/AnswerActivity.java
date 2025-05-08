@@ -13,12 +13,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
+import kr.co.gachon.emotion_diary.data.Diary;
+import kr.co.gachon.emotion_diary.data.DiaryRepository;
 
 public class AnswerActivity extends AppCompatActivity {
+
+    private DiaryRepository diaryRepository;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_answer);
+
+        // diaryRepository에 있는 insert를 참조하기 위해 사용
+        diaryRepository = new DiaryRepository(getApplication());
 
         Intent intent = getIntent();
 
@@ -41,9 +55,7 @@ public class AnswerActivity extends AppCompatActivity {
             ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
             backButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    finish();
-                }
+                public void onClick(View v) {finish();}
             });
 
             // 액션 바 제목 바꾸기
@@ -62,6 +74,32 @@ public class AnswerActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.answer);
         textView.setText(gptReply);
 
+        // date형태로 넣어줘야 하기 때문에 string을 date로 변환
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        Date parsedDate = null;
+        try {
+            parsedDate = formatter.parse(CurrentDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Date finalParsedDate = parsedDate;
+
+        findViewById(R.id.room_button).setOnClickListener(v -> {
+            if (finalParsedDate != null) {
+                Diary diary = new Diary(title, content, emotion, finalParsedDate);
+                diaryRepository.insert(diary);
+                Toast.makeText(this, "저장되었습니다", Toast.LENGTH_SHORT).show();
+
+                // 페이지를 MainActivity로 바로 가기, 이전 페이지들을 모두 종료 후 이동
+                Intent firstPage = new Intent(AnswerActivity.this, MainActivity.class);
+                firstPage.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(firstPage);
+                finish();
+            } else {
+                Toast.makeText(this, "날짜 정보가 없습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Toast로 wifi 연결 상태 보여줌 - 작동은 맨 아래 코드
         if (wifiConnected(AnswerActivity.this)) {

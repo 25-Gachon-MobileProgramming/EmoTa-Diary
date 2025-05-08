@@ -26,6 +26,9 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.OnBoarding.OnBoardingActivity"
+            android:exported="false"/>
+        <activity
             android:name=".ui.OnBoarding.SplashActivity"
             android:exported="true">
             <intent-filter>

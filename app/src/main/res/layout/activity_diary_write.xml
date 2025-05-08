@@ -1,0 +1,70 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- 첫 번째 배경: background.png -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop" />
+
+    <!-- 두 번째 배경: yellow_notebook.png -->
+    <!-- 첫 번째 배경위에다가 두 번째 배경을 씌움 -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/yellow_notebook"
+        android:scaleType="fitCenter"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="50dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="210dp"
+            android:textSize="30dp"
+            android:text="@string/current_date" />
+
+        <EditText
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="제목"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:foregroundTint="@color/black"
+            android:maxLength="30"
+            android:fontFamily="@font/font"
+            android:textFontWeight="700"
+            android:textSize="25sp" />
+        <EditText
+            android:id="@+id/contentTextView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:fontFamily="@font/font"
+            android:textFontWeight="700"
+            android:hint="작성하시오"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:foregroundTint="@color/black"
+            android:textSize="18sp"
+            android:maxLength="150"
+            android:gravity="start|top" />
+
+        <Button
+            android:id="@+id/nextPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:fontFamily="@font/font"
+            android:text="emotion select" />
+    </LinearLayout>
+</FrameLayout>

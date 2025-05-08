@@ -1,7 +1,13 @@
 package kr.co.gachon.emotion_diary;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -13,6 +19,7 @@ import java.util.Calendar;
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.ActivityMainBinding;
+import kr.co.gachon.emotion_diary.ui.writePage.DiaryWriteActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +48,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        ImageButton imageButton = findViewById(R.id.diary_write_button);
+
+        imageButton.setOnClick
+          ener(v -> {
+            Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
+            intent.putExtra("selectedDate", System.currentTimeMillis());
+            startActivity(intent);
+        });
+      
         // --------- DB TEST START ---------
         diaryRepository = new DiaryRepository(getApplication());
 

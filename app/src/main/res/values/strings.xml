@@ -4,4 +4,7 @@
     <string name="title_calendar">Calendar</string>
     <string name="title_timeLine">Time Line</string>
     <string name="title_myPage">My Page</string>
+    <string name="answer">Answer</string>
+    <string name="diary_write_title">Diary Write</string>
+    <string name="current_date">날짜</string>
 </resources>

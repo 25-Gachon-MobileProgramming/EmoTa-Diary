@@ -1,17 +1,20 @@
 package kr.co.gachon.emotion_diary;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import java.util.List;
+import java.util.Calendar;
 
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
@@ -20,14 +23,12 @@ import kr.co.gachon.emotion_diary.ui.writePage.DiaryWriteActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    /** @noinspection FieldCanBeLocal*/
+    /** @noinspection FieldCanBeLocal */
     private ActivityMainBinding binding;
 
-
     // --------- Assign FOR DB TEST START---------
-    /** @noinspection FieldCanBeLocal*/
+    /** @noinspection FieldCanBeLocal */
     private DiaryRepository diaryRepository;
-    private List<Diary> allDiariesList;
     // --------- Assign FOR DB TEST END-----------
 
     @Override
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        // BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -47,15 +48,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-
         ImageButton imageButton = findViewById(R.id.diary_write_button);
 
-        imageButton.setOnClickListener(view -> {
+        imageButton.setOnClick
+          ener(v -> {
             Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
             intent.putExtra("selectedDate", System.currentTimeMillis());
             startActivity(intent);
         });
-
+      
         // --------- DB TEST START ---------
         diaryRepository = new DiaryRepository(getApplication());
 
@@ -63,15 +64,17 @@ public class MainActivity extends AppCompatActivity {
 
         diaryRepository.getAllDiaries().observe(this, diaries -> {
             Log.d("RoomExample", "모든 일기 (Repository - ExecutorService):");
-            allDiariesList = diaries;
 
             for (Diary diary : diaries) {
                 Log.d("RoomExample", "ID: " + diary.getId() + ", 제목: " + diary.getTitle() + ", 내용: " + diary.getContent() + ", 날짜: " + diary.getDate());
             }
         });
 
-//        Diary newDiary = new Diary("title", "content", "emotion", Calendar.getInstance().getTime());
-//        diaryRepository.insert(newDiary);
+//         Diary newDiary = new Diary("title", "content", "행복", Calendar.getInstance().getTime());
+//         diaryRepository.insert(newDiary);
+
+
+
         // --------- DB TEST END ----------
 
     }

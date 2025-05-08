@@ -70,4 +70,5 @@ public class Diary {
     public void setEmotion(String emotion) {
         this.emotion = emotion;
     }
+
 }

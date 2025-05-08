@@ -18,7 +18,7 @@ public class EmotionStatisticsActivity extends AppCompatActivity {
         boolean isMonthly = getIntent().getBooleanExtra("isMonthly", true);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.emotiond_statistics_fragment_container, new EmotionStatisticsFragment())
+                .replace(R.id.emotion_statistics_fragment_container, new EmotionStatisticsFragment())
                 .commit();
         // 버튼 클릭 시 이동
         Button nextButton = findViewById(R.id.nextButton);

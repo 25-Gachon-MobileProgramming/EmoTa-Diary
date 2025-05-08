@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("selectedDate", System.currentTimeMillis());
             startActivity(intent);
         });
-      
+
         // --------- DB TEST START ---------
         diaryRepository = new DiaryRepository(getApplication());
 

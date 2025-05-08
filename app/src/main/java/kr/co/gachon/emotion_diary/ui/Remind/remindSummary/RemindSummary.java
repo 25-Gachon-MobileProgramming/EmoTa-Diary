@@ -14,7 +14,7 @@ public class RemindSummary extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    setContentView(R.layout.remind_summary);
+        setContentView(R.layout.remind_summary);
 
         boolean isMonthly = getIntent().getBooleanExtra("isMonthly", true);
 
@@ -26,8 +26,8 @@ public class RemindSummary extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.summaryFragmentCircle, fragment)
-            .replace(R.id.summaryFragmentEmotion, new EmotionStatisticsFragment())
-            .replace(R.id.summaryFragmentTime, new TimeZoneFragment())
-            .commit();
-}
+                .replace(R.id.summaryFragmentEmotion, new EmotionStatisticsFragment())
+                .replace(R.id.summaryFragmentTime, new TimeZoneFragment())
+                .commit();
+    }
 }

@@ -69,7 +69,7 @@ public class Diary {
     }
 
     public void setEmotionId(int emotionId) {
-        if(emotionId < 0 || emotionId >= Emotions.getAllEmotionDataList().size())
+        if (emotionId < 0 || emotionId >= Emotions.getAllEmotionDataList().size())
             throw new IllegalArgumentException("유효하지 않은 감정 ID입니다: " + emotionId);
 
         this.emotionId = emotionId;

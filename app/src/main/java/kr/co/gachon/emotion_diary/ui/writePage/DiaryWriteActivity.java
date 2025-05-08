@@ -1,4 +1,5 @@
 package kr.co.gachon.emotion_diary.ui.writePage;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,11 +10,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.ui.emotion.EmotionSelectActivity;
 
@@ -66,36 +70,36 @@ public class DiaryWriteActivity extends AppCompatActivity {
             }
         }
 
-            Intent intent = getIntent();
+        Intent intent = getIntent();
 
-            String title = intent.getStringExtra("title");
-            String content = intent.getStringExtra("content");
+        String title = intent.getStringExtra("title");
+        String content = intent.getStringExtra("content");
 
-            EditText titleView = findViewById(R.id.titleTextView);
-            titleView.setText(title);
+        EditText titleView = findViewById(R.id.titleTextView);
+        titleView.setText(title);
 
-            EditText contentView = findViewById(R.id.contentTextView);
-            contentView.setText(content);
+        EditText contentView = findViewById(R.id.contentTextView);
+        contentView.setText(content);
 
-            Button nextPageButton = findViewById(R.id.nextPage); 
-            nextPageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        Button nextPageButton = findViewById(R.id.nextPage);
+        nextPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-                    String titleText = titleView.getText().toString();
-                    String contentText = contentView.getText().toString();
+                String titleText = titleView.getText().toString();
+                String contentText = contentView.getText().toString();
 
-                    // 비어 있는지 확인하는 코드
-                    if (TextUtils.isEmpty(titleText) || TextUtils.isEmpty(contentText)) {
-                        Toast.makeText(getBaseContext(), "제목이랑 내용 중 1개가 비어있습니다.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Intent intent = new Intent(DiaryWriteActivity.this, EmotionSelectActivity.class);
-                        intent.putExtra("date", selectedDate.toString());
-                        intent.putExtra("title", titleText);
-                        intent.putExtra("content", contentText);
-                        startActivity(intent);
-                    }
+                // 비어 있는지 확인하는 코드
+                if (TextUtils.isEmpty(titleText) || TextUtils.isEmpty(contentText)) {
+                    Toast.makeText(getBaseContext(), "제목이랑 내용 중 1개가 비어있습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(DiaryWriteActivity.this, EmotionSelectActivity.class);
+                    intent.putExtra("date", selectedDate.toString());
+                    intent.putExtra("title", titleText);
+                    intent.putExtra("content", contentText);
+                    startActivity(intent);
                 }
-            });
-        }
+            }
+        });
     }
+}

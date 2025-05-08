@@ -1,4 +1,5 @@
 package kr.co.gachon.emotion_diary.ui.answerPage;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -11,12 +12,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
 import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.Diary;
@@ -28,7 +32,7 @@ public class AnswerActivity extends AppCompatActivity {
     private DiaryRepository diaryRepository;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_answer);
 
@@ -42,10 +46,10 @@ public class AnswerActivity extends AppCompatActivity {
         String content = intent.getStringExtra("content");
         String emotion = intent.getStringExtra("emotion");
 
-        Log.wtf("get2Test",CurrentDate);
-        Log.wtf("get2Test",title);
-        Log.wtf("get2Test",content);
-        Log.wtf("get2Test",emotion);
+        Log.wtf("get2Test", CurrentDate);
+        Log.wtf("get2Test", title);
+        Log.wtf("get2Test", content);
+        Log.wtf("get2Test", emotion);
 
         // 바 왼쪽에 imageButton 사용해서 뒤로가기
         ActionBar actionBar = getSupportActionBar();
@@ -56,7 +60,9 @@ public class AnswerActivity extends AppCompatActivity {
             ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
             backButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {finish();}
+                public void onClick(View v) {
+                    finish();
+                }
             });
 
             // 액션 바 제목 바꾸기
@@ -70,7 +76,7 @@ public class AnswerActivity extends AppCompatActivity {
         // GPT 응답 받기
         String gptReply = intent.getStringExtra("gptReply");
 
-        Log.wtf("Testanwer",gptReply);
+        Log.wtf("Testanwer", gptReply);
 
         TextView textView = findViewById(R.id.answer);
         textView.setText(gptReply);

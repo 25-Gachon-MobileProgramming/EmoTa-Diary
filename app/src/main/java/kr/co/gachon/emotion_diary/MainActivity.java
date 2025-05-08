@@ -23,11 +23,15 @@ import kr.co.gachon.emotion_diary.ui.writePage.DiaryWriteActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    /** @noinspection FieldCanBeLocal */
+    /**
+     * @noinspection FieldCanBeLocal
+     */
     private ActivityMainBinding binding;
 
     // --------- Assign FOR DB TEST START---------
-    /** @noinspection FieldCanBeLocal */
+    /**
+     * @noinspection FieldCanBeLocal
+     */
     private DiaryRepository diaryRepository;
     // --------- Assign FOR DB TEST END-----------
 
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("selectedDate", System.currentTimeMillis());
             startActivity(intent);
         });
-      
+
         // --------- DB TEST START ---------
         diaryRepository = new DiaryRepository(getApplication());
 
@@ -71,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
 //         Diary newDiary = new Diary("title", "content", "행복", Calendar.getInstance().getTime());
 //         diaryRepository.insert(newDiary);
-
 
 
         // --------- DB TEST END ----------

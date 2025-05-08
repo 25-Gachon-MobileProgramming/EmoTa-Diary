@@ -68,12 +68,12 @@ public class CircleGraphView extends View {
 
         float startAngle = -90f;
 
-        int[] sectionColors = new int[] {
+        int[] sectionColors = new int[]{
                 R.color.purple_200,
                 R.color.purple_500
         };
 
-        int[] textColors = new int[] {
+        int[] textColors = new int[]{
                 R.color.white,
                 R.color.white
         };

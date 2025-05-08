@@ -29,10 +29,11 @@ import kr.co.gachon.emotion_diary.ui.Remind.emotionStatistics.EmotionStatisticsA
 import kr.co.gachon.emotion_diary.ui.Remind.timeGraph.TimeZoneFragment;
 
 
-public class RateActivity extends AppCompatActivity implements RateFragment.RateTextListener{
+public class RateActivity extends AppCompatActivity implements RateFragment.RateTextListener {
 
 
     private TextView rateText;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +61,7 @@ public class RateActivity extends AppCompatActivity implements RateFragment.Rate
             startActivity(intent);
         });
     }
+
     @Override
     public void onRateTextUpdated(String text) {
         rateText.setText(text);

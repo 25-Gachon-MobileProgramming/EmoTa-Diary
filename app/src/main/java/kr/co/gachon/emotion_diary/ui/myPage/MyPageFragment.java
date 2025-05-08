@@ -44,7 +44,6 @@ public class MyPageFragment extends Fragment {
         });
 
 
-
         return root;
     }
 

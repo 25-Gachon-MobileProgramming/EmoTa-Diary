@@ -21,6 +21,7 @@ import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
+import kr.co.gachon.emotion_diary.data.Emotions;
 
 public class AnswerActivity extends AppCompatActivity {
 
@@ -87,7 +88,7 @@ public class AnswerActivity extends AppCompatActivity {
 
         findViewById(R.id.room_button).setOnClickListener(v -> {
             if (finalParsedDate != null) {
-                Diary diary = new Diary(title, content, emotion, finalParsedDate);
+                Diary diary = new Diary(title, content, finalParsedDate, Emotions.getEmotionIdByText(emotion));
                 diaryRepository.insert(diary);
                 Toast.makeText(this, "저장되었습니다", Toast.LENGTH_SHORT).show();
 

@@ -31,7 +31,7 @@ public interface DiaryDao {
     int getDiaryCountPerDay(Date startDate, Date endDate);
 
 
-    @Query("SELECT emotion, COUNT(*) as count FROM diaries GROUP BY emotion")
+    @Query("SELECT emotion_id, COUNT(*) as count FROM diaries GROUP BY emotion_id")
     List<EmotionCount> getEmotionCounts();
 
 

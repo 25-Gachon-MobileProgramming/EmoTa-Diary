@@ -47,18 +47,19 @@ public class DiaryRepository {
 
                 // dummy data from gpt
                 calendar.set(2025, Calendar.FEBRUARY, 4, 10, 30);
-                insert(new Diary("과제를함", "하루종일과제를함", "미침", calendar.getTime()));
+                insert(new Diary("과제를함", "하루종일과제를함", calendar.getTime(), Emotions.getEmotionIdByText("뿌듯")));
 
-                calendar.set(2025, Calendar.APRIL, 2, 10, 30);
-                insert(new Diary("즐거운 하루", "오늘 날씨가 정말 좋았어요!", "행복", calendar.getTime()));
+                calendar.set(2025, Calendar.APRIL, 2, 10, 39);
+                insert(new Diary("즐거운 하루", "오늘 날씨가 정말 좋았어요!", calendar.getTime(), Emotions.getEmotionIdByText("행복")));
                 calendar.set(2025, Calendar.MARCH, 3, 15, 0);
-                insert(new Diary("힘든 날", "회사에서 어려운 일이 있었어요.", "슬픔", calendar.getTime()));
+                insert(new Diary("힘든 날", "회사에서 어려운 일이 있었어요.", calendar.getTime(), Emotions.getEmotionIdByText("슬픔")));
 
                 calendar.set(2025, Calendar.APRIL, 4, 18, 45);
-                insert(new Diary("평범한 저녁", "맛있는 저녁을 먹고 휴식했어요.", "평온", calendar.getTime()));
+                insert(new Diary("평범한 저녁", "맛있는 저녁을 먹고 휴식했어요.", calendar.getTime(), Emotions.getEmotionIdByText("편안")));
 
                 calendar.set(2025, Calendar.APRIL, 5, 9, 0);
-                insert(new Diary("신나는 아침", "새로운 아이디어가 떠올랐어요!", "기쁨", Calendar.getInstance().getTime()));
+                // "신남" is not defined in Emotions, just for error test
+                insert(new Diary("신나는 아침", "새로운 아이디어가 떠올랐어요!", calendar.getTime(), Emotions.getEmotionIdByText("신남")));
 
                 Log.d("RoomExample", "더미 데이터 삽입 완료");
             } else {

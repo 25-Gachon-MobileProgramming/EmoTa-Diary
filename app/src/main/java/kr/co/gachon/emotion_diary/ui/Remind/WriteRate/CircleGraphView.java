@@ -1,4 +1,4 @@
-package kr.co.gachon.emotion_diary.ui.Remind;
+package kr.co.gachon.emotion_diary.ui.Remind.WriteRate;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

@@ -1,15 +1,25 @@
 package kr.co.gachon.emotion_diary;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import java.util.Calendar;
+
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.ActivityMainBinding;
+import kr.co.gachon.emotion_diary.ui.writePage.DiaryWriteActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        ImageButton imageButton = findViewById(R.id.diary_write_button);
+
+        imageButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
+            intent.putExtra("selectedDate", System.currentTimeMillis());
+            startActivity(intent);
+        });
+      
         // --------- DB TEST START ---------
         diaryRepository = new DiaryRepository(getApplication());
 
@@ -51,8 +69,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Diary newDiary = new Diary("title", "content", "emotion", Calendar.getInstance().getTime());
-        // diaryRepository.insert(newDiary);
+//         Diary newDiary = new Diary("title", "content", "행복", Calendar.getInstance().getTime());
+//         diaryRepository.insert(newDiary);
+
+
+
         // --------- DB TEST END ----------
 
     }

@@ -1,8 +1,15 @@
+import java.util.Properties
+import java.io.FileInputStream
+
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("local.properties")))
+
 plugins {
     alias(libs.plugins.android.application)
 }
 
 android {
+
     namespace = "kr.co.gachon.emotion_diary"
     compileSdk = 35
 
@@ -14,7 +21,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", "\"${localProperties["API_KEY"]}\"")
     }
+
 
     buildTypes {
         release {
@@ -31,7 +41,9 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
+
 }
 
 dependencies {
@@ -72,8 +84,13 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.circleimageview) //뷰를 완전히 원으로 보여줌
+    implementation ("com.tbuonomo:dotsindicator:4.3") // 온보딩 스크롤바 라이브러리
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
 }

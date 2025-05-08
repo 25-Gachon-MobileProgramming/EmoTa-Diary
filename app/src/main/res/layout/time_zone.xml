@@ -16,12 +16,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="300dp"/>
 
-    <kr.co.gachon.emotion_diary.ui.Remind.timeGraph.TimeGraph
-        android:id="@+id/timeGraph"
+    <FrameLayout
+        android:id="@+id/timegraph_fragment_container"
         android:layout_width="0dp"
         android:layout_height="250dp"
         app:layout_constraintTop_toBottomOf="@id/time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp" />
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="요약 보기"
+        app:layout_constraintTop_toBottomOf="@id/timegraph_fragment_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

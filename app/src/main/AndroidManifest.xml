@@ -13,11 +13,12 @@
         android:theme="@style/Theme.EmotionDiary"
         tools:targetApi="31">
       
-        <activity android:name=".ui.Remind.RemindActivity" />
+        <activity android:name=".ui.Remind.WriteRate.RateActivity" />
 
 
-        <activity android:name=".ui.Remind.EmotionStatisticsActivity" />
+        <activity android:name=".ui.Remind.emotionStatistics.EmotionStatisticsActivity" />
         <activity android:name=".ui.Remind.timeGraph.TimeZoneActivity" />
+        <activity android:name=".ui.Remind.remindSummary.RemindSummary" />
 
         <activity android:name=".ui.OnBoarding.AvatarActivity"
             android:exported="false"/>

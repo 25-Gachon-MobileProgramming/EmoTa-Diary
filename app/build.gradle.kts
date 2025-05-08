@@ -84,13 +84,13 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.circleimageview) //뷰를 완전히 원으로 보여줌
-    implementation ("com.tbuonomo:dotsindicator:4.3") // 온보딩 스크롤바 라이브러리
+    implementation (libs.dotsindicator) // 온보딩 스크롤바 라이브러리
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation(libs.mpandroidchart)
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation(libs.retrofit)
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
 }

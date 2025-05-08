@@ -38,6 +38,7 @@ public class TimeZoneActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
     public void setTimeText(String time) {
         timeTextView.setText(time);
     }

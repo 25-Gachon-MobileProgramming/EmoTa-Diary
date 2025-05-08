@@ -11,6 +11,7 @@ import androidx.room.TypeConverters; // Date 타입 변환을 위해 추가
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract DiaryDao diaryDao();
+
     private static volatile AppDatabase INSTANCE;
 
     public static AppDatabase getDatabase(final Context context) {

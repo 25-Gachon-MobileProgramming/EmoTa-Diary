@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.animation.ValueAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
+
 import androidx.core.content.res.ResourcesCompat;
 
 import java.util.List;
@@ -100,8 +101,6 @@ public class TimeGraph extends View {
         // 마지막 점까지 직선으로 연결
         path.lineTo(prevX, prevY);
     }
-
-
 
 
     @Override

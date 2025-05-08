@@ -48,6 +48,7 @@ public class AvatarActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         context = getApplicationContext();
         button = findViewById(R.id.button);
         editText = findViewById(R.id.nickname);

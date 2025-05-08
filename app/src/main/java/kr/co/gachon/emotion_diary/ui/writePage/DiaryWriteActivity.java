@@ -27,7 +27,11 @@ public class DiaryWriteActivity extends AppCompatActivity {
         long dateMillis = getIntent().getLongExtra("selectedDate", -1);
 
         // check that dateMillis is valid
-        assert (dateMillis != -1);
+        if (dateMillis == -1) {
+            Toast.makeText(this, "Invalid date selected. Please try again.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         Date selectedDate = new Date(dateMillis);
 

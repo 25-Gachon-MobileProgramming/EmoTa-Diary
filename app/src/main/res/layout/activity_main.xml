@@ -9,7 +9,6 @@
     android:paddingTop="?attr/actionBarSize"
     tools:context=".MainActivity">
 
-<!--이 버튼이 activity_diary_write로 넘어가는 버튼-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/diary_write_button"
         android:layout_width="wrap_content"

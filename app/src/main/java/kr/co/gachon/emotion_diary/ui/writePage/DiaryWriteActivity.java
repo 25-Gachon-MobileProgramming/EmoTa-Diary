@@ -37,7 +37,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
 
         Log.wtf("Test", selectedDate.toString());
 
-        // 나짜 데이터 연도 월 일로 바꿔서 @stirng으로 받게 한 뒤 화면에 뜨게 만듬
+        // 날짜 데이터 연도 월 일로 바꿔서 @stirng으로 받게 한 뒤 화면에 뜨게 만듬
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = formatter.format(selectedDate);
         Log.wtf("Test", formattedDate);
@@ -77,7 +77,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
             EditText contentView = findViewById(R.id.contentTextView);
             contentView.setText(content);
 
-            Button nextPageButton = findViewById(R.id.nextPage); // ImageButton 대신 MaterialButton으로 변경
+            Button nextPageButton = findViewById(R.id.nextPage); 
             nextPageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

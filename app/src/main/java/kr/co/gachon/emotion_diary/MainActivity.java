@@ -50,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton imageButton = findViewById(R.id.diary_write_button);
 
-        imageButton.setOnClick
-          ener(v -> {
+        imageButton.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
             intent.putExtra("selectedDate", System.currentTimeMillis());
             startActivity(intent);

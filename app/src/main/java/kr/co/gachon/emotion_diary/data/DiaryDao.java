@@ -31,11 +31,11 @@ public interface DiaryDao {
     int getDiaryCountPerDay(Date startDate, Date endDate);
 
 
-    @Query("SELECT emotion_id, COUNT(*) as count FROM diaries GROUP BY emotion_id")
-    List<EmotionCount> getEmotionCounts();
+    @Query("SELECT emotion_id, COUNT(*) as count FROM diaries WHERE date BETWEEN :startDate AND :endDate GROUP BY emotion_id")
+    List<EmotionCount> getEmotionCounts(Date startDate, Date endDate);
 
 
-    @Query("SELECT date FROM diaries")
-    List<Date> getAllDiaryDates();
+    @Query("SELECT date FROM diaries WHERE date BETWEEN :startDate AND :endDate")
+    List<Date> getAllDiaryDates(Date startDate, Date endDate);
 
 }

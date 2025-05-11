@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.ui.Remind.WriteRate.RateActivity;
 import kr.co.gachon.emotion_diary.ui.Remind.emotionStatistics.EmotionStatisticsActivity;
+import kr.co.gachon.emotion_diary.ui.Remind.emotionStatistics.EmotionStatisticsFragment;
 import kr.co.gachon.emotion_diary.ui.Remind.remindSummary.RemindSummary;
 
 public class TimeZoneActivity extends AppCompatActivity {
@@ -25,6 +26,11 @@ public class TimeZoneActivity extends AppCompatActivity {
         timeTextView = findViewById(R.id.time);
 
         boolean isMonthly = getIntent().getBooleanExtra("isMonthly", true);
+
+        TimeZoneFragment fragment = new TimeZoneFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("isMonthly", isMonthly);
+        fragment.setArguments(args);
 
         // Fragment를 container에 삽입
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

@@ -66,14 +66,27 @@ public class RateFragment extends Fragment {
             AppDatabase db = AppDatabase.getDatabase(requireContext());
             DiaryDao diaryDao = db.diaryDao();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String today = sdf.format(new Date());
+
+            // 한 달 전
+            Calendar calMonth = Calendar.getInstance();
+            calMonth.add(Calendar.MONTH, -1);
+            Date oneMonthAgo = calMonth.getTime();
+            String oneMonthAgoStr = sdf.format(oneMonthAgo);
+
+            // 일 년 전
+            Calendar calYear = Calendar.getInstance();
+            calYear.add(Calendar.YEAR, -1);
+            Date oneYearAgo = calYear.getTime();
+            String oneYearAgoStr = sdf.format(oneYearAgo);
 
             try {
                 Date startDate, endDate;
                 int count;
 
                 if (isMonthly) {
-                    startDate = sdf.parse("2025-03-01");
-                    endDate = sdf.parse("2026-04-07");
+                    startDate = sdf.parse(oneMonthAgoStr);
+                    endDate = sdf.parse(today);
                     count = diaryDao.getDiaryCountPerDay(startDate, endDate);
                     float rate = (count / days) * 100f;
 
@@ -81,8 +94,8 @@ public class RateFragment extends Fragment {
                     runOnUiThread(rate, result, callback);
 
                 } else {
-                    startDate = sdf.parse("2024-04-07");
-                    endDate = sdf.parse("2026-04-07");
+                    startDate = sdf.parse(oneYearAgoStr);
+                    endDate = sdf.parse(today);
                     count = diaryDao.getDiaryCountPerDay(startDate, endDate);
                     float rate = (count / 365f) * 100f;
 

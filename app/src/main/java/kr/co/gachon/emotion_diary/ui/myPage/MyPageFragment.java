@@ -1,10 +1,15 @@
 package kr.co.gachon.emotion_diary.ui.myPage;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,6 +22,8 @@ import kr.co.gachon.emotion_diary.ui.Remind.WriteRate.RateActivity;
 public class MyPageFragment extends Fragment {
 
     private FragmentMypageBinding binding;
+
+    private SharedPreferences sharedPreferences;
     private DiaryDao diaryDao;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -26,6 +33,10 @@ public class MyPageFragment extends Fragment {
 
         binding = FragmentMypageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        sharedPreferences = requireContext().getSharedPreferences("avatar_pref", Context.MODE_PRIVATE);
+        String savedNickname = sharedPreferences.getString("nickname", "사용자");
+        binding.nickname.setText(savedNickname);
 
         View yearRemindButton = binding.remindYearTouchView;
 
@@ -42,6 +53,33 @@ public class MyPageFragment extends Fragment {
             intent.putExtra("isMonthly", true);
             startActivity(intent);
         });
+
+        ImageButton nicknameChangeButton = binding.profileChange;
+
+        nicknameChangeButton.setOnClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setTitle("닉네임 변경");
+
+            final EditText input = new EditText(requireContext());
+            input.setHint("새 닉네임을 입력하세요");
+            builder.setView(input);
+
+            builder.setPositiveButton("확인", (dialog, which) -> {
+                String newNickname = input.getText().toString().trim();
+                if (!newNickname.isEmpty()) {
+
+                    sharedPreferences.edit().putString("nickname", newNickname).apply();
+                    binding.nickname.setText(newNickname);
+                }
+            });
+
+
+            builder.setNegativeButton("취소", (dialog, which) -> dialog.cancel());
+
+            builder.show();
+        });
+
+
 
 
         return root;

@@ -2,6 +2,7 @@ package kr.co.gachon.emotion_diary.ui.Remind.timeGraph;
 
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import kr.co.gachon.emotion_diary.data.DiaryDao;
 public class TimeZoneFragment extends Fragment {
 
     private TimeGraph graphView;
+    boolean isMonthly;
 
     @Nullable
     @Override
@@ -43,6 +45,11 @@ public class TimeZoneFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         graphView = view.findViewById(R.id.timeGraph);
+
+        if (getArguments() != null) {
+            isMonthly = getArguments().getBoolean("isMonthly", true);
+            Log.d("EmotionStats", "💡 전달받은 isMonthly 값: " + isMonthly);
+        }
 
         AppDatabase db = AppDatabase.getDatabase(requireContext());
         DiaryDao diaryDao = db.diaryDao();

@@ -34,7 +34,7 @@ public class TimeZoneActivity extends AppCompatActivity {
 
         // Fragment를 container에 삽입
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.timegraph_fragment_container, new TimeZoneFragment());
+        transaction.replace(R.id.timegraph_fragment_container, fragment);
         transaction.commit();
 
         Button button = findViewById(R.id.nextButton);

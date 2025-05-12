@@ -91,7 +91,7 @@ public class EmotionStatisticsFragment extends Fragment {
                 }
 
                 requireActivity().runOnUiThread(() -> {
-                    TextView placeHolder = requireActivity().findViewById(R.id.emotion_statistics_hint);
+                    TextView placeHolder = view.findViewById(R.id.emotion_statistics_hint);
                     if (emotions.isEmpty()) {
                         placeHolder.setVisibility(View.VISIBLE);
                     }else{

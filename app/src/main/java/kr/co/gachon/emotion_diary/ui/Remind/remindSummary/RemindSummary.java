@@ -18,16 +18,26 @@ public class RemindSummary extends AppCompatActivity {
 
         boolean isMonthly = getIntent().getBooleanExtra("isMonthly", true);
 
-        RateFragment fragment = new RateFragment();
         Bundle args = new Bundle();
         args.putBoolean("isMonthly", isMonthly);
-        fragment.setArguments(args);
+
+        // RateFragment
+        RateFragment rateFragment = new RateFragment();
+        rateFragment.setArguments(args);
+
+        // EmotionStatisticsFragment
+        EmotionStatisticsFragment emotionFragment = new EmotionStatisticsFragment();
+        emotionFragment.setArguments(args);
+
+        // TimeZoneFragment
+        TimeZoneFragment timeFragment = new TimeZoneFragment();
+        timeFragment.setArguments(args);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.summaryFragmentCircle, fragment)
-                .replace(R.id.summaryFragmentEmotion, new EmotionStatisticsFragment())
-                .replace(R.id.summaryFragmentTime, new TimeZoneFragment())
+                .replace(R.id.summaryFragmentCircle, rateFragment)
+                .replace(R.id.summaryFragmentEmotion,  emotionFragment)
+                .replace(R.id.summaryFragmentTime, timeFragment)
                 .commit();
     }
 }

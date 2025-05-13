@@ -1,5 +1,4 @@
 package kr.co.gachon.emotion_diary.ui.emotion;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,25 +8,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import kr.co.gachon.emotion_diary.BuildConfig;
 import kr.co.gachon.emotion_diary.R;
-import kr.co.gachon.emotion_diary.ui.Gpt.GptApiService;
-import kr.co.gachon.emotion_diary.ui.Gpt.GptRequest;
-import kr.co.gachon.emotion_diary.ui.Gpt.GptResponse;
-import kr.co.gachon.emotion_diary.ui.answerPage.AnswerActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import kr.co.gachon.emotion_diary.ui.taro.TaroActivity;
 
 public class EmotionSelectActivity extends AppCompatActivity {
 
@@ -120,57 +104,18 @@ public class EmotionSelectActivity extends AppCompatActivity {
                     if (pressButton == null) {
                         Toast.makeText(EmotionSelectActivity.this, "감정 선택하세요", Toast.LENGTH_SHORT).show();
                     } else {
-                        String prompt = "내가 보낸 감정과 내용을 기반으로 사람이 진심으로 위로해주는 3문장 글좀 적어줘 .\n내용: " + content + "\n감정: " + selectedEmotion;
+                        Intent intent = new Intent(EmotionSelectActivity.this, TaroActivity.class);
+                        intent.putExtra("date", CurrentDate);
+                        intent.putExtra("title", title);
+                        intent.putExtra("content", content);
+                        intent.putExtra("emotion", selectedEmotion);
 
-                        List<GptRequest.Message> messages = new ArrayList<>();
-                        messages.add(new GptRequest.Message("user", prompt));
-
-                        // temperature이 0은 보수적이고 정확한거, 1에 가까울 수록 이상한 답변해줌 0.7이 표준
-                        GptRequest request = new GptRequest("gpt-3.5-turbo", messages, 0.7);
-
-                        Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl("https://api.openai.com/")
-                                .addConverterFactory(GsonConverterFactory.create())
-                                .build();
-
-                        // retrofit : java를 json형태로 바꾸기
-                        GptApiService apiService = retrofit.create(GptApiService.class);
-
-                        String apiKey = "Bearer " + BuildConfig.API_KEY;
-
-                        Call<GptResponse> call = apiService.getGptMessage(apiKey, request);
-
-                        call.enqueue(new Callback<GptResponse>() {
-                            @Override
-                            public void onResponse(@NonNull Call<GptResponse> call, @NonNull Response<GptResponse> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-
-                                    // 첫 번째 본문 텍스트를 추출하여 변수에 저장하는 logic
-                                    String gptResult = response.body().choices.get(0).message.content;
-
-                                    Intent intent = new Intent(EmotionSelectActivity.this, AnswerActivity.class);
-                                    intent.putExtra("gptReply", gptResult);
-                                    intent.putExtra("date", CurrentDate);
-                                    intent.putExtra("title", title);
-                                    intent.putExtra("content", content);
-                                    intent.putExtra("emotion", selectedEmotion);
-
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(EmotionSelectActivity.this, "GPT 응답 실패", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(@NonNull Call<GptResponse> call, @NonNull Throwable t) {
-                                Toast.makeText(EmotionSelectActivity.this, "API 호출 실패: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        startActivity(intent);
                     }
                 }
             });
-
         }
-
     }
 }
+
+

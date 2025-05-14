@@ -40,25 +40,14 @@ public class CalendarViewModel extends AndroidViewModel {
         diaryDao = db.diaryDao();
         executorService = Executors.newFixedThreadPool(2);
 
-        _currentYearMonth.addSource(_currentYear, year -> {
-            Integer month = _currentMonth.getValue();
-            if (year != null && month != null) {
-                _currentYearMonth.setValue(new Pair<>(year, month));
-            }
-        });
-        _currentYearMonth.addSource(_currentMonth, month -> {
+        _monthlyDiaries = Transformations.switchMap(_currentMonth, month -> {
             Integer year = _currentYear.getValue();
-            if (year != null && month != null) {
-                _currentYearMonth.setValue(new Pair<>(year, month));
-            }
-        });
 
-        _monthlyDiaries = Transformations.switchMap(_currentYearMonth, yearMonth -> {
-            if (yearMonth == null)
+            if (year == null || month == null)
                 return new MutableLiveData<>(Collections.emptyList());
 
-            Date start = getStartDateOfMonth(yearMonth.first, yearMonth.second);
-            Date end = getEndDateOfMonth(yearMonth.first, yearMonth.second);
+            Date start = getStartDateOfMonth(year, month);
+            Date end = getEndDateOfMonth(year, month);
 
             return diaryDao.getDiariesForDateRange(start, end);
         });

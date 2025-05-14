@@ -11,11 +11,12 @@ plugins {
 android {
 
     namespace = "kr.co.gachon.emotion_diary"
+
     compileSdk = 35
 
     defaultConfig {
         applicationId = "kr.co.gachon.emotion_diary"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"

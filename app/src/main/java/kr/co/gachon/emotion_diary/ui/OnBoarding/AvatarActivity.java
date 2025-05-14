@@ -32,6 +32,7 @@ public class AvatarActivity extends AppCompatActivity {
     RadioButton genderM;
     RadioButton genderF;
     NumberPicker yearPicker;
+
     NumberPicker monthPicker;
     NumberPicker dayPicker;
     int selectedYear;

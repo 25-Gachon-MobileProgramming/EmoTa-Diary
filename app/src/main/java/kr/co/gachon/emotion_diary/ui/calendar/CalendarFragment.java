@@ -44,6 +44,9 @@ public class CalendarFragment extends Fragment {
 
     private CalendarViewModel calendarViewModel;
 
+    private int calendarYear;
+    private int calendarMonth;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
 
@@ -110,6 +113,9 @@ public class CalendarFragment extends Fragment {
             cal.set(year, month - 1, 1); // -1 cause zero-based month
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 M월", Locale.getDefault());
             monthYearText.setText(sdf.format(cal.getTime()));
+
+            calendarMonth = month;
+            calendarYear = year;
         }
     }
 
@@ -171,7 +177,7 @@ public class CalendarFragment extends Fragment {
 
         while (currentDayOfMonth <= daysInMonth) {
             Diary diary = findDiaryForDay(year, month, currentDayOfMonth, diaries);
-            Boolean isDiaryExist = (diary != null);
+            boolean isDiaryExist = (diary != null);
             String calendarText = isDiaryExist
                     ? Emotions.getEmotionDataById(diary.getEmotionId()).getEmoji()
                     : String.valueOf(currentDayOfMonth);
@@ -195,10 +201,19 @@ public class CalendarFragment extends Fragment {
                 // startActivity(intent);
             });
 
+            boolean isToday = Calendar.getInstance().get(Calendar.YEAR) == calendarYear &&
+                    Calendar.getInstance().get(Calendar.MONTH) + 1 == calendarMonth &&
+                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH) == currentDayOfMonth;
+
+
             LinearLayout diaryLayout = new LinearLayout(getContext());
             diaryLayout.setOrientation(LinearLayout.VERTICAL);
             diaryLayout.setGravity(Gravity.CENTER);
             diaryLayout.addView(dayTextView);
+
+            if (isToday)
+                diaryLayout.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.calendar_today_background));
+
 
             currentRow.addView(diaryLayout);
 

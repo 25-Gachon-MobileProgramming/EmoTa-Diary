@@ -39,7 +39,9 @@ public class DiaryRepository {
             Set<String> diaryEntryDates = new HashSet<>();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-            for (Diary diary : diaries) diaryEntryDates.add(sdf.format(diary.getDate()));
+            for (Diary diary : diaries) {
+                diaryEntryDates.add(sdf.format(diary.getDate()));
+            }
 
 
             Calendar calendar = Calendar.getInstance();

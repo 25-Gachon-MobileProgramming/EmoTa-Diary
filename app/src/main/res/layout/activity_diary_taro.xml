@@ -3,6 +3,8 @@
     android:background="@drawable/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:layout_gravity="center">
 
     <LinearLayout
@@ -10,12 +12,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerInParent="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+
         android:gravity="center">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:gravity="center">
 
             <ImageButton
@@ -38,6 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:layout_marginTop="16dp" android:gravity="center">
 
             <ImageButton

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
@@ -73,8 +74,18 @@ public class AnswerActivity extends AppCompatActivity {
 
         }
 
-        TextView TaroCard = findViewById(R.id.taro);
-        TaroCard.setText(taroCard);
+        ImageView taroImage = findViewById(R.id.taro);
+        String CardImage = getIntent().getStringExtra("taroCard");
+
+        int imageResId = getResources().getIdentifier(CardImage, "drawable", getPackageName());
+
+        if (imageResId != 0) {
+            taroImage.setImageResource(imageResId);
+        } else {
+            taroImage.setImageResource(R.drawable.card_back);
+        }
+
+
 
         // GPT 응답 받기
         String gptReply = intent.getStringExtra("gptReply");

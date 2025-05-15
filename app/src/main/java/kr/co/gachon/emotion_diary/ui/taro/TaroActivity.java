@@ -43,6 +43,29 @@ public class TaroActivity extends AppCompatActivity {
     private int selectedCardIndex = -1;
     private String selectedCardTitle = "";
 
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // action bar에서 뒤로가기 누르고 카드 선택시 발생하는 오류 방지
+        selectedCardIndex = -1;
+        selectedCardTitle = "";
+        nextButton.setEnabled(false);
+
+        cardTopLeft.setAlpha(1f);
+        cardTopRight.setAlpha(1f);
+        cardBottomLeft.setAlpha(1f);
+        cardBottomRight.setAlpha(1f);
+
+        cardTopLeft.setImageResource(R.drawable.card_back);
+        cardTopRight.setImageResource(R.drawable.card_back);
+        cardBottomLeft.setImageResource(R.drawable.card_back);
+        cardBottomRight.setImageResource(R.drawable.card_back);
+    }
+
+    // 카드 회전 애니메이션 후 drawable에 있는 카드 이미지 설정
     private void flipCard(final ImageButton card) {
         card.animate()
                 .rotationY(90f)
@@ -50,8 +73,20 @@ public class TaroActivity extends AppCompatActivity {
                 .withEndAction(new Runnable() {
                     @Override
                     public void run() {
-                        // 카드 앞면으로 바꾸기
-                        card.setImageResource(R.drawable.card_back);
+                        // 카드 이름에 해당하는 이미지 drawable에서 가져오기
+                        int imageResId = getResources().getIdentifier(
+                                selectedCardTitle,
+                                "drawable",
+                                getPackageName()
+                        );
+
+                        if (imageResId != 0) {
+                            card.setImageResource(imageResId);
+                        } else {
+                            card.setImageResource(R.drawable.card_back);
+                            Toast.makeText(TaroActivity.this, "이미지 리소스를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        }
+
                         card.animate()
                                 .rotationY(0f)
                                 .setDuration(700)
@@ -60,7 +95,6 @@ public class TaroActivity extends AppCompatActivity {
                 })
                 .start();
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +115,11 @@ public class TaroActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.next_button);
 
         List<String> cardTitles = new ArrayList<>(Arrays.asList(
-                "광대", "마법사", "여교황", "여황제", "교황", "연인", "전차", "힘", "은둔자",
-                "운명의 수레바퀴", "정의", "매달린 남자", "죽음", "절제", "악마", "탑", "별", "달",
-                "태양", "심판", "세계"
+                "fool", "magician", "highpriestess", "empress", "hierophant", "lovers", "chariot", "strength", "hermit",
+                "wheeloffortune", "justice", "hangedman", "death", "temperance", "devil", "tower", "star", "moon",
+                "sun", "judgment", "world", "top"
         ));
+
 
 
         ActionBar actionBar = getSupportActionBar();

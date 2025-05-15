@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -36,9 +37,9 @@ public class CalendarFragment extends Fragment {
     private FragmentCalendarBinding binding;
     private TableLayout calendarTable;
     private TextView monthYearText;
-    private Button prevMonthButton;
-    private Button nextMonthButton;
-    private Button showMonthlyStat;
+    private ImageView prevMonthButton;
+    private ImageView nextMonthButton;
+    private TextView showMonthlyStat;
 
     private List<Diary> monthlyDiaries;
 

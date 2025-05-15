@@ -11,6 +11,7 @@
     <color name="divider">#565F8C</color>
 
     <color name="calendar_text">#FFFFFF</color>
+    <color name="calendar_today_color">#3f51b5</color>
 
     <color name="timeline_background">#A9A9A9</color>
     <color name="timeline_text">#FFFFFF</color>

@@ -43,6 +43,23 @@ public class TaroActivity extends AppCompatActivity {
     private int selectedCardIndex = -1;
     private String selectedCardTitle = "";
 
+    private void flipCard(final ImageButton card) {
+        card.animate()
+                .rotationY(90f)
+                .setDuration(150)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 카드 앞면으로 바꾸기
+                        card.setImageResource(R.drawable.card_back);
+                        card.animate()
+                                .rotationY(0f)
+                                .setDuration(700)
+                                .start();
+                    }
+                })
+                .start();
+    }
 
 
     @Override
@@ -90,22 +107,25 @@ public class TaroActivity extends AppCompatActivity {
             }
         }
 
+
+
         View.OnClickListener cardClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (selectedCardIndex == -1) {
 
                     if (view != cardTopLeft) cardTopLeft.setAlpha(0.3f);
                     if (view != cardTopRight) cardTopRight.setAlpha(0.3f);
                     if (view != cardBottomLeft) cardBottomLeft.setAlpha(0.3f);
                     if (view != cardBottomRight) cardBottomRight.setAlpha(0.3f);
 
+                    view.setAlpha(1f);
+
                     Random random = new Random();
                     selectedCardIndex = random.nextInt(cardTitles.size());
                     selectedCardTitle = cardTitles.get(selectedCardIndex);
                     // 다음 버튼 활성화
                     nextButton.setEnabled(true);
-                }
+
             }
         };
 
@@ -118,6 +138,20 @@ public class TaroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (selectedCardIndex != -1) {
+
+                    ImageButton selectedCard = null;
+
+                    if (cardTopLeft.getAlpha() == 1f) selectedCard = cardTopLeft;
+                    else if (cardTopRight.getAlpha() == 1f) selectedCard = cardTopRight;
+                    else if (cardBottomLeft.getAlpha() == 1f) selectedCard = cardBottomLeft;
+                    else if (cardBottomRight.getAlpha() == 1f) selectedCard = cardBottomRight;
+
+                    if (selectedCard != null) {
+                        // 카드 회전
+                        flipCard(selectedCard);
+                    }
+
+
                     String prompt = "타로 카드 제목에 해당하는 내용과 내가 일기장에 쓴 내용을 종합하여 사람이 해주는 느낌으로 세 문장 정도 위로 글을 적어줘.\n내용: " + content + "\n타로 카드 제목: " + selectedCardTitle;
 
                     List<GptRequest.Message> messages = new ArrayList<>();

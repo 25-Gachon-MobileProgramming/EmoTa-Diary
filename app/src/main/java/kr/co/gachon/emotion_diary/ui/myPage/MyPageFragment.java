@@ -38,6 +38,15 @@ public class MyPageFragment extends Fragment {
         String savedNickname = sharedPreferences.getString("nickname", "사용자");
         binding.nickname.setText(savedNickname);
 
+        myPageViewModel.getConsecutiveWritingDays().observe(getViewLifecycleOwner(), days -> {
+            if (days != null) {
+                String message = "오늘은 아직 일기를 작성하지 않았어요.";
+                if (days > 0) message = "🔥" + days + "일 연속으로 일기 작성중🔥";
+
+                binding.days.setText(message);
+            }
+        });
+
         View yearRemindButton = binding.remindYearTouchView;
 
         yearRemindButton.setOnClickListener(view -> {
@@ -78,9 +87,6 @@ public class MyPageFragment extends Fragment {
 
             builder.show();
         });
-
-
-
 
         return root;
     }

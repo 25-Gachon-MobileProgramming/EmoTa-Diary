@@ -16,4 +16,6 @@
     <color name="timeline_background">#A9A9A9</color>
     <color name="timeline_text">#FFFFFF</color>
     <color name="timeline_circle_bg">#6E79A0</color>
+
+    <color name="write_fab_bg">#2A2E41</color>
 </resources>

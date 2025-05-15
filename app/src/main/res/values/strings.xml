@@ -9,4 +9,5 @@
     <string name="current_date">날짜</string>
     <string name="show_previous_month_text">show previous month</string>
     <string name="show_next_month_text">show next month</string>
+    <string name="pencil_outline_description">pencil outline</string>
 </resources>

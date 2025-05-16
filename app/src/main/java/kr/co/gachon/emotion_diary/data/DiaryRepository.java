@@ -4,10 +4,14 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,6 +30,41 @@ public class DiaryRepository {
 
     public LiveData<List<Diary>> getAllDiaries() {
         return allDiaries;
+    }
+
+    public LiveData<Integer> getConsecutiveWritingDays() {
+        return Transformations.map(allDiaries, diaries -> {
+            if (diaries == null || diaries.isEmpty()) return 0;
+
+            Set<String> diaryEntryDates = new HashSet<>();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+            for (Diary diary : diaries) {
+                diaryEntryDates.add(sdf.format(diary.getDate()));
+            }
+
+
+            Calendar calendar = Calendar.getInstance();
+            int consecutiveDays = 1;
+
+
+            // check today
+            String todayStr = sdf.format(calendar.getTime());
+            if (!diaryEntryDates.contains(todayStr)) return 0;
+
+            calendar.add(Calendar.DAY_OF_YEAR, -1); // move yesterday
+
+            while (true) {
+                // if no diary entry, break
+                String previousDayStr = sdf.format(calendar.getTime());
+                if (!diaryEntryDates.contains(previousDayStr)) break;
+
+                consecutiveDays++;
+                calendar.add(Calendar.DAY_OF_YEAR, -1); // move yesterday 1 more
+            }
+
+            return consecutiveDays;
+        });
     }
 
     public void insert(Diary diary) {
@@ -63,6 +102,14 @@ public class DiaryRepository {
 
                 calendar.set(2025, Calendar.MAY, 7, 18, 45);
                 insert(new Diary("평범한 저녁", "졸려요 잘래요", calendar.getTime(), Emotions.getEmotionIdByText("편안")));
+
+                calendar = Calendar.getInstance();
+
+                for (int i = 0; i < 5; i++) {
+                    calendar.add(Calendar.DAY_OF_YEAR, -1);
+                    insert(new Diary("test1", "test1", calendar.getTime(), (int) (Math.random() * 16) + 1));
+                }
+
 
                 Log.d("RoomExample", "더미 데이터 삽입 완료");
             } else {

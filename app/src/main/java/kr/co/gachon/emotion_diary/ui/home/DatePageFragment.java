@@ -42,5 +42,3 @@ public class DatePageFragment extends Fragment {
         return view;
     }
 }
-
-

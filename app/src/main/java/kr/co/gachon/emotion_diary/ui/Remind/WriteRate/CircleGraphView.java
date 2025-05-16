@@ -82,27 +82,19 @@ public class CircleGraphView extends View {
             paint.setColor(getContext().getColor(sectionColors[i]));
             canvas.drawArc(rect, startAngle, sweepAngles[i], false, paint);
 
-            int percentage = (int) (sweepAngles[i] / 360 * 100);
-            if (percentage > 0) {
-                float sectionCenterAngle = startAngle + sweepAngles[i] / 2f;
-
-                float sectionCenterX = (float) (getWidth() / 2f +
-                        (radius - paint.getStrokeWidth() / 2f) * Math.cos(Math.toRadians(sectionCenterAngle)));
-                float sectionCenterY = (float) (getHeight() / 2f +
-                        (radius - paint.getStrokeWidth() / 2f) * Math.sin(Math.toRadians(sectionCenterAngle)));
-
-                Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                textPaint.setColor(getContext().getColor(textColors[i]));
-                textPaint.setTextAlign(Paint.Align.CENTER);
-                textPaint.setTextSize(40f);
-                textPaint.setTypeface(ResourcesCompat.getFont(getContext(), R.font.temp));
-
-                String text = percentage + "%";
-                float textOffset = (textPaint.descent() + textPaint.ascent()) / 2f;
-                canvas.drawText(text, sectionCenterX, sectionCenterY - textOffset, textPaint);
-            }
-
             startAngle += sweepAngles[i];
         }
+        int mainPercentage = (int) (sweepAngles[0] / 360f * 100f);
+        Paint centerTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        centerTextPaint.setColor(getContext().getColor(R.color.white));
+        centerTextPaint.setTextAlign(Paint.Align.CENTER);
+        centerTextPaint.setTextSize(60f);
+        centerTextPaint.setTypeface(ResourcesCompat.getFont(getContext(), R.font.temp));
+
+        float centerX = getWidth() / 2f;
+        float centerY = getHeight() / 2f;
+        float textOffset = (centerTextPaint.descent() + centerTextPaint.ascent()) / 2f;
+
+        canvas.drawText(mainPercentage + "%", centerX, centerY - textOffset, centerTextPaint);
     }
 }

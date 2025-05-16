@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -52,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        ImageButton imageButton = findViewById(R.id.diary_write_button);
+        FloatingActionButton diaryWriteButton = findViewById(R.id.diary_write_button);
 
-        imageButton.setOnClickListener(v -> {
+        diaryWriteButton.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
             intent.putExtra("selectedDate", System.currentTimeMillis());
             startActivity(intent);

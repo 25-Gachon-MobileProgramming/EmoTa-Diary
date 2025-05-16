@@ -7,5 +7,11 @@
     <string name="answer">Answer</string>
     <string name="diary_write_title">Diary Write</string>
     <string name="current_date">날짜</string>
+
     <string name="Taro">타로카드제목</string>
+
+    <string name="show_previous_month_text">show previous month</string>
+    <string name="show_next_month_text">show next month</string>
+    <string name="pencil_outline_description">pencil outline</string>
+
 </resources>

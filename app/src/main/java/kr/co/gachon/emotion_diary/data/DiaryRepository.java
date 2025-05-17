@@ -60,6 +60,9 @@ public class DiaryRepository {
                 calendar.set(2025, Calendar.APRIL, 5, 9, 0);
                 // "신남" is not defined in Emotions, just for error test
                 insert(new Diary("신나는 아침", "새로운 아이디어가 떠올랐어요!", calendar.getTime(), Emotions.getEmotionIdByText("신남")));
+                calendar.set(2025, Calendar.APRIL, 4, 9, 29);
+                // "신남" is not defined in Emotions, just for error test
+                insert(new Diary("신나는 밤", "새로운 아이디어가 떠올랐어요!", calendar.getTime(), Emotions.getEmotionIdByText("신남")));
 
                 calendar.set(2025, Calendar.MAY, 7, 18, 45);
                 insert(new Diary("평범한 저녁", "졸려요 잘래요", calendar.getTime(), Emotions.getEmotionIdByText("편안")));

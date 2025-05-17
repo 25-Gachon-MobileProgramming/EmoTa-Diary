@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.Date;
+
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.ui.Remind.WriteRate.RateActivity;
 import kr.co.gachon.emotion_diary.ui.Remind.emotionStatistics.EmotionStatisticsActivity;
@@ -26,10 +28,14 @@ public class TimeZoneActivity extends AppCompatActivity {
         timeTextView = findViewById(R.id.time);
 
         boolean isMonthly = getIntent().getBooleanExtra("isMonthly", true);
+        Date startDate = (Date) getIntent().getSerializableExtra("startDate");
+        Date endDate = (Date) getIntent().getSerializableExtra("endDate");
 
         TimeZoneFragment fragment = new TimeZoneFragment();
         Bundle args = new Bundle();
         args.putBoolean("isMonthly", isMonthly);
+        args.putSerializable("startDate", startDate);
+        args.putSerializable("endDate", endDate);
         fragment.setArguments(args);
 
         // Fragment를 container에 삽입
@@ -41,6 +47,8 @@ public class TimeZoneActivity extends AppCompatActivity {
         button.setOnClickListener(view -> {
             Intent intent = new Intent(TimeZoneActivity.this, RemindSummary.class);
             intent.putExtra("isMonthly", isMonthly);
+            intent.putExtra("startDate", startDate);
+            intent.putExtra("endDate", endDate);
             startActivity(intent);
         });
     }

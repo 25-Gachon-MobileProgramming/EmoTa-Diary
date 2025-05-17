@@ -1,13 +1,14 @@
 package kr.co.gachon.emotion_diary.ui.Remind.emotionStatistics;
 
-import android.content.Intent;
+
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,7 +25,6 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -35,7 +35,6 @@ import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.AppDatabase;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.data.EmotionCount;
-import kr.co.gachon.emotion_diary.ui.Remind.timeGraph.TimeZoneActivity;
 
 public class EmotionStatisticsFragment extends Fragment {
 
@@ -44,6 +43,9 @@ public class EmotionStatisticsFragment extends Fragment {
     private List<EmotionCount> emotions = new ArrayList<>();
 
     boolean isMonthly;
+
+    Date startDate;
+    Date endDate;
 
     @Nullable
     @Override
@@ -63,31 +65,23 @@ public class EmotionStatisticsFragment extends Fragment {
 
         if (getArguments() != null) {
             isMonthly = getArguments().getBoolean("isMonthly", true);
+            startDate = (Date) getArguments().getSerializable("startDate");
+            endDate = (Date) getArguments().getSerializable("endDate");
             Log.d("EmotionStats", "💡 전달받은 isMonthly 값: " + isMonthly);
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
 
-        Calendar calMonth = Calendar.getInstance();
-        calMonth.add(Calendar.MONTH, -1);
-        String oneMonthAgoStr = sdf.format(calMonth.getTime());
-
-        Calendar calYear = Calendar.getInstance();
-        calYear.add(Calendar.YEAR, -1);
-        String oneYearAgoStr = sdf.format(calYear.getTime());
 
         try {
-            Date today = new Date();
-            Date oneMonthAgo = sdf.parse(oneMonthAgoStr);
-            Date oneYearAgo = sdf.parse(oneYearAgoStr);
 
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.execute(() -> {
                 if (isMonthly) {
-                    emotions = diaryDao.getEmotionCounts(oneMonthAgo, today);
+                    emotions = diaryDao.getEmotionCounts(startDate, endDate);
                 } else {
-                    emotions = diaryDao.getEmotionCounts(oneYearAgo, today);
+                    emotions = diaryDao.getEmotionCounts(startDate, endDate);
                 }
 
                 requireActivity().runOnUiThread(() -> {

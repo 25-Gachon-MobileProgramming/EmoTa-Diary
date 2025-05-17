@@ -70,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
             Log.d("RoomExample", "모든 일기 (Repository - ExecutorService):");
 
             for (Diary diary : diaries) {
-                Log.d("RoomExample", "ID: " + diary.getId() + ", 제목: " + diary.getTitle() + ", 내용: " + diary.getContent() + ", 날짜: " + diary.getDate());
+                Log.d("RoomExample", "ID: " + diary.getId() + ", 제목: " + diary.getTitle() + ", 내용: " + diary.getContent() + ", 날짜: " + diary.getDate()  + ", 감정: " + diary.getEmotionText());
             }
         });
 
-//         Diary newDiary = new Diary("title", "content", "행복", Calendar.getInstance().getTime());
+//         Diary newDiary = new Diary("title", "content",  Calendar.getInstance().getTime(), 1);
 //         diaryRepository.insert(newDiary);
 
 

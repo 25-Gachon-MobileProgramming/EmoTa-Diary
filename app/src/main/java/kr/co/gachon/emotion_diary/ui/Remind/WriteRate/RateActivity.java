@@ -43,10 +43,12 @@ public class RateActivity extends AppCompatActivity implements RateFragment.Rate
 
 
         boolean isMonthly = getIntent().getBooleanExtra("isMonthly", true);
+        String term = "2025";
 
         RateFragment fragment = new RateFragment();
         Bundle args = new Bundle();
         args.putBoolean("isMonthly", isMonthly);
+        args.putString("term", term);
         fragment.setArguments(args);
 
         getSupportFragmentManager()

@@ -10,17 +10,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.Diary;
@@ -45,11 +43,13 @@ public class AnswerActivity extends AppCompatActivity {
         String title = intent.getStringExtra("title");
         String content = intent.getStringExtra("content");
         String emotion = intent.getStringExtra("emotion");
+        String taroCard = intent.getStringExtra("taroCard");
 
         Log.wtf("get2Test", CurrentDate);
         Log.wtf("get2Test", title);
         Log.wtf("get2Test", content);
         Log.wtf("get2Test", emotion);
+        Log.wtf("get2Test", taroCard);
 
         // 바 왼쪽에 imageButton 사용해서 뒤로가기
         ActionBar actionBar = getSupportActionBar();
@@ -65,6 +65,7 @@ public class AnswerActivity extends AppCompatActivity {
                 }
             });
 
+
             // 액션 바 제목 바꾸기
             TextView titleTextView = actionBar.getCustomView().findViewById(R.id.titleTextViewActionBar);
             if (titleTextView != null) {
@@ -72,6 +73,19 @@ public class AnswerActivity extends AppCompatActivity {
             }
 
         }
+
+        ImageView taroImage = findViewById(R.id.taro);
+        String CardImage = getIntent().getStringExtra("taroCard");
+
+        int imageResId = getResources().getIdentifier(CardImage, "drawable", getPackageName());
+
+        if (imageResId != 0) {
+            taroImage.setImageResource(imageResId);
+        } else {
+            taroImage.setImageResource(R.drawable.card_back);
+        }
+
+
 
         // GPT 응답 받기
         String gptReply = intent.getStringExtra("gptReply");
@@ -115,8 +129,8 @@ public class AnswerActivity extends AppCompatActivity {
 
             Toast.makeText(AnswerActivity.this, "Wi-Fi가 연결 않되었습니다", Toast.LENGTH_SHORT).show();
         }
-
     }
+
 
     // wifi 유무 판단 코드
     public static boolean wifiConnected(Context context) {

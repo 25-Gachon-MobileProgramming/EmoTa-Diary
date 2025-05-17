@@ -19,6 +19,6 @@
         android:layout_gravity="center"
         android:layout_marginStart="100dp"
         android:text="@string/diary_write_title"
-        android:textSize="21sp" />
+        android:textSize="18dp" />
 
 </LinearLayout>

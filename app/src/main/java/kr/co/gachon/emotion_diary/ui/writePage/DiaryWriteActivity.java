@@ -90,8 +90,10 @@ public class DiaryWriteActivity extends AppCompatActivity {
                 String contentText = contentView.getText().toString();
 
                 // 비어 있는지 확인하는 코드
-                if (TextUtils.isEmpty(titleText) || TextUtils.isEmpty(contentText)) {
-                    Toast.makeText(getBaseContext(), "제목이랑 내용 중 1개가 비어있습니다.", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(titleText)) {
+                    Toast.makeText(getBaseContext(), "제목이 비어있습니다.", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(contentText)) {
+                    Toast.makeText(getBaseContext(), "내용이 비어있습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(DiaryWriteActivity.this, EmotionSelectActivity.class);
                     intent.putExtra("date", selectedDate.toString());

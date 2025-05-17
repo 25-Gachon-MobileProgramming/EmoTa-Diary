@@ -24,6 +24,7 @@
         <activity android:name=".ui.writePage.DiaryWriteActivity" />
         <activity android:name=".ui.emotion.EmotionSelectActivity" />
         <activity android:name=".ui.answerPage.AnswerActivity" />
+        <activity android:name=".ui.taro.TaroActivity"/>
 
         <activity android:name=".ui.OnBoarding.AvatarActivity" />
         <activity android:name=".ui.OnBoarding.OnBoardingActivity" />

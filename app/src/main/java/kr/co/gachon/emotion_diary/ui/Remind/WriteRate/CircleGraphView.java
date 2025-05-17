@@ -73,10 +73,6 @@ public class CircleGraphView extends View {
                 R.color.purple_500
         };
 
-        int[] textColors = new int[]{
-                R.color.white,
-                R.color.white
-        };
 
         for (int i = 0; i < 2; i++) {
             paint.setColor(getContext().getColor(sectionColors[i]));

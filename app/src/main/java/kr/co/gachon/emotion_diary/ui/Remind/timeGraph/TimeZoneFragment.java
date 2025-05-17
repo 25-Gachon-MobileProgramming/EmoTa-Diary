@@ -34,6 +34,9 @@ public class TimeZoneFragment extends Fragment {
     private TimeGraph graphView;
     private boolean isMonthly;
 
+    Date startDate;
+    Date endDate;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,6 +55,8 @@ public class TimeZoneFragment extends Fragment {
 
         if (getArguments() != null) {
             isMonthly = getArguments().getBoolean("isMonthly", true);
+            startDate = (Date) getArguments().getSerializable("startDate");
+            endDate = (Date) getArguments().getSerializable("endDate");
             Log.d("TimeGraph", "💡 전달받은 isMonthly: " + isMonthly);
         }
 
@@ -60,23 +65,12 @@ public class TimeZoneFragment extends Fragment {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-        // 날짜 범위 계산
-        Calendar cal = Calendar.getInstance();
-        if (isMonthly) {
-            cal.add(Calendar.MONTH, -1);
-        } else {
-            cal.add(Calendar.YEAR, -1);
-        }
-        String rangeStartStr = sdf.format(cal.getTime());
-        String todayStr = sdf.format(new Date());
 
         try {
-            Date rangeStart = sdf.parse(rangeStartStr);
-            Date today = sdf.parse(todayStr);
 
             ExecutorService executor = Executors.newSingleThreadExecutor();
             executor.execute(() -> {
-                List<Date> dates = diaryDao.getAllDiaryDates(rangeStart, today);
+                List<Date> dates = diaryDao.getAllDiaryDates(startDate, endDate);
 
 
 
@@ -87,7 +81,11 @@ public class TimeZoneFragment extends Fragment {
                     String timeStr = timeFormat.format(date);
                     String[] parts = timeStr.split(":");
                     int totalMinutes = Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
-                    countMap.put(totalMinutes, countMap.getOrDefault(totalMinutes, 0) + 1);
+
+                    // ⏱ 30분 단위로 묶기
+                    int roundedMinutes = (totalMinutes / 30) * 30;
+
+                    countMap.put(roundedMinutes, countMap.getOrDefault(roundedMinutes, 0) + 1);
                 }
 
                 List<Point> points = new ArrayList<>();

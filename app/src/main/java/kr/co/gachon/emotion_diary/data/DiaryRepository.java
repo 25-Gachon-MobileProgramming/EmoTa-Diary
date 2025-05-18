@@ -1,6 +1,8 @@
 package kr.co.gachon.emotion_diary.data;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -8,12 +10,14 @@ import androidx.lifecycle.Transformations;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class DiaryRepository {
 
@@ -77,6 +81,22 @@ public class DiaryRepository {
 
     public void delete(Diary diary) {
         executorService.execute(() -> diaryDao.deleteDiary(diary));
+    }
+
+    // 같은 연도, 월, 일에 해당하는 최근정보를 불러오는 logic
+    public void getDiaryByDate(Date date, Consumer<Diary> callback) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String formattedDate = sdf.format(date);
+        getLatestDiaryByDateAsync(formattedDate, callback);
+    }
+
+    public void getLatestDiaryByDateAsync(String date, Consumer<Diary> callback) {
+        executorService.execute(() -> {
+            Diary diary = diaryDao.getLatestDiaryByDate(date);
+            new Handler(Looper.getMainLooper()).post(() -> {
+                callback.accept(diary);
+            });
+        });
     }
 
     public void insertDummyData() {

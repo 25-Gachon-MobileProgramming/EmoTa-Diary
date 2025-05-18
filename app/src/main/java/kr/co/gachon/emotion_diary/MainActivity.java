@@ -4,9 +4,7 @@ package kr.co.gachon.emotion_diary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageButton;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
@@ -56,10 +55,27 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton diaryWriteButton = findViewById(R.id.diary_write_button);
 
         diaryWriteButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
-            intent.putExtra("selectedDate", System.currentTimeMillis());
-            startActivity(intent);
+            Calendar calendar = Calendar.getInstance();
+            Date todayDate = calendar.getTime();
+
+            diaryRepository.getDiaryByDate(todayDate, diary -> {
+                Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
+                intent.putExtra("selectedDate", System.currentTimeMillis());
+
+                if (diary != null) {
+                    // 같은 연, 월, 일에 해당하는 값을 가져오는 logic
+                    intent.putExtra("title", diary.getTitle());
+                    intent.putExtra("content", diary.getContent());
+                    intent.putExtra("isUpdate", true);
+                } else {
+                    // 그 외 상황이면 작성하는 logic
+                    intent.putExtra("isUpdate", false);
+                }
+
+                startActivity(intent);
+            });
         });
+
 
         // --------- DB TEST START ---------
         diaryRepository = new DiaryRepository(getApplication());

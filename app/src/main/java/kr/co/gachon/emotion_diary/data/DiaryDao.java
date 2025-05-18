@@ -30,6 +30,10 @@ public interface DiaryDao {
     @Query("SELECT COUNT(DISTINCT strftime('%Y-%m-%d', date / 1000, 'unixepoch')) FROM diaries WHERE date BETWEEN :startDate AND :endDate")
     int getDiaryCountPerDay(Date startDate, Date endDate);
 
+    // DiaryDao날짜 기준 검색 쿼리 추가
+    @Query("SELECT * FROM diaries WHERE strftime('%Y-%m-%d', date / 1000, 'unixepoch') = :date ORDER BY id DESC LIMIT 1")
+    Diary getLatestDiaryByDate(String date);
+
     @Query("SELECT * FROM diaries WHERE date BETWEEN :startDate AND :endDate ORDER BY date ASC")
     LiveData<List<Diary>> getDiariesForDateRange(Date startDate, Date endDate);
 

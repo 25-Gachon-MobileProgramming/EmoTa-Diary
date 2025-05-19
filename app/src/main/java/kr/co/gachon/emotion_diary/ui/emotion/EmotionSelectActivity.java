@@ -68,6 +68,7 @@ public class EmotionSelectActivity extends AppCompatActivity {
 
             // 😀\n행복 이런 식으로 정보를 가져 오기
             emojiButton.setText(emoji + "\n" + text);
+            emojiButton.setContentDescription(text);
             emojiButton.setTextSize(20);
             emojiButton.setPadding(16, 16, 16, 16);
             emojiButton.setAllCaps(false);

@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
         binding.dateViewPager.setClipChildren(false);
         binding.dateViewPager.setOffscreenPageLimit(3);
         binding.dateViewPager.getChildAt(0).setOverScrollMode(View.OVER_SCROLL_NEVER);
-        binding.dateViewPager.setPadding(60, 0, 60, 0);
+        binding.dateViewPager.setPadding(120, 0, 120, 0);
 
         binding.dateViewPager.setPageTransformer((page, position) -> {
             float scale = 1 - Math.abs(position) * 0.2f;

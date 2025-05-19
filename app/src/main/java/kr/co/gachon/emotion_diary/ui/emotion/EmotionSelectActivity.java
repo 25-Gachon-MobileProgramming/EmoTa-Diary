@@ -99,7 +99,7 @@ public class EmotionSelectActivity extends AppCompatActivity {
             emotionGrid.addView(emojiButton);
         }
 
-            originalTint = getColor(R.color.white);
+// Removed unused assignment to originalTint
 
 
             Button nextPage = findViewById(R.id.nextPageButton);

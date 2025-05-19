@@ -105,7 +105,7 @@ public class EmotionSelectActivity extends AppCompatActivity {
             Button nextPage = findViewById(R.id.nextPageButton);
             nextPage.setOnClickListener(view -> {
                 if (previousButton == null) {
-                    Toast.makeText(EmotionSelectActivity.this, "감정을 선택 하세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EmotionSelectActivity.this, "감정을 선택하세요", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent1 = new Intent(EmotionSelectActivity.this, TaroActivity.class);
                     intent1.putExtra("date", CurrentDate);

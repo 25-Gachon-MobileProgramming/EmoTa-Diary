@@ -14,21 +14,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.Objects;
 
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
@@ -88,7 +85,10 @@ public class MyPageFragment extends Fragment {
         myPageViewModel.getConsecutiveWritingDays().observe(getViewLifecycleOwner(), days -> {
             if (days != null) {
                 String message = "오늘은 아직 일기를 작성하지 않았어요.";
-                if (days > 0) message = "🔥" + days + "일 연속으로 일기 작성중🔥";
+                if (days > 0) {
+                    message = "🔥" + days + "일 연속으로 일기 작성중🔥";
+                    ConsecutiveWidgetProvider.updateAllWidgets(requireContext(), days);
+                }
 
                 binding.days.setText(message);
             }

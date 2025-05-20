@@ -1,7 +1,12 @@
 package kr.co.gachon.emotion_diary.ui.taro;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -42,8 +47,12 @@ public class TaroActivity extends AppCompatActivity {
     private Button nextButton;
     private int selectedCardIndex = -1;
     private String selectedCardTitle = "";
+    private String gender;
+    private String birth;
 
 
+    // Card click listener reference to disable/enable it
+    private View.OnClickListener cardClickListener;
 
     @Override
     protected void onResume() {
@@ -54,6 +63,8 @@ public class TaroActivity extends AppCompatActivity {
         selectedCardTitle = "";
         nextButton.setEnabled(false);
 
+        // Re-enable card selection and reset alpha
+        setCardSelectionEnabled(true);
         cardTopLeft.setAlpha(1f);
         cardTopRight.setAlpha(1f);
         cardBottomLeft.setAlpha(1f);
@@ -101,6 +112,15 @@ public class TaroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_taro);
 
+        
+        checkWifiStatus();
+
+        SharedPreferences prefs = getSharedPreferences("avatar_pref", MODE_PRIVATE);
+        gender = prefs.getString("gender", "알 수 없음");
+        birth = prefs.getString("birthDate","알 수 없음");
+        Log.wtf("genderTest",gender);
+        Log.wtf("birthTest",birth);
+
         // 이전 액티비티에서 데이터 받기
         Intent intent = getIntent();
         content = intent.getStringExtra("content");
@@ -119,8 +139,6 @@ public class TaroActivity extends AppCompatActivity {
                 "wheeloffortune", "justice", "hangedman", "death", "temperance", "devil", "tower", "star", "moon",
                 "sun", "judgment", "world", "top"
         ));
-
-
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -142,12 +160,10 @@ public class TaroActivity extends AppCompatActivity {
             }
         }
 
-
-
-        View.OnClickListener cardClickListener = new View.OnClickListener() {
+        cardClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (selectedCardIndex == -1) {
                     if (view != cardTopLeft) cardTopLeft.setAlpha(0.3f);
                     if (view != cardTopRight) cardTopRight.setAlpha(0.3f);
                     if (view != cardBottomLeft) cardBottomLeft.setAlpha(0.3f);
@@ -160,7 +176,7 @@ public class TaroActivity extends AppCompatActivity {
                     selectedCardTitle = cardTitles.get(selectedCardIndex);
                     // 다음 버튼 활성화
                     nextButton.setEnabled(true);
-
+                }
             }
         };
 
@@ -173,6 +189,8 @@ public class TaroActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (selectedCardIndex != -1) {
+                    // 버튼 누른 후 카드 비활성화
+                    setCardSelectionEnabled(false);
 
                     ImageButton selectedCard = null;
 
@@ -186,8 +204,9 @@ public class TaroActivity extends AppCompatActivity {
                         flipCard(selectedCard);
                     }
 
-
-                    String prompt = "타로 카드 제목에 해당하는 내용과 내가 일기장에 쓴 내용을 종합하여 사람이 해주는 느낌으로 세 문장 정도 위로 글을 적어줘.\n내용: " + content + "\n타로 카드 제목: " + selectedCardTitle;
+                    String prompt = "타로 카드 제목에 해당하는 내용과 내가 일기장에 쓴 내용, 나이,성별을 종합하여 사람이 해주는 느낌으로 세 문장 정도 위로 글을 적어줘. " +
+                            "나는 " + gender + "이고 생년월일은 " + birth + "이야." +
+                            "\n내용: " + content + "\n타로 카드 제목: " + selectedCardTitle;
 
                     List<GptRequest.Message> messages = new ArrayList<>();
                     messages.add(new GptRequest.Message("user", prompt));
@@ -222,12 +241,14 @@ public class TaroActivity extends AppCompatActivity {
                                 startActivity(sendintent);
                             } else {
                                 Toast.makeText(TaroActivity.this, "GPT 응답 실패", Toast.LENGTH_SHORT).show();
+                                setCardSelectionEnabled(true);
                             }
                         }
 
                         @Override
                         public void onFailure(@NonNull Call<GptResponse> call, @NonNull Throwable t) {
-                            Toast.makeText(TaroActivity.this, "API 호출 실패: ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(TaroActivity.this, "API 호출 실패", Toast.LENGTH_SHORT).show();
+                            setCardSelectionEnabled(true);
                         }
                     });
                 } else {
@@ -235,7 +256,26 @@ public class TaroActivity extends AppCompatActivity {
                 }
             }
         });
-        // 처음에는 다음 버튼 비활성화
+        // 버튼 누른 후 카드 비활성화
         nextButton.setEnabled(false);
+    }
+
+    // 카드 활성과 비활성 방법
+    private void setCardSelectionEnabled(boolean enabled) {
+        cardTopLeft.setClickable(enabled);
+        cardTopRight.setClickable(enabled);
+        cardBottomLeft.setClickable(enabled);
+        cardBottomRight.setClickable(enabled);
+    }
+
+    private void checkWifiStatus() {
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            Toast.makeText(this, "Wi-Fi에 연결되었습니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Wi-Fi에 연결되어 있지 않습니다. 데이터 요금이 발생할 수 있습니다.", Toast.LENGTH_LONG).show();
+        }
     }
 }

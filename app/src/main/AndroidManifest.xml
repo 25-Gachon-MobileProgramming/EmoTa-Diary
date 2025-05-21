@@ -19,7 +19,7 @@
         <activity android:name=".ui.Remind.WriteRate.RateActivity" />
         <activity android:name=".ui.Remind.emotionStatistics.EmotionStatisticsActivity" />
         <activity android:name=".ui.Remind.timeGraph.TimeZoneActivity" />
-        <activity android:name=".ui.Remind.remindSummary.RemindSummary" />
+        <activity android:name=".ui.Remind.remindSummary.RemindSummaryActivity" />
 
         <activity android:name=".ui.writePage.DiaryWriteActivity" />
         <activity android:name=".ui.emotion.EmotionSelectActivity" />

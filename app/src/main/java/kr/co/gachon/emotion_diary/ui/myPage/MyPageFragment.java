@@ -17,8 +17,13 @@ import android.widget.ImageButton;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.databinding.FragmentMypageBinding;
@@ -30,7 +35,6 @@ public class MyPageFragment extends Fragment {
 
     private SharedPreferences sharedPreferences;
     private DiaryDao diaryDao;
-    private static final String PREF_PROFILE_URI = "profile_uri";
 
     // 이미지 선택 런처
     private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
@@ -39,8 +43,7 @@ public class MyPageFragment extends Fragment {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     Uri selectedImageUri = result.getData().getData();
                     if (selectedImageUri != null) {
-                        binding.profileImage.setImageURI(selectedImageUri);
-                        sharedPreferences.edit().putString(PREF_PROFILE_URI, selectedImageUri.toString()).apply();
+                        copyUriToInternalStorage(selectedImageUri);
                     }
                 }
             }
@@ -56,10 +59,14 @@ public class MyPageFragment extends Fragment {
 
         sharedPreferences = requireContext().getSharedPreferences("avatar_pref", Context.MODE_PRIVATE);
 
+
         // 프로필 이미지 불러오기
-        String savedUri = sharedPreferences.getString(PREF_PROFILE_URI, null);
-        if (savedUri != null) {
-            binding.profileImage.setImageURI(Uri.parse(savedUri));
+        String savedPath = sharedPreferences.getString("profileImage", null);
+        if (savedPath != null) {
+            File file = new File(savedPath);
+            if (file.exists()) {
+                binding.profileImage.setImageURI(Uri.fromFile(file));
+            }
         }
 
         // 이미지 클릭 시 갤러리 열기
@@ -116,4 +123,28 @@ public class MyPageFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+    private void copyUriToInternalStorage(Uri sourceUri) {
+        try {
+            InputStream inputStream = requireContext().getContentResolver().openInputStream(sourceUri);
+            File file = new File(requireContext().getFilesDir(), "profile.jpg");
+            FileOutputStream outputStream = new FileOutputStream(file);
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            inputStream.close();
+            outputStream.close();
+
+            binding.profileImage.setImageURI(Uri.fromFile(file));
+            // 로컬 URI 저장
+            sharedPreferences.edit().putString("profileImage", file.getAbsolutePath()).apply();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -111,7 +111,7 @@
         app:layout_constraintTop_toTopOf="@id/remindYear"
         android:layout_marginRight="50dp"
         />
-    <!--터치 이벤트를 여기에 걸 예정-->
+
     <ImageView
         android:id="@+id/remindYearTouchView"
         android:layout_width="340dp"

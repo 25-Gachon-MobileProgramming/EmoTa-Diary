@@ -33,7 +33,7 @@ public class HomeFragment extends Fragment {
     private void setupDatePager() {
         List<LocalDate> dateList = new ArrayList<>();
         LocalDate today = LocalDate.now();
-        for (int i = -5; i <= 5; i++) {
+        for (int i = -5; i <= 1; i++) {
             dateList.add(today.plusDays(i));
         }
 

@@ -6,9 +6,12 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -37,6 +40,7 @@ public class RateActivity extends AppCompatActivity implements RateFragment.Rate
     private TextView rateText;
     Date startDate;
     Date endDate;
+    String term = "2024-5";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,17 +51,17 @@ public class RateActivity extends AppCompatActivity implements RateFragment.Rate
 
 
         boolean isMonthly = getIntent().getBooleanExtra("isMonthly", true);
-        String term = "2025-4";
+        term = getIntent().getStringExtra("term");
 
+            Pair<Date, Date> range = null;
+            try {
+                range = getDateRangeFromTerm(term, isMonthly);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            startDate = range.first;
+            endDate = range.second;
 
-        Pair<Date, Date> range = null;
-        try {
-            range = getDateRangeFromTerm(term);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        startDate = range.first;
-        endDate = range.second;
 
 
         Button nextButton = findViewById(R.id.nextButton);
@@ -81,17 +85,37 @@ public class RateActivity extends AppCompatActivity implements RateFragment.Rate
                 .beginTransaction()
                 .replace(R.id.circleFragmentContainer, fragment)
                 .commit();
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setCustomView(R.layout.custom_back_bar);
+
+            ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+
+            // 액션 바 제목 바꾸기
+            TextView titleTextView = actionBar.getCustomView().findViewById(R.id.titleTextViewActionBar);
+            if (titleTextView != null) {
+                titleTextView.setText("Rate");
+            }
+        }
     }
 
     @Override
     public void onRateTextUpdated(String text) {
         rateText.setText(text);
     }
-    public static Pair<Date, Date> getDateRangeFromTerm(String term) throws ParseException {
+    public static Pair<Date, Date> getDateRangeFromTerm(String term, Boolean isMonthly) throws ParseException {
         Calendar calStart = Calendar.getInstance();
         Calendar calEnd = Calendar.getInstance();
 
-        if (term.matches("^\\d{4}-\\d{1,2}$")) {
+        if (isMonthly) {
             // term이 "2024-5" 또는 "2024-05" 형태
             String[] parts = term.split("-");
             int year = Integer.parseInt(parts[0]);
@@ -109,9 +133,14 @@ public class RateActivity extends AppCompatActivity implements RateFragment.Rate
             calEnd.set(Calendar.MINUTE, 59);
             calEnd.set(Calendar.SECOND, 59);
             calEnd.set(Calendar.MILLISECOND, 999);
-        } else if (term.matches("^\\d{4}$")) {
+        } else if (isMonthly == false) {
             // term이 "2024" 형태
-            int year = Integer.parseInt(term);
+            calStart = Calendar.getInstance();
+            calEnd = Calendar.getInstance();
+
+            // 연도만 추출: "2024-5" → 2024, "2024" → 2024
+            String yearStr = term.split("-")[0];
+            int year = Integer.parseInt(yearStr);
 
             // 시작일: YYYY-01-01 00:00:00
             calStart.set(year, Calendar.JANUARY, 1, 0, 0, 0);

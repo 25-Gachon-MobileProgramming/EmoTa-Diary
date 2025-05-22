@@ -19,7 +19,6 @@ import kr.co.gachon.emotion_diary.databinding.FragmentHomeBinding;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-
     private List<LocalDate> dateList;
     private OnDateSelectedListener dateSelectedListener; // 리스너 선언
 
@@ -40,15 +39,10 @@ public class HomeFragment extends Fragment {
         }
     }
 
-
-
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
 
         setupDateViewPager();
 
@@ -64,25 +58,19 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        setupDatePager();
-
-
         return root;
     }
 
-    private void setupDatePager() {
-        List<LocalDate> dateList = new ArrayList<>();
+    private void setupDateViewPager() {
+        dateList = new ArrayList<>();
         LocalDate today = LocalDate.now();
-        for (int i = -5; i <= 1; i++) {
+
+        for (int i = -5; i <= 5; i++) {
             dateList.add(today.plusDays(i));
         }
 
         DatePagerAdapter adapter = new DatePagerAdapter(dateList);
         binding.dateViewPager.setAdapter(adapter);
-
-
-        binding.dateViewPager.setCurrentItem(5, false);
-
 
         binding.dateViewPager.setCurrentItem(5, false); // 초기 설정 시 애니메이션 없이
         if (dateSelectedListener != null) {
@@ -93,7 +81,7 @@ public class HomeFragment extends Fragment {
         binding.dateViewPager.setClipChildren(false);
         binding.dateViewPager.setOffscreenPageLimit(3);
         binding.dateViewPager.getChildAt(0).setOverScrollMode(View.OVER_SCROLL_NEVER);
-        binding.dateViewPager.setPadding(120, 0, 120, 0);
+        binding.dateViewPager.setPadding(60, 0, 60, 0);
 
         binding.dateViewPager.setPageTransformer((page, position) -> {
             float scale = 1 - Math.abs(position) * 0.2f;
@@ -113,8 +101,4 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }
-
-}
-

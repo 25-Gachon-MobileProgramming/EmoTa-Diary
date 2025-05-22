@@ -50,25 +50,6 @@ public class DiaryWriteActivity extends AppCompatActivity {
         dateTextView.setText(formattedDate);
 
         // 바 왼쪽에 imageButton 사용해서 뒤로가기
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            actionBar.setCustomView(R.layout.custom_back_bar);
-
-            ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
-            backButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-
-            // 액션 바 제목 바꾸기
-            TextView titleTextView = actionBar.getCustomView().findViewById(R.id.titleTextViewActionBar);
-            if (titleTextView != null) {
-                titleTextView.setText("Diary Write");
-            }
-        }
 
         Intent intent = getIntent();
 

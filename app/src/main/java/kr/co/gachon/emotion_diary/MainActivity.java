@@ -1,6 +1,7 @@
 package kr.co.gachon.emotion_diary;
 
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,12 +11,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -63,11 +67,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }
+        ActivityCompat.requestPermissions(
+                this,
+                new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                1010);
 
         if (!alarmSet) {
             // 최초 실행 시 기본값 23:00 저장 및 알림 예약
-            SharedPreferencesUtils.saveTime(this, 21, 31);
-            AlarmScheduler.scheduleDiaryReminder(this, 21, 31);
+            SharedPreferencesUtils.saveTime(this, 19, 9);
+            AlarmScheduler.scheduleDiaryReminder(this, 19, 9);
 
             prefs.edit().putBoolean("alarm_set", true).apply();
         } else {
@@ -75,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             int hour = SharedPreferencesUtils.getHour(this);
             int minute = SharedPreferencesUtils.getMinute(this);
             AlarmScheduler.scheduleDiaryReminder(this, hour, minute);
+
         }
 
         // BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -113,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // --------- DB TEST END ----------
+
+
 
     }
 }

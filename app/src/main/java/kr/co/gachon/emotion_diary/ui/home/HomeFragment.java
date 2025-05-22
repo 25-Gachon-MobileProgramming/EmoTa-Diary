@@ -4,15 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.databinding.FragmentHomeBinding;
+import kr.co.gachon.emotion_diary.notification.AlarmScheduler;
 
 public class HomeFragment extends Fragment {
 
@@ -53,6 +57,16 @@ public class HomeFragment extends Fragment {
             page.setScaleY(scale);
             page.setAlpha(0.5f + (1 - Math.abs(position)) * 0.5f);
         });
+
+        binding.btn.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE, 1); // 현재 시간 + 1분
+
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            AlarmScheduler.scheduleDiaryReminder(requireContext(), hour, minute);
+        });
     }
 
     @Override
@@ -60,4 +74,5 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }

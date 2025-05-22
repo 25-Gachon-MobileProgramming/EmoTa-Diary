@@ -1,9 +1,14 @@
 package kr.co.gachon.emotion_diary;
 
 
+import android.app.AlarmManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.ImageButton;
 
@@ -50,10 +55,19 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("diary_prefs", MODE_PRIVATE);
         boolean alarmSet = prefs.getBoolean("alarm_set", false);
 
+        // 알림 권한 요청
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (!alarmManager.canScheduleExactAlarms()) {
+                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(intent);
+            }
+        }
+
         if (!alarmSet) {
             // 최초 실행 시 기본값 23:00 저장 및 알림 예약
-            SharedPreferencesUtils.saveTime(this, 23, 0);
-            AlarmScheduler.scheduleDiaryReminder(this, 23, 0);
+            SharedPreferencesUtils.saveTime(this, 21, 31);
+            AlarmScheduler.scheduleDiaryReminder(this, 21, 31);
 
             prefs.edit().putBoolean("alarm_set", true).apply();
         } else {

@@ -93,5 +93,5 @@ dependencies {
 
     implementation(libs.retrofit)
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
+    implementation("io.github.ParkSangGwon:tedpermission-normal:3.3.0")
 }

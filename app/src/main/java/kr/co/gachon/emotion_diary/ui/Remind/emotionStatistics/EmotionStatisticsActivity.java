@@ -3,8 +3,12 @@ package kr.co.gachon.emotion_diary.ui.Remind.emotionStatistics;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Date;
@@ -45,5 +49,24 @@ public class EmotionStatisticsActivity extends AppCompatActivity {
             intent.putExtra("endDate", endDate);
             startActivity(intent);
         });
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setCustomView(R.layout.custom_back_bar);
+
+            ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+
+            // 액션 바 제목 바꾸기
+            TextView titleTextView = actionBar.getCustomView().findViewById(R.id.titleTextViewActionBar);
+            if (titleTextView != null) {
+                titleTextView.setText("Emotion Statistics");
+            }
+        }
     }
 }

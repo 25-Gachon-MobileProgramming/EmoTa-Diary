@@ -24,18 +24,18 @@ public class Diary {
     @ColumnInfo(name = "emotion_id")
     private int emotionId;
 
-    @ColumnInfo(name = "taro_id")
-    private int taroId;
+    @ColumnInfo(name = "taro_name")
+    private String taroName;
 
     @ColumnInfo(name = "gpt_answer")
     private String gptAnswer;
 
-    public Diary(String title, String content, Date date, int emotionId, int taroId, String gptAnswer) {
+    public Diary(String title, String content, Date date, int emotionId, String taroName, String gptAnswer) {
         this.title = title;
         this.content = content;
         this.date = date;
         this.emotionId = emotionId;
-        this.taroId = taroId;
+        this.taroName = taroName;
         this.gptAnswer = gptAnswer;
     }
 
@@ -82,12 +82,12 @@ public class Diary {
         this.emotionId = emotionId;
     }
 
-    public int getTaroId() {
-        return taroId;
+    public String getTaroName() {
+        return taroName;
     }
 
-    public void setTaroId(int taroId) {
-        this.taroId = taroId;
+    public void setTaroName(String taroName) {
+        this.taroName = taroName;
     }
 
     public String getGptAnswer() {

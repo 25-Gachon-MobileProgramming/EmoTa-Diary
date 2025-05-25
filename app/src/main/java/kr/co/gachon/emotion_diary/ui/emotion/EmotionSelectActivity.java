@@ -75,7 +75,7 @@ public class EmotionSelectActivity extends AppCompatActivity {
             }
 
             Date currentDate = new Date(dateMillis);
-            diaryRepository.insert(new Diary(title, content, currentDate, Emotions.getEmotionIdByText(selectedEmotion), -1, null));
+            diaryRepository.insert(new Diary(title, content, currentDate, Emotions.getEmotionIdByText(selectedEmotion), null, null));
 
             Intent intent1 = new Intent(EmotionSelectActivity.this, TaroActivity.class);
             intent1.putExtra("date", currentDate.getTime());

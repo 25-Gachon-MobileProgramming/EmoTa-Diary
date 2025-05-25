@@ -20,7 +20,9 @@ import java.util.Date;
 import java.util.List;
 
 import kr.co.gachon.emotion_diary.R;
+import kr.co.gachon.emotion_diary.data.AppDatabase;
 import kr.co.gachon.emotion_diary.data.Diary;
+import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.data.Emotions;
 import kr.co.gachon.emotion_diary.helper.Helper;
@@ -31,6 +33,7 @@ public class EmotionSelectActivity extends AppCompatActivity {
     String selectedEmotion = null;
 
     private Button previousButton = null;
+    private DiaryDao diaryDao;
     private DiaryRepository diaryRepository;
 
     @Override
@@ -50,6 +53,8 @@ public class EmotionSelectActivity extends AppCompatActivity {
             if (titleTextView != null) titleTextView.setText("Emotion");
         }
 
+        AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
+        diaryDao = db.diaryDao();
         diaryRepository = new DiaryRepository(getApplication());
 
         Intent intent = getIntent();
@@ -63,7 +68,28 @@ public class EmotionSelectActivity extends AppCompatActivity {
             return;
         }
 
+        Date selectedDate = new Date(dateMillis);
+
         makeEmotionButtons();
+
+        new Thread(() -> {
+            Date startOfToday = Helper.getStartOfDay(selectedDate);
+            Date startOfTomorrow = Helper.getStartOfNextDay(selectedDate);
+
+            List<Diary> diariesOnce = diaryDao.getDiariesForSpecificDayOnce(startOfToday, startOfTomorrow);
+
+            if (diariesOnce != null && !diariesOnce.isEmpty()) {
+                Diary diary = diariesOnce.get(0);
+                Intent taroPageIntent = new Intent(EmotionSelectActivity.this, TaroActivity.class);
+                taroPageIntent.putExtra("date", dateMillis);
+                taroPageIntent.putExtra("title", diary.getTitle());
+                taroPageIntent.putExtra("content", diary.getContent());
+                taroPageIntent.putExtra("emotion", diary.getEmotionText());
+                taroPageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(taroPageIntent);
+                finish();
+            }
+        }).start();
 
         Button nextPage = findViewById(R.id.nextPageButton);
         nextPage.setOnClickListener(v -> {

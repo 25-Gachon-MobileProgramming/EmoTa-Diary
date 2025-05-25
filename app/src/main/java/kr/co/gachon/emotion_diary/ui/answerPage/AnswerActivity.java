@@ -46,7 +46,7 @@ public class AnswerActivity extends AppCompatActivity {
 
         ImageView taroImage = findViewById(R.id.taro);
 
-        int imageResId = getResources().getIdentifier(cardName, "drawable", getPackageName());
+        int imageResId = getResources().getIdentifier("taro_" + cardName, "drawable", getPackageName());
         if (imageResId != 0) taroImage.setImageResource(imageResId);
         else taroImage.setImageResource(R.drawable.card_back);
 
@@ -64,11 +64,6 @@ public class AnswerActivity extends AppCompatActivity {
     }
 
     private void showExitConfirmationDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("종료 확인")
-                .setMessage("정말 일기 결과 확인을 종료하시겠습니까?")
-                .setPositiveButton("예", (dialog, which) -> finishToMainActivity())
-                .setNegativeButton("아니오", (dialog, which) -> dialog.dismiss())
-                .show();
+        new AlertDialog.Builder(this).setTitle("종료 확인").setMessage("정말 일기 결과 확인을 종료하시겠습니까?").setPositiveButton("예", (dialog, which) -> finishToMainActivity()).setNegativeButton("아니오", (dialog, which) -> dialog.dismiss()).show();
     }
 }

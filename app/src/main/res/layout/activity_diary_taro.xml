@@ -74,6 +74,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
         android:layout_centerHorizontal="true"
-        android:text="send gpt" />
+        android:text="결과 보기" />
 
 </RelativeLayout>

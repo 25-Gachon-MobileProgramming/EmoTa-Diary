@@ -130,11 +130,32 @@ public class TaroActivity extends AppCompatActivity {
 
         initLoadingDialog();
 
+        new Thread(() -> {
+            Date startOfToday = Helper.getStartOfDay(currentDate);
+            Date startOfTomorrow = Helper.getStartOfNextDay(currentDate);
+
+            List<Diary> diariesOnce = diaryDao.getDiariesForSpecificDayOnce(startOfToday, startOfTomorrow);
+
+            if (diariesOnce != null && !diariesOnce.isEmpty()) {
+                Diary diary = diariesOnce.get(0);
+
+                if(diary.getTaroName() != null && diary.getGptAnswer() != null) {
+                    Intent sendintent = new Intent(TaroActivity.this, AnswerActivity.class);
+                    sendintent.putExtra("gptReply", diary.getGptAnswer());
+                    sendintent.putExtra("taroCard", diary.getTaroName());
+                    startActivity(sendintent);
+                    finish();
+                }
+            }
+        }).start();
+
         nextButton.setOnClickListener(v -> {
             if (selectedCardTitle == null) {
                 Toast.makeText(TaroActivity.this, "카드를 선택하세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            v.setEnabled(false);
 
             ImageButton selectedCard = null;
 
@@ -145,9 +166,7 @@ public class TaroActivity extends AppCompatActivity {
 
             if (selectedCard != null) flipCard(selectedCard);
 
-
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                // 딜레이 후 실행될 코드
                 if (loadingDialog != null && loadingDialog.getWindow() != null && !loadingDialog.isShowing()) {
                     loadingDialog.show();
                 }
@@ -167,14 +186,12 @@ public class TaroActivity extends AppCompatActivity {
                             Date startOfTomorrow = Helper.getStartOfNextDay(currentDate);
                             List<Diary> diariesOnce = diaryDao.getDiariesForSpecificDayOnce(startOfToday, startOfTomorrow);
 
-                            runOnUiThread(() -> {
-                                if (diariesOnce != null && !diariesOnce.isEmpty()) {
-                                    Diary diary = diariesOnce.get(0);
-                                    diary.setTaroName(selectedCardTitle);
-                                    diary.setGptAnswer(gptResult);
-                                    diaryRepository.update(diary);
-                                }
-                            });
+                            if (diariesOnce != null && !diariesOnce.isEmpty()) {
+                                Diary diary = diariesOnce.get(0);
+                                diary.setTaroName(selectedCardTitle);
+                                diary.setGptAnswer(gptResult);
+                                diaryRepository.update(diary);
+                            }
                         }).start();
 
                         Intent sendintent = new Intent(TaroActivity.this, AnswerActivity.class);
@@ -195,7 +212,7 @@ public class TaroActivity extends AppCompatActivity {
             }, 800);
         });
 
-        nextButton.setEnabled(false);
+        nextButton.setEnabled(true);
     }
 
     private void finishToMainActivity() {

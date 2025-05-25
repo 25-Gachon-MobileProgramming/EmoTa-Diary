@@ -3,8 +3,6 @@ package kr.co.gachon.emotion_diary.ui.writePage;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -16,12 +14,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import kr.co.gachon.emotion_diary.R;
+import kr.co.gachon.emotion_diary.data.AppDatabase;
+import kr.co.gachon.emotion_diary.data.Diary;
+import kr.co.gachon.emotion_diary.data.DiaryDao;
+import kr.co.gachon.emotion_diary.helper.Helper;
 import kr.co.gachon.emotion_diary.ui.emotion.EmotionSelectActivity;
 
 public class DiaryWriteActivity extends AppCompatActivity {
+    private DiaryDao diaryDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,9 @@ public class DiaryWriteActivity extends AppCompatActivity {
             if (titleTextView != null) titleTextView.setText("Emotion");
         }
 
+        AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
+        diaryDao = db.diaryDao();
+
         long dateMillis = getIntent().getLongExtra("selectedDate", -1);
 
         // check that dateMillis is valid
@@ -51,6 +58,24 @@ public class DiaryWriteActivity extends AppCompatActivity {
 
         Date selectedDate = new Date(dateMillis);
 
+        new Thread(() -> {
+            Date startOfToday = Helper.getStartOfDay(selectedDate);
+            Date startOfTomorrow = Helper.getStartOfNextDay(selectedDate);
+
+            List<Diary> diariesOnce = diaryDao.getDiariesForSpecificDayOnce(startOfToday, startOfTomorrow);
+
+            if (diariesOnce != null && !diariesOnce.isEmpty()) {
+                Diary diary = diariesOnce.get(0);
+                Intent writePageIntent = new Intent(DiaryWriteActivity.this, EmotionSelectActivity.class);
+                writePageIntent.putExtra("date", selectedDate.getTime());
+                writePageIntent.putExtra("title", diary.getTitle());
+                writePageIntent.putExtra("content", diary.getContent());
+                startActivity(writePageIntent);
+                finish();
+            }
+        }).start();
+
+
         // 날짜 데이터 연도 월 일로 바꿔서 @stirng으로 받게 한 뒤 화면에 뜨게 만듬
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = formatter.format(selectedDate);
@@ -58,16 +83,8 @@ public class DiaryWriteActivity extends AppCompatActivity {
         TextView dateTextView = findViewById(R.id.dateTextView);
         dateTextView.setText(formattedDate);
 
-        Intent intent = getIntent();
-
-        String title = intent.getStringExtra("title");
-        String content = intent.getStringExtra("content");
-
         EditText titleView = findViewById(R.id.titleTextView);
-        titleView.setText(title);
-
         EditText contentView = findViewById(R.id.contentTextView);
-        contentView.setText(content);
 
         Button nextPageButton = findViewById(R.id.nextPage);
         nextPageButton.setOnClickListener(view -> {

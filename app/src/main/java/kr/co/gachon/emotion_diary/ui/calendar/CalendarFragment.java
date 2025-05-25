@@ -2,6 +2,7 @@ package kr.co.gachon.emotion_diary.ui.calendar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,7 +22,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +36,7 @@ import kr.co.gachon.emotion_diary.data.Emotions;
 import kr.co.gachon.emotion_diary.databinding.FragmentCalendarBinding;
 import kr.co.gachon.emotion_diary.helper.Helper;
 import kr.co.gachon.emotion_diary.ui.Remind.WriteRate.RateActivity;
+import kr.co.gachon.emotion_diary.ui.writePage.DiaryWriteActivity;
 
 public class CalendarFragment extends Fragment {
     private FragmentCalendarBinding binding;
@@ -196,6 +200,9 @@ public class CalendarFragment extends Fragment {
                     ? Emotions.getEmotionDataById(diary.getEmotionId()).getEmoji()
                     : String.valueOf(currentDayOfMonth);
 
+            boolean isDiaryIncomplete = isDiaryExist && diary.getGptAnswer() == null;
+            if (isDiaryIncomplete) calendarText = "⏳";
+
             TextView dayTextView = createEmotionTextView(calendarText);
             dayTextView.setTextSize(Dimension.SP, 20);
 
@@ -203,16 +210,36 @@ public class CalendarFragment extends Fragment {
                 dayTextView.setTextSize(Dimension.SP, 40);
             }
 
-            // int finalCurrentDayOfMonth = currentDayOfMonth; // For the lambda wtf
+            int finalCurrentDayOfMonth = currentDayOfMonth; // For the lambda wtf
             dayTextView.setOnClickListener(v -> {
-                // Toast.makeText(getContext(), year + "년 " + month + "월 " + finalCurrentDayOfMonth + "일 클릭", Toast.LENGTH_SHORT).show();
-                // 일기 작성했는지 판단하는 로직 => DB에서 불러올때 처리하는게 좋을 듯?
+                String dateString = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month, finalCurrentDayOfMonth);
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-                // Intent intent = new Intent(getActivity(), WriteDiaryActivity.class);
-                // intent.putExtra("year", year);
-                // intent.putExtra("month", month);
-                // intent.putExtra("day", finalCurrentDayOfMonth);
-                // startActivity(intent);
+                try {
+                    Date date = formatter.parse(dateString);
+                    assert date != null;
+
+                    Calendar today = Calendar.getInstance();
+                    today.set(Calendar.HOUR_OF_DAY, 0);
+                    today.set(Calendar.MINUTE, 0);
+                    today.set(Calendar.SECOND, 0);
+                    today.set(Calendar.MILLISECOND, 0);
+
+                    Calendar targetDate = Calendar.getInstance();
+                    targetDate.setTime(date);
+                    targetDate.set(Calendar.HOUR_OF_DAY, 0);
+                    targetDate.set(Calendar.MINUTE, 0);
+                    targetDate.set(Calendar.SECOND, 0);
+                    targetDate.set(Calendar.MILLISECOND, 0);
+
+                    if (!targetDate.after(today)) {
+                        Intent intent = new Intent(getActivity(), DiaryWriteActivity.class);
+                        intent.putExtra("selectedDate", date.getTime());
+                        startActivity(intent);
+                    }
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             });
 
             boolean isToday = Calendar.getInstance().get(Calendar.YEAR) == calendarYear &&

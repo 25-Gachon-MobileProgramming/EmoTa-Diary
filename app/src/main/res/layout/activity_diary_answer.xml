@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:layout_gravity="center_horizontal"
+    android:background="@drawable/background"
     android:orientation="vertical">
 
     <TextView
@@ -23,14 +23,12 @@
         android:background="#ffd"
         android:contentDescription="타로 카드" />
 
-
     <Button
         android:id="@+id/room_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:layout_gravity="end"
-        android:text="save data,send room"
-        />
+        android:layout_marginTop="30dp"
+        android:text="확인" />
 
 </LinearLayout>

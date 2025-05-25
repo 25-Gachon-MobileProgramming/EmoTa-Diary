@@ -13,7 +13,6 @@ android {
     namespace = "kr.co.gachon.emotion_diary"
 
     compileSdk = 35
-    buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "kr.co.gachon.emotion_diary"

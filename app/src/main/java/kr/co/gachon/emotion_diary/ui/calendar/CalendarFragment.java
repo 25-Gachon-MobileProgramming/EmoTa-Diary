@@ -212,7 +212,7 @@ public class CalendarFragment extends Fragment {
 
             int finalCurrentDayOfMonth = currentDayOfMonth; // For the lambda wtf
             dayTextView.setOnClickListener(v -> {
-                String dateString = year + "-" + month + "-" + finalCurrentDayOfMonth;
+                String dateString = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month, finalCurrentDayOfMonth);
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
                 try {

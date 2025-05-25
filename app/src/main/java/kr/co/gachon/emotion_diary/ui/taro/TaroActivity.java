@@ -166,9 +166,6 @@ public class TaroActivity extends AppCompatActivity {
                     loadingDialog.show();
                 }
 
-                if (loadingDialog != null && loadingDialog.getWindow() != null && !loadingDialog.isShowing())
-                    loadingDialog.show();
-
                 // TODO: 유저 정보 추가
                 GptGetDiaryResponse.getGptReply(title, content, selectedEmotion, selectedCardTitle, new GptGetDiaryResponse.GptResponseListener() {
                     @Override

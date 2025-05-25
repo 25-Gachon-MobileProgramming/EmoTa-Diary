@@ -1,4 +1,4 @@
-package kr.co.gachon.emotion_diary.ui.Gpt;
+package kr.co.gachon.emotion_diary.data.Gpt;
 
 import java.util.List;
 

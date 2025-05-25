@@ -1,12 +1,15 @@
 package kr.co.gachon.emotion_diary.ui.Remind.emotionStatistics;
 
-import android.content.Intent;
+
+
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,8 +23,11 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,13 +35,17 @@ import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.AppDatabase;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.data.EmotionCount;
-import kr.co.gachon.emotion_diary.ui.Remind.timeGraph.TimeZoneActivity;
 
 public class EmotionStatisticsFragment extends Fragment {
 
     private BarChart barChart;
     private static final String SET_LABEL = "감정별 통계";
     private List<EmotionCount> emotions = new ArrayList<>();
+
+    boolean isMonthly;
+
+    Date startDate;
+    Date endDate;
 
     @Nullable
     @Override
@@ -53,16 +63,42 @@ public class EmotionStatisticsFragment extends Fragment {
         AppDatabase db = AppDatabase.getDatabase(requireContext());
         DiaryDao diaryDao = db.diaryDao();
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
-            emotions = diaryDao.getEmotionCounts();
+        if (getArguments() != null) {
+            isMonthly = getArguments().getBoolean("isMonthly", true);
+            startDate = (Date) getArguments().getSerializable("startDate");
+            endDate = (Date) getArguments().getSerializable("endDate");
+            Log.d("EmotionStats", "💡 전달받은 isMonthly 값: " + isMonthly);
+        }
 
-            requireActivity().runOnUiThread(() -> {
-                configureChartAppearance();
-                BarData data = createChartData();
-                prepareChartData(data);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+
+
+        try {
+
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.execute(() -> {
+                if (isMonthly) {
+                    emotions = diaryDao.getEmotionCounts(startDate, endDate);
+                } else {
+                    emotions = diaryDao.getEmotionCounts(startDate, endDate);
+                }
+
+                requireActivity().runOnUiThread(() -> {
+                    TextView placeHolder = view.findViewById(R.id.emotion_statistics_hint);
+                    if (emotions.isEmpty()) {
+                        placeHolder.setVisibility(View.VISIBLE);
+                    }else{
+                        placeHolder.setVisibility(View.GONE);
+                    }
+                    configureChartAppearance();
+                    BarData data = createChartData();
+                    prepareChartData(data);
+                });
             });
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -105,6 +141,7 @@ public class EmotionStatisticsFragment extends Fragment {
     }
 
     private BarData createChartData() {
+
         ArrayList<BarEntry> values = new ArrayList<>();
         for (int i = 0; i < emotions.size(); i++) {
             values.add(new BarEntry(i, emotions.get(i).count));

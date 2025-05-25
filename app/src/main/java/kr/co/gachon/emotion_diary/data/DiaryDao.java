@@ -30,12 +30,16 @@ public interface DiaryDao {
     @Query("SELECT COUNT(DISTINCT strftime('%Y-%m-%d', date / 1000, 'unixepoch')) FROM diaries WHERE date BETWEEN :startDate AND :endDate")
     int getDiaryCountPerDay(Date startDate, Date endDate);
 
+    @Query("SELECT * FROM diaries WHERE date BETWEEN :startDate AND :endDate ORDER BY date ASC")
+    LiveData<List<Diary>> getDiariesForDateRange(Date startDate, Date endDate);
 
-    @Query("SELECT emotion, COUNT(*) as count FROM diaries GROUP BY emotion")
-    List<EmotionCount> getEmotionCounts();
+    @Query("SELECT * FROM diaries WHERE date >= :startOfDay AND date < :endOfNextDay ORDER BY date ASC")
+    List<Diary> getDiariesForSpecificDayOnce(Date startOfDay, Date endOfNextDay);
 
 
-    @Query("SELECT date FROM diaries")
-    List<Date> getAllDiaryDates();
+    @Query("SELECT emotion_id, COUNT(*) as count FROM diaries WHERE date BETWEEN :startDate AND :endDate GROUP BY emotion_id")
+    List<EmotionCount> getEmotionCounts(Date startDate, Date endDate);
 
+    @Query("SELECT date FROM diaries WHERE date BETWEEN :startDate AND :endDate")
+    List<Date> getAllDiaryDates(Date startDate, Date endDate);
 }

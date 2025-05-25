@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -23,11 +24,15 @@ import kr.co.gachon.emotion_diary.ui.writePage.DiaryWriteActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    /** @noinspection FieldCanBeLocal */
+    /**
+     * @noinspection FieldCanBeLocal
+     */
     private ActivityMainBinding binding;
 
     // --------- Assign FOR DB TEST START---------
-    /** @noinspection FieldCanBeLocal */
+    /**
+     * @noinspection FieldCanBeLocal
+     */
     private DiaryRepository diaryRepository;
     // --------- Assign FOR DB TEST END-----------
 
@@ -48,14 +53,14 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        ImageButton imageButton = findViewById(R.id.diary_write_button);
+        FloatingActionButton diaryWriteButton = findViewById(R.id.diary_write_button);
 
-        imageButton.setOnClickListener(v -> {
+        diaryWriteButton.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), DiaryWriteActivity.class);
             intent.putExtra("selectedDate", System.currentTimeMillis());
             startActivity(intent);
         });
-      
+
         // --------- DB TEST START ---------
         diaryRepository = new DiaryRepository(getApplication());
 
@@ -65,13 +70,12 @@ public class MainActivity extends AppCompatActivity {
             Log.d("RoomExample", "모든 일기 (Repository - ExecutorService):");
 
             for (Diary diary : diaries) {
-                Log.d("RoomExample", "ID: " + diary.getId() + ", 제목: " + diary.getTitle() + ", 내용: " + diary.getContent() + ", 날짜: " + diary.getDate());
+                Log.d("RoomExample", "ID: " + diary.getId() + ", 제목: " + diary.getTitle() + ", 내용: " + diary.getContent() + ", 날짜: " + diary.getDate()  + ", 감정: " + diary.getEmotionText());
             }
         });
 
-//         Diary newDiary = new Diary("title", "content", "행복", Calendar.getInstance().getTime());
+//         Diary newDiary = new Diary("title", "content",  Calendar.getInstance().getTime(), 1);
 //         diaryRepository.insert(newDiary);
-
 
 
         // --------- DB TEST END ----------

@@ -1,4 +1,5 @@
 package kr.co.gachon.emotion_diary.ui.emotion;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,14 +11,19 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import java.util.Date;
 import java.util.List;
 
 import kr.co.gachon.emotion_diary.R;
+import kr.co.gachon.emotion_diary.data.Diary;
+import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.data.Emotions;
+import kr.co.gachon.emotion_diary.helper.Helper;
 import kr.co.gachon.emotion_diary.ui.taro.TaroActivity;
 
 public class EmotionSelectActivity extends AppCompatActivity {
@@ -25,22 +31,12 @@ public class EmotionSelectActivity extends AppCompatActivity {
     String selectedEmotion = null;
 
     private Button previousButton = null;
-    private Integer originalTint = null;
+    private DiaryRepository diaryRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_emotion);
-
-        Intent intent = getIntent();
-
-        String CurrentDate = intent.getStringExtra("date");
-        String title = intent.getStringExtra("title");
-        String content = intent.getStringExtra("content");
-
-        Log.wtf("getTest", CurrentDate);
-        Log.wtf("getTest", title);
-        Log.wtf("getTest", content);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -50,15 +46,51 @@ public class EmotionSelectActivity extends AppCompatActivity {
             ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
             backButton.setOnClickListener(v -> finish());
 
-            // 액션 바 제목 바꾸기
             TextView titleTextView = actionBar.getCustomView().findViewById(R.id.titleTextViewActionBar);
-            if (titleTextView != null) {
-                titleTextView.setText("Emotion");
+            if (titleTextView != null) titleTextView.setText("Emotion");
+        }
+
+        diaryRepository = new DiaryRepository(getApplication());
+
+        Intent intent = getIntent();
+        long dateMillis = intent.getLongExtra("date", -1);
+        String title = intent.getStringExtra("title");
+        String content = intent.getStringExtra("content");
+
+        if (dateMillis == -1) {
+            Toast.makeText(this, "Invalid date selected. Please try again.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        makeEmotionButtons();
+
+        Button nextPage = findViewById(R.id.nextPageButton);
+        nextPage.setOnClickListener(v -> {
+            v.setClickable(false);
+
+            if (selectedEmotion == null) {
+                Toast.makeText(EmotionSelectActivity.this, "감정을 선택하세요", Toast.LENGTH_SHORT).show();
+                return;
             }
 
+            Date currentDate = new Date(dateMillis);
+            diaryRepository.insert(new Diary(title, content, currentDate, Emotions.getEmotionIdByText(selectedEmotion), -1, null));
+
+            Intent intent1 = new Intent(EmotionSelectActivity.this, TaroActivity.class);
+            intent1.putExtra("date", currentDate.getTime());
+            intent1.putExtra("title", title);
+            intent1.putExtra("content", content);
+            intent1.putExtra("emotion", selectedEmotion);
+            intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent1);
+            v.setClickable(true);
+        });
+    }
+
+    private void makeEmotionButtons() {
         GridLayout emotionGrid = findViewById(R.id.emotionGrid);
 
-            // emotions 에 있는 감정 목록을 가져 와서 버튼 생성
         List<Emotions.EmotionData> emotionList = Emotions.getAllEmotionDataList();
         for (Emotions.EmotionData emotion : emotionList) {
             String text = emotion.getText();
@@ -66,8 +98,7 @@ public class EmotionSelectActivity extends AppCompatActivity {
 
             Button emojiButton = new Button(this);
 
-            // 😀\n행복 이런 식으로 정보를 가져 오기
-            emojiButton.setText(emoji + "\n" + text);
+            emojiButton.setText(String.format("%s\n%s", emoji, text));
             emojiButton.setContentDescription(text);
             emojiButton.setTextSize(20);
             emojiButton.setPadding(16, 16, 16, 16);
@@ -83,14 +114,11 @@ public class EmotionSelectActivity extends AppCompatActivity {
             emojiButton.setLayoutParams(params);
 
             emojiButton.setOnClickListener(v -> {
-                // 이전 선택된 버튼 초기화, 배경은 투명하게 놨둠
                 if (previousButton != null && previousButton != emojiButton) {
                     previousButton.setBackgroundColor(Color.TRANSPARENT);
-                    ((Button) previousButton).setTextColor(Color.WHITE);
-
+                    previousButton.setTextColor(Color.WHITE);
                 }
 
-                // 눌린 버튼 색깔
                 emojiButton.setBackgroundColor(ContextCompat.getColor(EmotionSelectActivity.this, R.color.green));
 
                 selectedEmotion = text;
@@ -98,25 +126,6 @@ public class EmotionSelectActivity extends AppCompatActivity {
             });
 
             emotionGrid.addView(emojiButton);
-        }
-
-// Removed unused assignment to originalTint
-
-
-            Button nextPage = findViewById(R.id.nextPageButton);
-            nextPage.setOnClickListener(view -> {
-                if (previousButton == null) {
-                    Toast.makeText(EmotionSelectActivity.this, "감정을 선택하세요", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent1 = new Intent(EmotionSelectActivity.this, TaroActivity.class);
-                    intent1.putExtra("date", CurrentDate);
-                    intent1.putExtra("title", title);
-                    intent1.putExtra("content", content);
-                    intent1.putExtra("emotion", selectedEmotion);
-
-                    startActivity(intent1);
-                }
-            });
         }
     }
 }

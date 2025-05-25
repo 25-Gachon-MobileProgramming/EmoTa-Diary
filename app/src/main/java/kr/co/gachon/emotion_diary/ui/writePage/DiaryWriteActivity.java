@@ -28,6 +28,18 @@ public class DiaryWriteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_write);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setCustomView(R.layout.custom_back_bar);
+
+            ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
+            backButton.setOnClickListener(v -> finish());
+
+            TextView titleTextView = actionBar.getCustomView().findViewById(R.id.titleTextViewActionBar);
+            if (titleTextView != null) titleTextView.setText("Emotion");
+        }
+
         long dateMillis = getIntent().getLongExtra("selectedDate", -1);
 
         // check that dateMillis is valid
@@ -39,17 +51,12 @@ public class DiaryWriteActivity extends AppCompatActivity {
 
         Date selectedDate = new Date(dateMillis);
 
-        Log.wtf("Test", selectedDate.toString());
-
         // 날짜 데이터 연도 월 일로 바꿔서 @stirng으로 받게 한 뒤 화면에 뜨게 만듬
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = formatter.format(selectedDate);
-        Log.wtf("Test", formattedDate);
 
         TextView dateTextView = findViewById(R.id.dateTextView);
         dateTextView.setText(formattedDate);
-
-        // 바 왼쪽에 imageButton 사용해서 뒤로가기
 
         Intent intent = getIntent();
 
@@ -63,26 +70,25 @@ public class DiaryWriteActivity extends AppCompatActivity {
         contentView.setText(content);
 
         Button nextPageButton = findViewById(R.id.nextPage);
-        nextPageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        nextPageButton.setOnClickListener(view -> {
+            String titleText = titleView.getText().toString();
+            String contentText = contentView.getText().toString();
 
-                String titleText = titleView.getText().toString();
-                String contentText = contentView.getText().toString();
-
-                // 비어 있는지 확인하는 코드
-                if (TextUtils.isEmpty(titleText)) {
-                    Toast.makeText(getBaseContext(), "제목이 비어있습니다.", Toast.LENGTH_SHORT).show();
-                } else if (TextUtils.isEmpty(contentText)) {
-                    Toast.makeText(getBaseContext(), "내용이 비어있습니다.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(DiaryWriteActivity.this, EmotionSelectActivity.class);
-                    intent.putExtra("date", selectedDate.toString());
-                    intent.putExtra("title", titleText);
-                    intent.putExtra("content", contentText);
-                    startActivity(intent);
-                }
+            if (TextUtils.isEmpty(titleText)) {
+                Toast.makeText(getBaseContext(), "제목이 비어있습니다.", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            if (TextUtils.isEmpty(contentText)) {
+                Toast.makeText(getBaseContext(), "내용이 비어있습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Intent writePageIntent = new Intent(DiaryWriteActivity.this, EmotionSelectActivity.class);
+            writePageIntent.putExtra("date", selectedDate.getTime());
+            writePageIntent.putExtra("title", titleText);
+            writePageIntent.putExtra("content", contentText);
+            startActivity(writePageIntent);
         });
     }
 }

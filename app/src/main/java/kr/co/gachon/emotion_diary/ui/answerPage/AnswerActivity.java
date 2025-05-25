@@ -1,5 +1,6 @@
 package kr.co.gachon.emotion_diary.ui.answerPage;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import kr.co.gachon.emotion_diary.MainActivity;
@@ -25,7 +27,7 @@ public class AnswerActivity extends AppCompatActivity {
             actionBar.setCustomView(R.layout.custom_back_bar);
 
             ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
-            backButton.setOnClickListener(v -> finish());
+            backButton.setOnClickListener(v -> showExitConfirmationDialog());
 
             TextView titleTextView = actionBar.getCustomView().findViewById(R.id.titleTextViewActionBar);
             if (titleTextView != null) titleTextView.setText("Answer");
@@ -34,17 +36,17 @@ public class AnswerActivity extends AppCompatActivity {
         this.getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                finishToMainActivity();
+                showExitConfirmationDialog();
             }
         });
 
         Intent intent = getIntent();
         String gptReply = intent.getStringExtra("gptReply");
-        String CardImage = getIntent().getStringExtra("taroCard");
+        String cardName = getIntent().getStringExtra("taroCard");
 
         ImageView taroImage = findViewById(R.id.taro);
 
-        int imageResId = getResources().getIdentifier(CardImage, "drawable", getPackageName());
+        int imageResId = getResources().getIdentifier(cardName, "drawable", getPackageName());
         if (imageResId != 0) taroImage.setImageResource(imageResId);
         else taroImage.setImageResource(R.drawable.card_back);
 
@@ -59,5 +61,14 @@ public class AnswerActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
+    }
+
+    private void showExitConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("종료 확인")
+                .setMessage("정말 일기 결과 확인을 종료하시겠습니까?")
+                .setPositiveButton("예", (dialog, which) -> finishToMainActivity())
+                .setNegativeButton("아니오", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }

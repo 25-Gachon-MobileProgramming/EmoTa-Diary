@@ -4,6 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.ArrayMap;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -23,37 +27,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
-import kr.co.gachon.emotion_diary.BuildConfig;
 import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.AppDatabase;
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
-import kr.co.gachon.emotion_diary.data.Emotions;
-import kr.co.gachon.emotion_diary.data.Gpt.GptApiService;
 import kr.co.gachon.emotion_diary.data.Gpt.GptGetDiaryResponse;
-import kr.co.gachon.emotion_diary.data.Gpt.GptRequest;
-import kr.co.gachon.emotion_diary.data.Gpt.GptResponse;
 import kr.co.gachon.emotion_diary.helper.Helper;
 import kr.co.gachon.emotion_diary.ui.answerPage.AnswerActivity;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TaroActivity extends AppCompatActivity {
     private String selectedCardTitle = null;
     private AlertDialog loadingDialog;
     private DiaryDao diaryDao;
     private DiaryRepository diaryRepository;
+
     List<String> cardTitles = new ArrayList<>(Arrays.asList(
-            "fool", "magician", "highpriestess", "empress", "hierophant", "lovers", "chariot", "strength", "hermit",
-            "wheeloffortune", "justice", "hangedman", "death", "temperance", "devil", "tower", "star", "moon",
-            "sun", "judgment", "world", "top"
+            "chariot", "death", "devil", "emperor", "empress",
+            "fool", "hangedman", "hermit", "hierophant", "highpriestess",
+            "judgement", "justice", "lovers", "magician", "moon", "star",
+            "strength", "sun", "temperance", "tower", "wheeloffortune", "world"
     ));
 
     @Override
@@ -67,7 +64,7 @@ public class TaroActivity extends AppCompatActivity {
             actionBar.setCustomView(R.layout.custom_back_bar);
 
             ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
-            backButton.setOnClickListener(v -> finish());
+            backButton.setOnClickListener(v -> showExitConfirmationDialog());
 
             TextView titleTextView = actionBar.getCustomView().findViewById(R.id.titleTextViewActionBar);
             if (titleTextView != null) titleTextView.setText("Taro Card");
@@ -82,7 +79,7 @@ public class TaroActivity extends AppCompatActivity {
         this.getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                finishToMainActivity();
+                showExitConfirmationDialog();
             }
         });
 
@@ -148,46 +145,54 @@ public class TaroActivity extends AppCompatActivity {
 
             if (selectedCard != null) flipCard(selectedCard);
 
-            if (loadingDialog != null && loadingDialog.getWindow() != null && !loadingDialog.isShowing())
-                loadingDialog.show();
 
-
-            // TODO: 유저 정보 추가
-            GptGetDiaryResponse.getGptReply(title, content, selectedEmotion, selectedCardTitle, new GptGetDiaryResponse.GptResponseListener() {
-                @Override
-                public void onGptResponseSuccess(String gptResult) {
-                    if (loadingDialog != null && loadingDialog.isShowing()) loadingDialog.dismiss();
-
-                    new Thread(() -> {
-                        Date startOfToday = Helper.getStartOfDay(currentDate);
-                        Date startOfTomorrow = Helper.getStartOfNextDay(currentDate);
-                        List<Diary> diariesOnce = diaryDao.getDiariesForSpecificDayOnce(startOfToday, startOfTomorrow);
-
-                        runOnUiThread(() -> {
-                            if (diariesOnce != null && !diariesOnce.isEmpty()) {
-                                Diary diary = diariesOnce.get(0);
-                                diary.setTaroName(selectedCardTitle);
-                                diary.setGptAnswer(gptResult);
-                                diaryRepository.update(diary);
-                            }
-                        });
-                    }).start();
-
-
-                    Intent sendintent = new Intent(TaroActivity.this, AnswerActivity.class);
-                    sendintent.putExtra("gptReply", gptResult);
-                    sendintent.putExtra("taroCard", selectedCardTitle);
-                    startActivity(sendintent);
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                // 딜레이 후 실행될 코드
+                if (loadingDialog != null && loadingDialog.getWindow() != null && !loadingDialog.isShowing()) {
+                    loadingDialog.show();
                 }
 
-                @Override
-                public void onGptResponseFailure(String errorMessage) {
-                    if (loadingDialog != null && loadingDialog.isShowing()) loadingDialog.dismiss();
+                if (loadingDialog != null && loadingDialog.getWindow() != null && !loadingDialog.isShowing())
+                    loadingDialog.show();
 
-                    Toast.makeText(TaroActivity.this, "에러가 발생했습니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                    finishToMainActivity();
-                }
-            });
+                // TODO: 유저 정보 추가
+                GptGetDiaryResponse.getGptReply(title, content, selectedEmotion, selectedCardTitle, new GptGetDiaryResponse.GptResponseListener() {
+                    @Override
+                    public void onGptResponseSuccess(String gptResult) {
+                        if (loadingDialog != null && loadingDialog.isShowing())
+                            loadingDialog.dismiss();
+
+                        new Thread(() -> {
+                            Date startOfToday = Helper.getStartOfDay(currentDate);
+                            Date startOfTomorrow = Helper.getStartOfNextDay(currentDate);
+                            List<Diary> diariesOnce = diaryDao.getDiariesForSpecificDayOnce(startOfToday, startOfTomorrow);
+
+                            runOnUiThread(() -> {
+                                if (diariesOnce != null && !diariesOnce.isEmpty()) {
+                                    Diary diary = diariesOnce.get(0);
+                                    diary.setTaroName(selectedCardTitle);
+                                    diary.setGptAnswer(gptResult);
+                                    diaryRepository.update(diary);
+                                }
+                            });
+                        }).start();
+
+                        Intent sendintent = new Intent(TaroActivity.this, AnswerActivity.class);
+                        sendintent.putExtra("gptReply", gptResult);
+                        sendintent.putExtra("taroCard", selectedCardTitle);
+                        startActivity(sendintent);
+                    }
+
+                    @Override
+                    public void onGptResponseFailure(String errorMessage) {
+                        if (loadingDialog != null && loadingDialog.isShowing())
+                            loadingDialog.dismiss();
+
+                        Toast.makeText(TaroActivity.this, "에러가 발생했습니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        finishToMainActivity();
+                    }
+                });
+            }, 800);
         });
 
         nextButton.setEnabled(false);
@@ -205,8 +210,10 @@ public class TaroActivity extends AppCompatActivity {
                 .rotationY(90f)
                 .setDuration(150)
                 .withEndAction(() -> {
+                    Log.d("TaroActivity", "selectedCardTitle: " + selectedCardTitle);
+
                     int imageResId = getResources().getIdentifier(
-                            selectedCardTitle,
+                            "taro_" + selectedCardTitle,
                             "drawable",
                             getPackageName()
                     );
@@ -251,5 +258,14 @@ public class TaroActivity extends AppCompatActivity {
         builder.setView(layout);
         builder.setCancelable(false);
         loadingDialog = builder.create();
+    }
+
+    private void showExitConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("종료 확인")
+                .setMessage("정말 타로카드 선택을 종료하시겠습니까?")
+                .setPositiveButton("예", (dialog, which) -> finishToMainActivity())
+                .setNegativeButton("아니오", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }

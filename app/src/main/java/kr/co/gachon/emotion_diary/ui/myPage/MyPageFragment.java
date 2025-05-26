@@ -8,9 +8,11 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -27,7 +29,9 @@ import java.io.InputStream;
 
 import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.databinding.FragmentMypageBinding;
+import kr.co.gachon.emotion_diary.notification.AlarmScheduler;
 import kr.co.gachon.emotion_diary.ui.Remind.WriteRate.RateActivity;
+import kr.co.gachon.emotion_diary.utils.SharedPreferencesUtils;
 
 public class MyPageFragment extends Fragment {
 
@@ -113,6 +117,32 @@ public class MyPageFragment extends Fragment {
             builder.setNegativeButton("취소", (dialog, which) -> dialog.cancel());
 
             builder.show();
+        });
+        View notification = binding.notificationTouchView;
+
+
+        notification.setOnClickListener(view -> {
+            binding.timePickerCard.setVisibility(View.VISIBLE);
+        });
+
+        Button cancel = binding.btnCancel;
+        Button confirm = binding.btnConfirm;
+
+        cancel.setOnClickListener(v -> {
+            binding.timePickerCard.setVisibility(View.GONE);
+        });
+
+
+        confirm.setOnClickListener(v -> {
+            int hour = binding.timePicker.getHour();
+            int minute = binding.timePicker.getMinute();
+
+            SharedPreferencesUtils.saveTime(requireContext(), hour, minute);
+            AlarmScheduler.scheduleDiaryReminder(requireContext(), hour, minute);
+
+            Log.d("TimePicker", "선택된 시간: " + hour + ":" + minute);
+
+            binding.timePickerCard.setVisibility(View.GONE);
         });
 
         return root;

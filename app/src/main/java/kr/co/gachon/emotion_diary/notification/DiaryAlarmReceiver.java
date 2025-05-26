@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.data.AppDatabase;
+import kr.co.gachon.emotion_diary.utils.SharedPreferencesUtils;
 
 
 public class DiaryAlarmReceiver extends BroadcastReceiver {
@@ -35,6 +36,9 @@ public class DiaryAlarmReceiver extends BroadcastReceiver {
             if (!isWritten) {
                 sendNotification(context);
 
+                int hour = SharedPreferencesUtils.getHour(context);
+                int minute = SharedPreferencesUtils.getMinute(context);
+                AlarmScheduler.scheduleDiaryReminder(context, hour, minute);
             }
         });
     }

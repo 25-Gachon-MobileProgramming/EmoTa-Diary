@@ -144,6 +144,88 @@
         app:layout_constraintTop_toBottomOf="@+id/nicknameChangeTouchView"
 
         />
+    <!--Notification-->
+    <TextView
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/notification"
+        android:text="알림시간 변경"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/setting"
+        android:layout_marginLeft="13dp"
+        app:layout_constraintTop_toTopOf="@+id/notificationTouchView"
+        android:layout_marginTop="6dp" />
 
-    
+    <ImageView
+        android:id="@+id/notificationRightArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/right_arrow_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/notification"
+        android:layout_marginRight="50dp"
+        />
+
+    <ImageView
+        android:id="@+id/notificationTouchView"
+        android:layout_width="340dp"
+        android:layout_height="40dp"
+        android:background="@drawable/touch_view"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@+id/notification"
+        app:layout_constraintTop_toBottomOf="@+id/profileImageChangeTouchView"
+
+        />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/timePickerCard"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <TimePicker
+                android:id="@+id/time_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="취소" />
+
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="0dp" />
+
+                <Button
+                    android:id="@+id/btn_confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="확인" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

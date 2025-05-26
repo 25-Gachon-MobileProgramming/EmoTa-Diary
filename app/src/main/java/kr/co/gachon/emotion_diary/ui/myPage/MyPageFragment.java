@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,7 +27,9 @@ import androidx.lifecycle.ViewModelProvider;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.Objects;
 
+import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.databinding.FragmentMypageBinding;
 import kr.co.gachon.emotion_diary.notification.AlarmScheduler;
@@ -74,7 +77,7 @@ public class MyPageFragment extends Fragment {
         }
 
         // 이미지 클릭 시 갤러리 열기
-        binding.profileImageChangeTouchView.setOnClickListener(v -> {
+        binding.profileImageChangeLayout.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             imagePickerLauncher.launch(intent);
         });
@@ -93,10 +96,7 @@ public class MyPageFragment extends Fragment {
 
 
 
-        View setting = binding.nicknameChangeTouchView;
-
-
-        setting.setOnClickListener(view -> {
+        binding.nicknameChangeLayout.setOnClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setTitle("닉네임 변경");
 
@@ -116,7 +116,13 @@ public class MyPageFragment extends Fragment {
 
             builder.setNegativeButton("취소", (dialog, which) -> dialog.cancel());
 
-            builder.show();
+            AlertDialog dialog = builder.show();
+
+
+            dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorSecondary));
+            dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorSecondary));
         });
         View notification = binding.notificationTouchView;
 

@@ -5,12 +5,14 @@ import android.Manifest;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -30,9 +32,7 @@ import java.util.Calendar;
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.ActivityMainBinding;
-import kr.co.gachon.emotion_diary.notification.AlarmScheduler;
 import kr.co.gachon.emotion_diary.ui.writePage.DiaryWriteActivity;
-import kr.co.gachon.emotion_diary.utils.SharedPreferencesUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         FloatingActionButton diaryWriteButton = findViewById(R.id.diary_write_button);
@@ -122,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         // --------- DB TEST END ----------
-
-
 
     }
 }

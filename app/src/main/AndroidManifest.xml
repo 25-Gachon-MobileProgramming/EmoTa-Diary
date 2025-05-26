@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -25,12 +30,13 @@
         <activity android:name=".ui.writePage.DiaryWriteActivity" />
         <activity android:name=".ui.emotion.EmotionSelectActivity" />
         <activity android:name=".ui.answerPage.AnswerActivity" />
-        <activity android:name=".ui.taro.TaroActivity"/>
+        <activity android:name=".ui.taro.TaroActivity" />
 
         <activity android:name=".ui.OnBoarding.AvatarActivity" />
         <activity android:name=".ui.OnBoarding.OnBoardingActivity" />
         <activity
             android:name=".ui.OnBoarding.SplashActivity"
+            android:theme="@style/SplashTheme"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

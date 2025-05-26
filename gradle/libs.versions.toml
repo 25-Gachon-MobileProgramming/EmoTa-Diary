@@ -17,6 +17,7 @@ navigationUi = "2.6.0"
 retrofit = "2.9.0"
 roomCompiler = "2.6.1"
 circleimageview = "3.1.0"
+tedpermissionNormal = "3.3.0"
 
 
 [libraries]
@@ -43,6 +44,7 @@ room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "roomCompi
 
 androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomCompiler" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomCompiler" }
+tedpermission-normal = { module = "io.github.ParkSangGwon:tedpermission-normal", version.ref = "tedpermissionNormal" }
 
 
 [plugins]

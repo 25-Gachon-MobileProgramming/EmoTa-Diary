@@ -7,17 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +20,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import java.util.Calendar;
 
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
@@ -84,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
             int hour = SharedPreferencesUtils.getHour(this);
             int minute = SharedPreferencesUtils.getMinute(this);
             AlarmScheduler.scheduleDiaryReminder(this, hour, minute);
-
         }
 
         // BottomNavigationView navView = findViewById(R.id.nav_view);

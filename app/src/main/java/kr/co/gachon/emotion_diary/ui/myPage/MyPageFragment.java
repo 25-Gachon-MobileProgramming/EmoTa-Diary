@@ -33,7 +33,6 @@ import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.databinding.FragmentMypageBinding;
 import kr.co.gachon.emotion_diary.notification.AlarmScheduler;
-import kr.co.gachon.emotion_diary.ui.Remind.WriteRate.RateActivity;
 import kr.co.gachon.emotion_diary.utils.SharedPreferencesUtils;
 
 public class MyPageFragment extends Fragment {

@@ -169,7 +169,7 @@ public class CalendarFragment extends Fragment {
             for (String dayName : dayNames) {
                 TextView dayNameTextView = createEmotionTextView(dayName);
                 dayNameTextView.setTextSize(Dimension.SP, 25);
-                dayNameTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.calendar_text));
+                dayNameTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorSecondary));
                 dayNamesRow.addView(dayNameTextView);
             }
 
@@ -282,6 +282,9 @@ public class CalendarFragment extends Fragment {
 
                         AlertDialog dialog = builder.create();
                         dialog.show();
+
+                        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorSecondary));
+                        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.colorSecondary));
                     }
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
@@ -358,7 +361,7 @@ public class CalendarFragment extends Fragment {
     private TextView createEmotionTextView(String text) {
         TextView textView = new TextView(getContext());
         textView.setText(text);
-        textView.setTextColor(ContextCompat.getColor(requireActivity(), R.color.calendar_text));
+        textView.setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorOnSecondary));
         textView.setGravity(android.view.Gravity.CENTER);
 
         return textView;

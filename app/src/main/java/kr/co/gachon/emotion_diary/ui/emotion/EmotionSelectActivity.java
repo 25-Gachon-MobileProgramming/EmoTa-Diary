@@ -79,14 +79,24 @@ public class EmotionSelectActivity extends AppCompatActivity {
 
             if (diariesOnce != null && !diariesOnce.isEmpty()) {
                 Diary diary = diariesOnce.get(0);
-                Intent taroPageIntent = new Intent(EmotionSelectActivity.this, TaroActivity.class);
-                taroPageIntent.putExtra("date", dateMillis);
-                taroPageIntent.putExtra("title", diary.getTitle());
-                taroPageIntent.putExtra("content", diary.getContent());
-                taroPageIntent.putExtra("emotion", diary.getEmotionText());
-                taroPageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(taroPageIntent);
-                finish();
+                String emotionFromDiary = diary.getEmotionText();
+
+                runOnUiThread(() -> {
+                    GridLayout emotionGrid = findViewById(R.id.emotionGrid);
+
+                    for (int i = 0; i < emotionGrid.getChildCount(); i++) {
+                        Button button = (Button) emotionGrid.getChildAt(i);
+                        String buttonEmotionText = button.getContentDescription().toString();
+
+                        if (buttonEmotionText.equals(emotionFromDiary)) {
+                            button.setBackgroundColor(ContextCompat.getColor(EmotionSelectActivity.this, R.color.green));
+
+                            selectedEmotion = emotionFromDiary;
+                            previousButton = button;
+                            break;
+                        }
+                    }
+                });
             }
         }).start();
 

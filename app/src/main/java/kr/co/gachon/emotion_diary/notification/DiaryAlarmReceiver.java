@@ -1,5 +1,7 @@
 package kr.co.gachon.emotion_diary.notification;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -15,6 +17,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
@@ -30,8 +34,9 @@ public class DiaryAlarmReceiver extends BroadcastReceiver {
         AppExecutors.getInstance().diskIO().execute(() -> {
             // 오늘 일기 작성 여부 확인
             DiaryDao diaryDao = AppDatabase.getDatabase(context).diaryDao();
-            String today = LocalDate.now().toString(); // 예: "2025-05-20"
+            Date today = getTodayDateOnly();
             boolean isWritten = diaryDao.isDiaryWritten(today);
+            Log.d("isWritten", "onReceive: " + isWritten);
 
             if (!isWritten) {
                 sendNotification(context);
@@ -74,5 +79,13 @@ public class DiaryAlarmReceiver extends BroadcastReceiver {
                 .setAutoCancel(true);
         Log.d("알람", "Notifying...");
         notificationManager.notify(1002, builder.build());
+    }
+    public static Date getTodayDateOnly() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();  // 오늘 날짜 00:00:00
     }
 }

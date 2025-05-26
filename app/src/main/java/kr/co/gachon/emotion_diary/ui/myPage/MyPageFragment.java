@@ -143,6 +143,7 @@ public class MyPageFragment extends Fragment {
             int hour = binding.timePicker.getHour();
             int minute = binding.timePicker.getMinute();
 
+
             SharedPreferencesUtils.saveTime(requireContext(), hour, minute);
             AlarmScheduler.scheduleDiaryReminder(requireContext(), hour, minute);
 

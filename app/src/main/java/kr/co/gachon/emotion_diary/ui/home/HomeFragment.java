@@ -57,16 +57,7 @@ public class HomeFragment extends Fragment {
             page.setScaleY(scale);
             page.setAlpha(0.5f + (1 - Math.abs(position)) * 0.5f);
         });
-
-        binding.btn.setOnClickListener(v -> {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MINUTE, 1); // 현재 시간 + 1분
-
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            int minute = calendar.get(Calendar.MINUTE);
-
-            AlarmScheduler.scheduleDiaryReminder(requireContext(), hour, minute);
-        });
+        
     }
 
     @Override

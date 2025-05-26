@@ -8,11 +8,14 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -30,7 +33,8 @@ import java.util.Objects;
 import kr.co.gachon.emotion_diary.R;
 import kr.co.gachon.emotion_diary.data.DiaryDao;
 import kr.co.gachon.emotion_diary.databinding.FragmentMypageBinding;
-import kr.co.gachon.emotion_diary.ui.Remind.WriteRate.RateActivity;
+import kr.co.gachon.emotion_diary.notification.AlarmScheduler;
+import kr.co.gachon.emotion_diary.utils.SharedPreferencesUtils;
 
 public class MyPageFragment extends Fragment {
 
@@ -119,6 +123,34 @@ public class MyPageFragment extends Fragment {
                     .setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorSecondary));
             dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)
                     .setTextColor(ContextCompat.getColor(requireActivity(), R.color.colorSecondary));
+        });
+        View notification = binding.notificationTouchView;
+
+
+        notification.setOnClickListener(view -> {
+            binding.timePickerCard.setVisibility(View.VISIBLE);
+        });
+
+        Button cancel = binding.btnCancel;
+        Button confirm = binding.btnConfirm;
+
+        cancel.setOnClickListener(v -> {
+            binding.timePickerCard.setVisibility(View.GONE);
+        });
+
+
+        confirm.setOnClickListener(v -> {
+            int hour = binding.timePicker.getHour();
+            int minute = binding.timePicker.getMinute();
+
+
+            SharedPreferencesUtils.saveTime(requireContext(), hour, minute);
+            AlarmScheduler.scheduleDiaryReminder(requireContext(), hour, minute);
+
+            Log.d("TimePicker", "선택된 시간: " + hour + ":" + minute);
+            Toast.makeText(requireActivity(), "알림 시간이 " + hour + ":" + minute + " 으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
+
+            binding.timePickerCard.setVisibility(View.GONE);
         });
 
         return root;

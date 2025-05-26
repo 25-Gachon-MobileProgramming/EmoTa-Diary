@@ -92,5 +92,5 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.dotsindicator.v510)
     implementation(libs.converter.gson)
-
+    implementation(libs.tedpermission.normal)
 }

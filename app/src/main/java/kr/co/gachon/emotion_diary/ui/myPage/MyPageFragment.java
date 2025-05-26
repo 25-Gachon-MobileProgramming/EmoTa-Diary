@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -146,6 +147,7 @@ public class MyPageFragment extends Fragment {
             AlarmScheduler.scheduleDiaryReminder(requireContext(), hour, minute);
 
             Log.d("TimePicker", "선택된 시간: " + hour + ":" + minute);
+            Toast.makeText(requireActivity(), "알림 시간이 " + hour + ":" + minute + " 으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
 
             binding.timePickerCard.setVisibility(View.GONE);
         });

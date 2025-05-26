@@ -29,7 +29,7 @@ public class DiaryAlarmReceiver extends BroadcastReceiver {
         Log.d("알람", "onReceive called. Alarm triggered.");
         AppExecutors.getInstance().diskIO().execute(() -> {
             // 오늘 일기 작성 여부 확인
-            DiaryDao diaryDao = AppDatabase.getInstance(context).diaryDao();
+            DiaryDao diaryDao = AppDatabase.getDatabase(context).diaryDao();
             String today = LocalDate.now().toString(); // 예: "2025-05-20"
             boolean isWritten = diaryDao.isDiaryWritten(today);
 
@@ -53,11 +53,10 @@ public class DiaryAlarmReceiver extends BroadcastReceiver {
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Android 8.0 이상 채널 필요
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    channelId, "Diary Reminder", NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
+        NotificationChannel channel = new NotificationChannel(
+                channelId, "Diary Reminder", NotificationManager.IMPORTANCE_DEFAULT);
+        notificationManager.createNotificationChannel(channel);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
                     != PackageManager.PERMISSION_GRANTED) {

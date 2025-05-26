@@ -35,7 +35,7 @@ public class GptGetDiaryResponse {
                 "분량은 5문장씩 3문단 정도로 각 문단 끝나면 엔터 넣어줘 휴대폰 화면에 TextView로 띄울거거든.";
 
 
-        String prompt = String.format(promptTemplate, title, content, selectedEmotion, selectedCardTitle);
+        String prompt = String.format(promptTemplate, title, content, selectedEmotion, selectedCardTitle, selectedCardTitle);
 
         List<GptRequest.Message> messages = new ArrayList<>();
         messages.add(new GptRequest.Message("user", prompt));

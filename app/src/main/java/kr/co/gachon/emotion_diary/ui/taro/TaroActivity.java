@@ -202,7 +202,7 @@ public class TaroActivity extends AppCompatActivity {
                         if (loadingDialog != null && loadingDialog.isShowing())
                             loadingDialog.dismiss();
 
-                        Toast.makeText(TaroActivity.this, "에러가 발생했습니다. 잠시 후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TaroActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                         finishToMainActivity();
                     }
                 });

@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/dunggeunmo"
-                android:text="2025년 6월"
+                android:text="@string/year_month_text"
                 android:textColor="@color/colorOnSurface"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/font"
-                android:text="작성된 일기: 5개"
+                android:text="@string/written_diary_text"
                 android:textColor="@color/colorOnSurface"
                 android:textSize="14sp" />
         </LinearLayout>

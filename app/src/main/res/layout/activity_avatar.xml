@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="60dp"
         android:fontFamily="@font/concon"
-        android:text="Set Your Avatar"
+        android:text="@string/set_your_avatar_text"
         android:textSize="24sp"
         android:textColor="?attr/colorOnSurface" />
 
@@ -28,7 +28,7 @@
         android:id="@+id/nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Enter your nickname"
+        android:hint="@string/enter_your_nickname_hint"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
         android:textColor="?attr/colorOnSurface"
@@ -45,7 +45,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gender "
+            android:text="@string/gender_text"
             android:textSize="20sp"
             android:textColor="?attr/colorOnSurface" />
 
@@ -53,14 +53,14 @@
             android:id="@+id/genderM"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Male"
+            android:text="@string/male_text"
             android:textColor="?attr/colorOnSurface" />
 
         <RadioButton
             android:id="@+id/genderF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Female"
+            android:text="@string/female_text"
             android:textColor="?attr/colorOnSurface" />
     </RadioGroup>
 
@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Birth date"
+        android:text="@string/birth_date_text"
         android:textSize="20sp"
         android:textColor="?attr/colorOnSurface" />
 
@@ -88,7 +88,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_margin="4dp"
-            android:text="/"
+            android:text="@string/slash_text"
             android:textSize="20sp"
             android:textColor="?attr/colorOnSurface" />
 
@@ -102,7 +102,7 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:gravity="center"
-            android:text="/"
+            android:text="@string/slash_text"
             android:textSize="20sp"
             android:textColor="?attr/colorOnSurface" />
 
@@ -117,7 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Send"
+        android:text="@string/sendButton_text"
         android:textColor="?attr/colorOnPrimary"
         android:backgroundTint="?attr/colorPrimary" />
 </LinearLayout>

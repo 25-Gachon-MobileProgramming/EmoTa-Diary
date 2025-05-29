@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="24dp"
-            android:text="데이터 수집중입니다"
+            android:text="@string/collecting_date_text"
             android:textSize="16sp"
             android:textColor="@color/colorOnSurface"
             android:gravity="center"

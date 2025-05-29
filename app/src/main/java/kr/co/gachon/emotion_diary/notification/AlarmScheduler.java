@@ -27,6 +27,14 @@ public class AlarmScheduler {
                 context, 1001, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!alarmManager.canScheduleExactAlarms()) {
+                // 권한이 없으면 리턴
+                return;
+            }
+        }
+
         alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }

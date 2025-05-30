@@ -38,6 +38,7 @@
     </style>
 
     <style name="SplashTheme" parent="Theme.EmotionDiary">
+        <item name="android:windowIsTranslucent">true</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>

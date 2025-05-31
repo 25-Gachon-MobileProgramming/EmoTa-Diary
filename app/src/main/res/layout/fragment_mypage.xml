@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/dunggeunmo"
-                    android:text="닉네임 없음"
+                    android:text="@string/no_nickName_text"
                     android:textColor="@color/colorOnSurface"
                     android:textSize="18sp" />
 
@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="🔥 24일째 일기 작성중 🔥"
+                    android:text="@string/diary_entry_rate_text"
                     android:textColor="@color/colorOnSurface"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -89,7 +89,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="닉네임 변경"
+                android:text="@string/change_nickname_text"
                 android:textColor="@color/colorOnSurface"
                 android:textSize="16sp" />
 
@@ -116,7 +116,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="프로필 변경"
+                android:text="@string/change_profile_text"
                 android:textColor="@color/colorOnSurface"
                 android:textSize="16sp" />
 
@@ -144,7 +144,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="알림시간 변경"
+                android:text="@string/change_alarm_time_text"
                 android:textColor="@color/colorOnBackground"
                 android:textSize="17sp" />
 
@@ -199,7 +199,7 @@
                     android:id="@+id/btn_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="취소" />
+                    android:text="@string/pauseButton_text" />
 
                 <View
                     android:layout_width="16dp"
@@ -209,7 +209,7 @@
                     android:id="@+id/btn_confirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="확인" />
+                    android:text="@string/checkButton_text" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -45,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
                         // 전체 종료 후 다음 화면 이동
                         new Handler().postDelayed(() -> {
                             proceedToNextScreen();
-                        }, 7000);
+                        }, 5000);
 
                         return false;
                     }

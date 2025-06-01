@@ -4,11 +4,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
@@ -22,14 +29,36 @@ public class SplashActivity extends AppCompatActivity {
 
         ImageView logoGifView = findViewById(R.id.logoGifView);
 
-        // GIF 로고 표시
         Glide.with(this)
                 .asGif()
                 .load(R.raw.logo)
-                .skipMemoryCache(true)
+                .listener(new RequestListener<GifDrawable>() {
+                    @Override
+                    public boolean onResourceReady(GifDrawable resource, Object model,
+                                                   Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
+                        // 애니메이션 멈추고 첫 프레임만 보여줌
+                        resource.setLoopCount(1);
+                        resource.stop();
+
+                        new Handler().postDelayed(resource::start, 2000);
+
+                        // 전체 종료 후 다음 화면 이동
+                        new Handler().postDelayed(() -> {
+                            proceedToNextScreen();
+                        }, 7000);
+
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model,
+                                                Target<GifDrawable> target, boolean isFirstResource) {
+                        proceedToNextScreen(); // 로드 실패 시 바로 이동
+                        return false;
+                    }
+                })
                 .into(logoGifView);
 
-        new Handler().postDelayed(this::proceedToNextScreen, 7000);
     }
 
     private void proceedToNextScreen() {

@@ -2,13 +2,13 @@ package kr.co.gachon.emotion_diary.ui.OnBoarding;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.ImageView;
-import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 
 import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
@@ -20,29 +20,30 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        VideoView logoVideoView = findViewById(R.id.logoVideoView);
-        ImageView videoPlaceholder = findViewById(R.id.videoPlaceholder);
+        ImageView logoGifView = findViewById(R.id.logoGifView);
 
-        Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.logovideo);
-        logoVideoView.setVideoURI(videoUri);
+        // GIF 로고 표시
+        Glide.with(this)
+                .asGif()
+                .load(R.raw.logo)
+                .skipMemoryCache(true)
+                .into(logoGifView);
 
-        // 영상 준비되면 썸네일 제거 + 영상 재생
-        logoVideoView.setOnPreparedListener(mp -> {
-            videoPlaceholder.setVisibility(ImageView.GONE);
-            logoVideoView.start();
-        });
+        new Handler().postDelayed(this::proceedToNextScreen, 7000);
+    }
 
-        // 영상 끝나면 다음 화면으로
-        logoVideoView.setOnCompletionListener(mp -> {
-            SharedPreferences prefs = getSharedPreferences("avatar_pref", MODE_PRIVATE);
-            boolean isAvatarCompleted = prefs.getBoolean("isAvatarCompleted", false);
+    private void proceedToNextScreen() {
+        SharedPreferences prefs = getSharedPreferences("avatar_pref", MODE_PRIVATE);
+        boolean isAvatarCompleted = prefs.getBoolean("isAvatarCompleted", false);
 
-            Intent intent = isAvatarCompleted ?
-                    new Intent(SplashActivity.this, MainActivity.class) :
-                    new Intent(SplashActivity.this, OnBoardingActivity.class);
+        Intent intent = isAvatarCompleted ?
+                new Intent(this, MainActivity.class) :
+                new Intent(this, OnBoardingActivity.class);
 
-            startActivity(intent);
-            finish();
-        });
+        startActivity(intent);
+        finish();
     }
 }
+
+
+

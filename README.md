@@ -1,11 +1,11 @@
 
 
 ## 👶🏼 Team Members 👶🏼
-<img width="160px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyPkxMuo6NOHcNx-aO-wOo3eyVnB2oTq-ZwA&s"/> | <img width="160px" src="https://avatars.githubusercontent.com/u/105594739?v=4"/> | <img width="160px" src="https://avatars.githubusercontent.com/u/105594739?v=4"/> |<img width="160px" src="https://avatars.githubusercontent.com/u/105594739?v=4"/>| 
+<img width="160px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyPkxMuo6NOHcNx-aO-wOo3eyVnB2oTq-ZwA&s"/> | <img width="160px" src="https://media.discordapp.net/attachments/1352117680416493583/1379142910162767902/IMG_5921.jpg?ex=683f2a6d&is=683dd8ed&hm=94cd8e10d0f520eafce0e78a938496da18a43dc805ada0358da81c1db014c6db&=&format=webp&width=756&height=618"/> | <img width="160px" src="https://avatars.githubusercontent.com/u/105594739?v=4"/> |<img width="160px" src="https://avatars.githubusercontent.com/u/105594739?v=4"/>| 
 |:-----:|:-----:|:-----:|:-----:|
 |[송재곤](https://github.com/worhs02)|[서은주](https://github.com/worhs02)|[홍석진](https://github.com/worhs02)|[박재현](https://github.com/worhs02)|
 |팀원 👨🏻‍💻|팀원 👨🏻‍💻|팀원 👨🏻‍💻|팀원 👨🏻‍💻|
-|`마이페이지`<br/> `일기 작성률 그래프`<br/>`감정 통계 그래프`<br/>`시간대 그래프`<br/> `알림 설정`<br/> `깃허브 초기 세팅`<br/>|`온보딩`<br/>`아바타 설정`<br/>`홈화면`<br/>`알림 설정`<br>|`타임라인`<br/>`캘린더`<br/>`일기 위젯`<br/>`연속작성 체크`<br/>`프로젝트 매니징`<br/> `깃허브 초기 세팅`<br/>|`일기 작성`<br/>`감정 선택`<br/>`타로카드 선택`<br/>`gpt응답`<br/>
+|`마이페이지`<br/> `일기 작성률 그래프`<br/>`감정 통계 그래프`<br/>`시간대 그래프`<br/> `알림 설정`<br/> `깃허브 초기 세팅`<br/>|`온보딩`<br/>`아바타 설정`<br/>`홈화면`<br/>`알림 설정`<br>`권한 요청`<br>|`타임라인`<br/>`캘린더`<br/>`일기 위젯`<br/>`연속작성 체크`<br/>`프로젝트 매니징`<br/> `깃허브 초기 세팅`<br/>|`일기 작성`<br/>`감정 선택`<br/>`타로카드 선택`<br/>`gpt응답`<br/>
 
 <br/>
 

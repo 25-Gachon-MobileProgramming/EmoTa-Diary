@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
@@ -53,7 +54,9 @@ public class AnswerActivity extends AppCompatActivity {
 
         int imageResId = getResources().getIdentifier("taro_" + cardName, "drawable", getPackageName());
         taroImage.setImageResource(imageResId != 0 ? imageResId : R.drawable.card_back);
-        if (imageResId == 0) { Toast.makeText(this, "타로카드를 불러오기 실패했습니다.", Toast.LENGTH_SHORT).show(); }
+        if (imageResId == 0) {
+            Toast.makeText(this, "타로카드를 불러오기 실패했습니다.", Toast.LENGTH_SHORT).show();
+        }
 
         TextView textView = findViewById(R.id.answer);
         textView.setText(gptReply);
@@ -69,6 +72,16 @@ public class AnswerActivity extends AppCompatActivity {
     }
 
     private void showExitConfirmationDialog() {
-        new AlertDialog.Builder(this).setTitle("종료 확인").setMessage("정말 일기 결과 확인을 종료하시겠습니까?").setPositiveButton("예", (dialog, which) -> finishToMainActivity()).setNegativeButton("아니오", (dialog, which) -> dialog.dismiss()).show();
+        AlertDialog dialogBuilder = new AlertDialog.Builder(this)
+                .setTitle("종료 확인")
+                .setMessage("정말 일기 결과 확인을 종료하시겠습니까?")
+                .setPositiveButton("예", (dialog, which) -> finishToMainActivity())
+                .setNegativeButton("아니오", (dialog, which) -> dialog.dismiss())
+                .show();
+
+        dialogBuilder.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(this, R.color.colorSecondary));
+        dialogBuilder.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(this, R.color.colorSecondary));
     }
 }

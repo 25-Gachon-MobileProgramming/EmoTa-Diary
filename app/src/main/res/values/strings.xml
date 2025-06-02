@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Emotion Diary</string>
+    <string name="app_name">EmoTa Diary</string>
     <string name="title_home">Home</string>
     <string name="title_calendar">Calendar</string>
     <string name="title_timeLine">Time Line</string>
@@ -50,13 +50,13 @@
     <string name="selectEmotion_text">감정 선택</string>
     <string name="resultButton_text">결과 보기</string>
     <string name="taro_card_text">Taro Card</string>
-    <string name="set_your_avatar_text">Set Your Avatar</string>
-    <string name="enter_your_nickname_hint">Enter your nickname</string>
-    <string name="gender_text">Gender</string>
-    <string name="male_text">Male</string>
-    <string name="female_text">Female</string>
-    <string name="birth_date_text">Birth date</string>
+    <string name="set_your_avatar_text">프로필 설정</string>
+    <string name="enter_your_nickname_hint">닉네임을 입력해주세요</string>
+    <string name="gender_text">성별</string>
+    <string name="male_text">남</string>
+    <string name="female_text">여</string>
+    <string name="birth_date_text">생년월일</string>
     <string name="slash_text">/</string>
-    <string name="sendButton_text">Send</string>
+    <string name="sendButton_text">설정 완료</string>
 
 </resources>

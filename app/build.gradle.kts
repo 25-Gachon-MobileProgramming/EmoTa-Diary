@@ -93,4 +93,7 @@ dependencies {
     implementation(libs.dotsindicator.v510)
     implementation(libs.converter.gson)
     implementation(libs.tedpermission.normal)
+    implementation ("com.github.bumptech.glide:glide:4.16.0") //gif파일 관련
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+
 }

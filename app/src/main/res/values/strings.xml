@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Emotion Diary</string>
+    <string name="app_name">EmoTa Diary</string>
     <string name="title_home">Home</string>
     <string name="title_calendar">Calendar</string>
     <string name="title_timeLine">Time Line</string>

@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackground"
+    android:background="#F7EACC"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="24dp">
+    android:padding="15dp">
 
     <!-- 타이틀 -->
     <TextView
@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diary_title_text"
-        android:textSize="32sp"
+        android:textSize="50sp"
         android:textStyle="bold"
         android:fontFamily="@font/dunggeunmo"
         android:textColor="@color/colorOnBackground"
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/diary_explain_text"
-        android:textSize="18sp"
+        android:textSize="25sp"
         android:fontFamily="@font/font"
         android:textColor="@color/colorOnBackground"
         android:gravity="center"
@@ -42,8 +42,8 @@
     <!-- 타로 이미지 -->
     <ImageView
         android:id="@+id/image"
-        android:layout_width="250dp"
-        android:layout_height="350dp"
+        android:layout_width="400dp"
+        android:layout_height="500dp"
         android:layout_marginTop="32dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"

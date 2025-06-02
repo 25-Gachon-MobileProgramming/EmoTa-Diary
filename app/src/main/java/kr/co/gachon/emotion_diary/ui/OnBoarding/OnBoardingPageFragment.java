@@ -48,7 +48,7 @@ public class OnBoardingPageFragment extends Fragment {
 
             // 마지막 페이지일 때만 버튼 보이기
             String titleText = getArguments().getString(ARG_TITLE);
-            if ("타로".equals(titleText)) {
+            if ("마이페이지".equals(titleText)) {
                 startButton.setVisibility(View.VISIBLE);
                 startButton.setOnClickListener(v -> {
                     Intent intent = new Intent(getActivity(), AvatarActivity.class);

@@ -25,6 +25,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.Calendar;
+
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.ActivityMainBinding;
@@ -95,11 +97,11 @@ public class MainActivity extends AppCompatActivity {
             Log.d("RoomExample", "모든 일기 (Repository - ExecutorService):");
 
             for (Diary diary : diaries) {
-                Log.d("RoomExample", "ID: " + diary.getId() + ", 제목: " + diary.getTitle() + ", 내용: " + diary.getContent() + ", 날짜: " + diary.getDate() + ", 감정: " + diary.getEmotionText());
+                Log.d("RoomExample", "ID: " + diary.getId() + ", 제목: " + diary.getTitle() + ", 내용: " + diary.getContent() + ", 날짜: " + diary.getDate() + ", 감정: " + diary.getEmotionEmoji());
             }
         });
 
-//         Diary newDiary = new Diary("title", "content",  Calendar.getInstance().getTime(), 1);
+//         Diary newDiary = new Diary("title", "content",  Calendar.getInstance().getTime(), 1, "", "");
 //         diaryRepository.insert(newDiary);
 
 

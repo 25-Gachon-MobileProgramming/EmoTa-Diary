@@ -157,6 +157,11 @@ public class TaroActivity extends AppCompatActivity {
 
             v.setEnabled(false);
 
+            cardBottomLeft.setOnClickListener(null);
+            cardBottomRight.setOnClickListener(null);
+            cardTopLeft.setOnClickListener(null);
+            cardTopRight.setOnClickListener(null);
+
             ImageButton selectedCard = null;
 
             if (cardTopLeft.getAlpha() == 1f) selectedCard = cardTopLeft;

@@ -15,7 +15,8 @@
         android:layout_height="0dp"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_weight="1"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="20dp"/>
 
     <!-- 페이지 인디케이터 (worm style) -->
     <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator

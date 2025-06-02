@@ -202,7 +202,7 @@ public class TaroActivity extends AppCompatActivity {
                         if (loadingDialog != null && loadingDialog.isShowing())
                             loadingDialog.dismiss();
 
-                        Toast.makeText(TaroActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TaroActivity.this, "Api key 값이 없습니다", Toast.LENGTH_SHORT).show();
                         finishToMainActivity();
                     }
                 });

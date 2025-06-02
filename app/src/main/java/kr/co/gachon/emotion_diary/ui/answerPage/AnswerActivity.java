@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
@@ -25,6 +27,9 @@ public class AnswerActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             actionBar.setCustomView(R.layout.custom_back_bar);
+
+            Toolbar parent = (Toolbar) actionBar.getCustomView().getParent();
+            parent.setContentInsetsAbsolute(0, 0);
 
             ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
             backButton.setOnClickListener(v -> showExitConfirmationDialog());
@@ -47,8 +52,8 @@ public class AnswerActivity extends AppCompatActivity {
         ImageView taroImage = findViewById(R.id.taro);
 
         int imageResId = getResources().getIdentifier("taro_" + cardName, "drawable", getPackageName());
-        if (imageResId != 0) taroImage.setImageResource(imageResId);
-        else taroImage.setImageResource(R.drawable.card_back);
+        taroImage.setImageResource(imageResId != 0 ? imageResId : R.drawable.card_back);
+        if (imageResId == 0) { Toast.makeText(this, "타로카드를 불러오기 실패했습니다.", Toast.LENGTH_SHORT).show(); }
 
         TextView textView = findViewById(R.id.answer);
         textView.setText(gptReply);

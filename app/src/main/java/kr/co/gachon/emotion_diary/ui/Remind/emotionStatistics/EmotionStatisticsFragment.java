@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -171,6 +172,7 @@ public class EmotionStatisticsFragment extends Fragment {
         set.setDrawValues(true);
         set.setColor(Color.parseColor("#FF0000"));
 
+        set.setValueTextColor(ContextCompat.getColor(requireContext(), R.color.colorOnPrimary));
         set.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {

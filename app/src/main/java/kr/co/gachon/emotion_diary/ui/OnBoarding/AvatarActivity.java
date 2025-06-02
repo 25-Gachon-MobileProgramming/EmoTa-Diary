@@ -143,16 +143,16 @@ public class AvatarActivity extends AppCompatActivity {
 
             final String gender;
             if (TextUtils.isEmpty(input)) {
-                Toast.makeText(context, "Please enter your nickname", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "닉네임을 입력해주세요", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (genderM.getId() == genderid) {
-                gender = "Male";
+                gender = "남";
             } else if (genderF.getId() == genderid) {
-                gender = "Female";
+                gender = "여";
             } else {
-                Toast.makeText(context, "Please select your gender", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "성별을 선택해주세요", Toast.LENGTH_SHORT).show();
                 return;
             }
 

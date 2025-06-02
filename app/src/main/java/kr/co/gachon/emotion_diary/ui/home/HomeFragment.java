@@ -58,8 +58,6 @@ public class HomeFragment extends Fragment {
                 page.setScaleY(scale);
                 page.setAlpha(0.5f + (1 - Math.abs(position)) * 0.5f);
             });
-
-            binding.dotsIndicator.setViewPager2(binding.dateViewPager);
         });
     }
 

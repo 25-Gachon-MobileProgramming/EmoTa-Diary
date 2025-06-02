@@ -8,6 +8,7 @@
     <color name="colorSecondary">#dbbd7b</color>
     <color name="colorSecondaryVariant">#b99b5f</color>
     <color name="colorOnSecondary">#000000</color>
+    <color name="colorOnThird">#FFE8B0</color>
 
     <!-- Background / Surface -->
     <color name="colorBackground">#fafafa</color>

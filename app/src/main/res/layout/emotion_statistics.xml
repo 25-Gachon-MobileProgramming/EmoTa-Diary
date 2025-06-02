@@ -13,7 +13,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/colorSurface"
-        android:elevation="4dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="8dp"
         android:clipToOutline="true"
@@ -23,17 +22,17 @@
         app:layout_constraintHeight_percent="0.9" />
 
     <!-- 시간대 감정 보기 버튼 -->
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/view_time_zone_emotion_text"
+        android:src="@drawable/floating_right_arrow"
         android:textColor="@color/colorOnPrimary"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorSecondary"
         app:cornerRadius="16dp"
-        app:layout_constraintTop_toBottomOf="@id/emotion_statistics_fragment_container"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp" />
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

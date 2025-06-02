@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,8 +35,13 @@ public class TimeZoneFragment extends Fragment {
     private TimeGraph graphView;
     private boolean isMonthly;
 
-    Date startDate;
-    Date endDate;
+    private Date startDate;
+    private Date endDate;
+    private FrameLayout graph;
+
+    private TextView hint;
+
+
 
     @Nullable
     @Override
@@ -51,8 +57,9 @@ public class TimeZoneFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         graphView = view.findViewById(R.id.timeGraph);
-        TextView placeholder = view.findViewById(R.id.time_zone_hint);
+        hint = getActivity().findViewById(R.id.time_zone_activity_hint);
 
+        graph = getActivity().findViewById(R.id.timegraph_fragment_container);
         if (getArguments() != null) {
             isMonthly = getArguments().getBoolean("isMonthly", true);
             startDate = (Date) getArguments().getSerializable("startDate");
@@ -96,9 +103,9 @@ public class TimeZoneFragment extends Fragment {
                     points.add(new Point(minute, countMap.get(minute)));
                 }
 
-                if (points.isEmpty()) {
-                    points.add(new Point(0, 0)); // 더미
-                }
+//                if (points.isEmpty()) {
+//                    points.add(new Point(0, 0)); // 더미
+//                }
 
                 int maxMinute = 0, maxCount = 0;
                 for (Map.Entry<Integer, Integer> entry : countMap.entrySet()) {
@@ -111,17 +118,24 @@ public class TimeZoneFragment extends Fragment {
                 String mostFrequentTime = String.format("%02d:%02d", maxMinute / 60, maxMinute % 60);
                 Log.d("TimeGraph", "⏰ 최다 시간: " + mostFrequentTime);
 
+
                 requireActivity().runOnUiThread(() -> {
 
 
-                    if (countMap.isEmpty()) {
+                    boolean noFrequentData = countMap.values().stream().noneMatch(count -> count >= 2);
 
-                        placeholder.setText("표시할 데이터가 없습니다.");
+                    if (countMap.isEmpty() || noFrequentData) {
+
+                        graph.setVisibility(View.GONE);
+                        hint.setVisibility(View.VISIBLE);
+
                         graphView.setVisibility(View.GONE);
                     } else {
-                        placeholder.setVisibility(View.GONE);
+                        Log.d("point", "onViewCreated: " + points);
+                        graph.setVisibility(View.VISIBLE);
                         graphView.setVisibility(View.VISIBLE);
                         graphView.setTimePoints(points);
+                        hint.setVisibility(View.GONE);
 
                         if (getActivity() instanceof TimeZoneActivity) {
                             ((TimeZoneActivity) getActivity()).setTimeText(mostFrequentTime);

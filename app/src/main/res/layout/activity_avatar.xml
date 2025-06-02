@@ -13,16 +13,29 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="60dp"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/concon"
         android:text="@string/set_your_avatar_text"
-        android:textSize="24sp"
+        android:textSize="50dp"
         android:textColor="?attr/colorOnSurface" />
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="250dp"
+        android:id="@+id/profileImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
-        android:src="@drawable/avatar" />
+        android:scaleType="centerCrop"
+        android:padding="8dp"
+        android:src="@drawable/avatar"
+        android:background="@drawable/profile_image_border"
+        android:contentDescription="profile photo" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="사진 선택"
+        android:textSize="25dp"
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="center"/>
 
     <EditText
         android:id="@+id/nickname"
@@ -30,9 +43,9 @@
         android:layout_height="wrap_content"
         android:hint="@string/enter_your_nickname_hint"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="30dp"
         android:textColor="?attr/colorOnSurface"
-        android:backgroundTint="?attr/colorPrimary"
+        android:backgroundTint="#B0B0B0"
         android:textColorHint="?attr/colorOnSurface" />
 
     <RadioGroup
@@ -46,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/gender_text"
-            android:textSize="20sp"
+            android:textSize="35dp"
             android:textColor="?attr/colorOnSurface" />
 
         <RadioButton
@@ -69,8 +82,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/birth_date_text"
-        android:textSize="20sp"
-        android:textColor="?attr/colorOnSurface" />
+        android:textSize="40dp"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_margin="30dp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -89,7 +103,7 @@
             android:gravity="center"
             android:layout_margin="4dp"
             android:text="@string/slash_text"
-            android:textSize="20sp"
+            android:textSize="30dp"
             android:textColor="?attr/colorOnSurface" />
 
         <NumberPicker
@@ -103,7 +117,7 @@
             android:layout_margin="4dp"
             android:gravity="center"
             android:text="@string/slash_text"
-            android:textSize="20sp"
+            android:textSize="30dp"
             android:textColor="?attr/colorOnSurface" />
 
         <NumberPicker
@@ -119,5 +133,6 @@
         android:layout_gravity="center"
         android:text="@string/sendButton_text"
         android:textColor="?attr/colorOnPrimary"
-        android:backgroundTint="?attr/colorPrimary" />
+        android:backgroundTint="?attr/colorPrimary"
+        android:layout_marginTop="30dp"/>
 </LinearLayout>

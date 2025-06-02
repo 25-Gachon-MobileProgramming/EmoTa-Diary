@@ -1,26 +1,37 @@
 package kr.co.gachon.emotion_diary.ui.OnBoarding;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.Calendar;
 
 import kr.co.gachon.emotion_diary.MainActivity;
@@ -37,9 +48,24 @@ public class AvatarActivity extends AppCompatActivity {
     NumberPicker yearPicker;
     NumberPicker monthPicker;
     NumberPicker dayPicker;
+    private ImageView profileImage;
+    private Uri selectedImageUri;
     int selectedYear;
     int selectedMonth;
     int selectedDay;
+
+    // 이미지 선택런처
+    private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    selectedImageUri = result.getData().getData();
+                    if (selectedImageUri != null) {
+                        profileImage.setImageURI(selectedImageUri);
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +87,8 @@ public class AvatarActivity extends AppCompatActivity {
         yearPicker = findViewById(R.id.yearPicker);
         monthPicker = findViewById(R.id.monthPicker);
         dayPicker = findViewById(R.id.dayPicker);
+        profileImage = findViewById(R.id.profileImage);
+        profileImage.setOnClickListener(v -> checkAndRequestImagePermission());
 
         // NumberPicker 설정 (범위 제한)
         yearPicker.setMinValue(1950);
@@ -140,6 +168,12 @@ public class AvatarActivity extends AppCompatActivity {
                         editor.putString("nickname", input);
                         editor.putString("gender", gender);
                         editor.putString("birthDate", birthDate);
+                        if (selectedImageUri != null) {
+                            String savedPath = copyUriToInternalStorage(selectedImageUri);
+                            if (savedPath != null) {
+                                editor.putString("profileImage", savedPath);
+                            }
+                        }
                         editor.apply();
 
                         Intent intent = new Intent(AvatarActivity.this, MainActivity.class);
@@ -171,5 +205,67 @@ public class AvatarActivity extends AppCompatActivity {
         int daysInMonth = getDaysInMonth(year, month);
         dayPicker.setMinValue(1);
         dayPicker.setMaxValue(daysInMonth);
+    }
+
+    // 갤러리 권한 체크
+    private void checkAndRequestImagePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES)
+                    != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.READ_MEDIA_IMAGES}, 100);
+            } else {
+                launchGallery();
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 101);
+            } else {
+                launchGallery();
+            }
+        }
+    }
+
+    // 권한 응답 처리
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if ((requestCode == 100 || requestCode == 101) &&
+                grantResults.length > 0 && grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            launchGallery();
+        } else {
+            Toast.makeText(this, "갤러리 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // 갤러리 열기
+    private void launchGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        imagePickerLauncher.launch(intent);
+    }
+
+    // 내부 저장소로 복사
+    private String copyUriToInternalStorage(Uri sourceUri) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(sourceUri);
+            File file = new File(getFilesDir(), "profile.jpg");
+            FileOutputStream outputStream = new FileOutputStream(file);
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            inputStream.close();
+            outputStream.close();
+
+            return file.getAbsolutePath();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

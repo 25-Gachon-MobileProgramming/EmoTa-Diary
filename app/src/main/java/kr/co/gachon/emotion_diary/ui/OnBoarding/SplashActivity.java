@@ -66,7 +66,7 @@ public class SplashActivity extends AppCompatActivity {
         boolean isAvatarCompleted = prefs.getBoolean("isAvatarCompleted", false);
 
         Intent intent = isAvatarCompleted ?
-                new Intent(this, MainActivity.class) :
+                new Intent(this, OnBoardingActivity.class) :
                 new Intent(this, OnBoardingActivity.class);
 
         startActivity(intent);

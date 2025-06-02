@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -84,11 +86,14 @@ public class DatePagerAdapter extends RecyclerView.Adapter<DatePagerAdapter.Date
             if (diaryMap.containsKey(date)) {
                 Diary diary = diaryMap.get(date);
                 if (Objects.requireNonNull(diary).getTaroName() != null) {
+                    Log.d("asdf", "taro_" + Objects.requireNonNull(diaryMap.get(date)).getTaroName());
                     int imageResId = context.getResources().getIdentifier(
                             "taro_" + Objects.requireNonNull(diaryMap.get(date)).getTaroName(),
                             "drawable",
                             context.getPackageName()
                     );
+
+                    Log.d("asdf", "imageResId: " + imageResId);
 
                     if (imageResId != 0) {
                         tarotImage.setImageResource(imageResId);
@@ -116,9 +121,9 @@ public class DatePagerAdapter extends RecyclerView.Adapter<DatePagerAdapter.Date
                 emotionHintText.setText("오늘의 일기를 써보세요 ✍️");
 
                 cardView.setOnClickListener(v -> {
-                    Date today = new Date();
+                    long millis = date.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
                     Intent intent = new Intent(context, DiaryWriteActivity.class);
-                    intent.putExtra("selectedDate", today.getTime());
+                    intent.putExtra("selectedDate", millis);
                     ContextCompat.startActivity(context, intent, null);
                 });
             }

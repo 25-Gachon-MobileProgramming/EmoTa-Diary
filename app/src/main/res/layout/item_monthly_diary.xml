@@ -52,6 +52,58 @@
                 android:text="@string/written_diary_text"
                 android:textColor="@color/colorOnSurface"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/diaryPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/font"
+                android:text="이번 달 개근율: 90%"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/emotionSummaryTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/font"
+                android:text="가장 많이 느낀 감정: 😢 슬픔"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tarotSummaryTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/font"
+                android:text="가장 많이 뽑은 타로: 🌟 별 카드"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/emotionFlowTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/font"
+                android:text="감정 변화: 평온 → 분노 → 회복"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/badgeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/font"
+                android:text="🎖 7일 연속 일기 작성!"
+                android:textColor="@color/colorOnSurface"
+                android:textSize="14sp" />
+
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

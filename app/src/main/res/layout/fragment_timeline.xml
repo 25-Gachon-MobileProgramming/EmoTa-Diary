@@ -7,6 +7,7 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
     android:paddingTop="16dp"
+    android:paddingBottom="?attr/actionBarSize"
     tools:context=".ui.timeLine.TimeLineFragment">
 
 <!--    &lt;!&ndash; 타임라인 기준선 &ndash;&gt;-->
@@ -35,7 +36,7 @@
         android:clipToPadding="false"
         android:paddingStart="8dp"
         android:paddingEnd="0dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

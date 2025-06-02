@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Date;
 
@@ -41,7 +44,8 @@ public class EmotionStatisticsActivity extends AppCompatActivity {
                 .commit();
 
         // 버튼 클릭 시 이동
-        Button nextButton = findViewById(R.id.nextButton);
+        FloatingActionButton nextButton = findViewById(R.id.nextButton);
+
         nextButton.setOnClickListener(view -> {
             Intent intent = new Intent(this, TimeZoneActivity.class);
             intent.putExtra("isMonthly", isMonthly);
@@ -53,6 +57,10 @@ public class EmotionStatisticsActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             actionBar.setCustomView(R.layout.custom_back_bar);
+
+
+            Toolbar parent = (Toolbar) actionBar.getCustomView().getParent();
+            parent.setContentInsetsAbsolute(0, 0);
 
             ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
             backButton.setOnClickListener(new View.OnClickListener() {

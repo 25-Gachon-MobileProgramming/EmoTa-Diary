@@ -45,7 +45,7 @@ public class DiaryWriteActivity extends AppCompatActivity {
             backButton.setOnClickListener(v -> finish());
 
             TextView titleTextView = actionBar.getCustomView().findViewById(R.id.titleTextViewActionBar);
-            if (titleTextView != null) titleTextView.setText("Emotion");
+            if (titleTextView != null) titleTextView.setText("Diary Write");
         }
 
         AppDatabase db = AppDatabase.getDatabase(getApplicationContext());

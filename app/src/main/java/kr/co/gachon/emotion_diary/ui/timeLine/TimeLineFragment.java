@@ -1,6 +1,7 @@
 package kr.co.gachon.emotion_diary.ui.timeLine;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -18,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.FragmentTimelineBinding;
+import kr.co.gachon.emotion_diary.ui.Remind.WriteRate.RateActivity;
 
 public class TimeLineFragment extends Fragment implements MonthlyDiaryAdapter.OnMonthlyDiaryClickListener {
 
@@ -70,13 +73,46 @@ public class TimeLineFragment extends Fragment implements MonthlyDiaryAdapter.On
                 List<Diary> diaryList = entry.getValue();
                 List<MonthlyDiaryEntry> entriesForMonth = new ArrayList<>();
 
+                Map<String, Integer> emotionCount = new HashMap<>();
+                Map<String, Integer> tarotCount = new HashMap<>();
+
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
                 for (Diary diary : diaryList) {
                     String formattedDate = dateFormat.format(diary.getDate());
-                    entriesForMonth.add(new MonthlyDiaryEntry(formattedDate, diary.getContent()));
+
+                    String emotion = diary.getEmotionText();
+                    String tarot = diary.getTaroName();
+
+                    // 카운팅
+                    if (emotion != null) {
+                        emotionCount.put(emotion, emotionCount.getOrDefault(emotion, 0) + 1);
+                    }
+                    if (tarot != null) {
+                        tarotCount.put(tarot, tarotCount.getOrDefault(tarot, 0) + 1);
+                    }
+
+                    entriesForMonth.add(new MonthlyDiaryEntry(formattedDate, diary.getContent(), emotion, tarot));
                 }
+
+                // 가장 많은 감정/타로
+                String topEmotion = emotionCount.entrySet().stream()
+                        .max(Map.Entry.comparingByValue())
+                        .map(Map.Entry::getKey)
+                        .orElse("정보 없음");
+
+                String topTarot = tarotCount.entrySet().stream()
+                        .max(Map.Entry.comparingByValue())
+                        .map(Map.Entry::getKey)
+                        .orElse("정보 없음");
+
+                // MonthlyDiaryAdapter에 전달할 때 확장
                 groupedDiaryData.add(new Pair<>(month, entriesForMonth));
+
+                Log.d(logTitle, "📊 " + month + " 감정 통계: " + topEmotion);
+                Log.d(logTitle, "🔮 " + month + " 타로 통계: " + topTarot);
             }
+
 
             // 최신 월부터 표시하기 위해 정렬
             groupedDiaryData.sort((pair1, pair2) -> pair2.first.compareTo(pair1.first));
@@ -93,13 +129,22 @@ public class TimeLineFragment extends Fragment implements MonthlyDiaryAdapter.On
 
     @Override
     public void onMonthlyDiaryClick(String month, List<MonthlyDiaryEntry> diaryList) {
-        // 클릭 이벤트 처리 ㄱㄱ
-        Log.d("RecyclerViewClick", "Clicked on month: " + month + ", Diary count: " + diaryList.size());
+        moveToStatActivity(true, Integer.parseInt(month.split("-")[0]), Integer.parseInt(month.split("-")[1]));
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void moveToStatActivity(boolean isMonthly, int year, int month) {
+        String term = year + "-" + month;
+
+        Intent intent = new Intent(getActivity(), RateActivity.class);
+        intent.putExtra("isMonthly", isMonthly);
+        intent.putExtra("term", term);
+
+        startActivity(intent);
     }
 }

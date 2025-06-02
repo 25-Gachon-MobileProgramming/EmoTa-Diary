@@ -1,6 +1,7 @@
 package kr.co.gachon.emotion_diary.ui.timeLine;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 import kr.co.gachon.emotion_diary.data.Diary;
 import kr.co.gachon.emotion_diary.data.DiaryRepository;
 import kr.co.gachon.emotion_diary.databinding.FragmentTimelineBinding;
+import kr.co.gachon.emotion_diary.ui.Remind.WriteRate.RateActivity;
 
 public class TimeLineFragment extends Fragment implements MonthlyDiaryAdapter.OnMonthlyDiaryClickListener {
 
@@ -93,13 +95,22 @@ public class TimeLineFragment extends Fragment implements MonthlyDiaryAdapter.On
 
     @Override
     public void onMonthlyDiaryClick(String month, List<MonthlyDiaryEntry> diaryList) {
-        // 클릭 이벤트 처리 ㄱㄱ
-        Log.d("RecyclerViewClick", "Clicked on month: " + month + ", Diary count: " + diaryList.size());
+        moveToStatActivity(true, Integer.parseInt(month.split("-")[0]), Integer.parseInt(month.split("-")[1]));
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void moveToStatActivity(boolean isMonthly, int year, int month) {
+        String term = year + "-" + month;
+
+        Intent intent = new Intent(getActivity(), RateActivity.class);
+        intent.putExtra("isMonthly", isMonthly);
+        intent.putExtra("term", term);
+
+        startActivity(intent);
     }
 }

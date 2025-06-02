@@ -59,7 +59,7 @@
             android:layout_marginBottom="16dp"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
-            android:text="확인"
+            android:text="@string/checkButton_text"
             android:textColor="@color/colorOnPrimary"
             app:backgroundTint="@color/colorPrimary"
             app:cornerRadius="16dp" />

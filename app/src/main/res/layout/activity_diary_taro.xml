@@ -87,7 +87,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="결과 보기"
+        android:text="@string/resultButton_text"
         android:textColor="@color/colorOnPrimary"
         app:backgroundTint="@color/colorPrimary"
         app:cornerRadius="12dp" />

@@ -89,6 +89,7 @@ public class EmotionStatisticsFragment extends Fragment {
                         emotions.get(id).count = ec.count;
                     }
                 }
+                emotions.sort((e1, e2) -> Integer.compare(e1.count, e2.count));
 
 
                 requireActivity().runOnUiThread(() -> {
@@ -125,7 +126,8 @@ public class EmotionStatisticsFragment extends Fragment {
         xAxis.setGranularity(1f);
         xAxis.setGranularityEnabled(true);
         xAxis.setTextSize(20f);
-        xAxis.setLabelCount(emotions.size(), true);
+        xAxis.setCenterAxisLabels(false);
+        xAxis.setLabelCount(emotions.size(), false);
 
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -134,12 +136,15 @@ public class EmotionStatisticsFragment extends Fragment {
             public String getFormattedValue(float value) {
                 int index = (int) value;
                 Log.d("ChartEntry", "id=" + index);
-                return Emotions.getEmotionDataById(emotions.get(index).emotion_id).getEmoji();
+                if (index >= 0 && index < emotions.size()) {
+                    return Emotions.getEmotionDataById(emotions.get(index).emotion_id).getEmoji();
+                }
+                return "";
             }
         });
 
         YAxis axisLeft = barChart.getAxisLeft();
-        axisLeft.setDrawLabels(true);
+        axisLeft.setDrawLabels(false);
         axisLeft.setDrawGridLines(false);
         axisLeft.setDrawAxisLine(false);
         axisLeft.setAxisMinimum(0f);

@@ -20,6 +20,8 @@ import androidx.core.content.ContextCompat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
@@ -37,15 +39,23 @@ public class DiaryAlarmReceiver extends BroadcastReceiver {
             // 오늘 일기 작성 여부 확인
             DiaryDao diaryDao = AppDatabase.getDatabase(context).diaryDao();
             Date today = getTodayDateOnly();
-            boolean isWritten = diaryDao.isDiaryWritten(today);
-            Log.d("isWritten", "onReceive: " + isWritten);
-
-            if (!isWritten) {
-                sendNotification(context);
-
+            Date endOfToday =  getTodayEndDate();
+            if (diaryDao.getDiaryCountPerDay(today, endOfToday) != 0){
+                Log.d("알림", "onReceive: " + diaryDao.getDiaryCountPerDay(today, endOfToday));
                 int hour = SharedPreferencesUtils.getHour(context);
                 int minute = SharedPreferencesUtils.getMinute(context);
-                AlarmScheduler.scheduleDiaryReminder(context, hour, minute);
+                Executors.newSingleThreadScheduledExecutor().schedule(() -> {
+                    AlarmScheduler.scheduleDiaryReminder(context, hour, minute);
+                }, 2, TimeUnit.SECONDS);
+
+            }else{
+                sendNotification(context);
+                int hour = SharedPreferencesUtils.getHour(context);
+                int minute = SharedPreferencesUtils.getMinute(context);
+                Executors.newSingleThreadScheduledExecutor().schedule(() -> {
+                    AlarmScheduler.scheduleDiaryReminder(context, hour, minute);
+                }, 2, TimeUnit.SECONDS);
+
             }
         });
     }
@@ -96,6 +106,14 @@ public class DiaryAlarmReceiver extends BroadcastReceiver {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();  // 오늘 날짜 00:00:00
+    }
+    public static Date getTodayEndDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        return calendar.getTime();  // 오늘 날짜 23:59:59.999
     }
 }
 

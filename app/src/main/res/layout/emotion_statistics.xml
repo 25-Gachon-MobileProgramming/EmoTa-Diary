@@ -27,7 +27,7 @@
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="시간대 감정 보기"
+        android:text="@string/view_time_zone_emotion_text"
         android:textColor="@color/colorOnPrimary"
         app:backgroundTint="@color/colorPrimary"
         app:cornerRadius="16dp"

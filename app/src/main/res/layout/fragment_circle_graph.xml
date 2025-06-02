@@ -21,7 +21,7 @@
         android:id="@+id/writeRateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="이번 달 기록률: 82%"
+        android:text="@string/creation_rate_of_month_text"
         android:textSize="18sp"
         android:textColor="@color/colorOnBackground"
         android:fontFamily="@font/font"

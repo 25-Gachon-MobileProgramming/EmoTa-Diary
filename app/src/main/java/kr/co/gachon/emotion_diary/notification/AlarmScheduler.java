@@ -12,6 +12,9 @@ import java.util.Calendar;
 public class AlarmScheduler {
 
     public static void scheduleDiaryReminder(Context context, int hour, int minute) {
+
+        cancelDiaryReminder(context);
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
@@ -37,5 +40,13 @@ public class AlarmScheduler {
 
         alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+    }
+    public static void cancelDiaryReminder(Context context) {
+        Intent intent = new Intent(context, DiaryAlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                context, 1001, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);  // 등록된 알림 취소
     }
 }

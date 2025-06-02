@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginTop="40dp"
-        android:text="Taro Card"
+        android:text="@string/taro_card_text"
         android:textColor="@color/colorOnPrimary"
         app:backgroundTint="@color/colorPrimary"
         app:cornerRadius="12dp"

@@ -157,6 +157,11 @@ public class TaroActivity extends AppCompatActivity {
 
             v.setEnabled(false);
 
+            cardBottomLeft.setOnClickListener(null);
+            cardBottomRight.setOnClickListener(null);
+            cardTopLeft.setOnClickListener(null);
+            cardTopRight.setOnClickListener(null);
+
             ImageButton selectedCard = null;
 
             if (cardTopLeft.getAlpha() == 1f) selectedCard = cardTopLeft;
@@ -202,7 +207,7 @@ public class TaroActivity extends AppCompatActivity {
                         if (loadingDialog != null && loadingDialog.isShowing())
                             loadingDialog.dismiss();
 
-                        Toast.makeText(TaroActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TaroActivity.this, "Api key 값이 없습니다", Toast.LENGTH_SHORT).show();
                         finishToMainActivity();
                     }
                 });

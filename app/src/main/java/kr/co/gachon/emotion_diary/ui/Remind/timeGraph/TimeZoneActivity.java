@@ -10,12 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Date;
 
+import kr.co.gachon.emotion_diary.MainActivity;
 import kr.co.gachon.emotion_diary.R;
-import kr.co.gachon.emotion_diary.ui.Remind.remindSummary.RemindSummaryActivity;
+
 
 public class TimeZoneActivity extends AppCompatActivity {
     private TextView timeTextView;
@@ -45,17 +47,16 @@ public class TimeZoneActivity extends AppCompatActivity {
 
         Button button = findViewById(R.id.nextButton);
         button.setOnClickListener(view -> {
-            Intent intent = new Intent(TimeZoneActivity.this, RemindSummaryActivity.class);
-            intent.putExtra("isMonthly", isMonthly);
-            intent.putExtra("startDate", startDate);
-            intent.putExtra("endDate", endDate);
-            startActivity(intent);
+            finishToMainActivity();
         });
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             actionBar.setCustomView(R.layout.custom_back_bar);
+
+            Toolbar parent = (Toolbar) actionBar.getCustomView().getParent();
+            parent.setContentInsetsAbsolute(0, 0);
 
             ImageButton backButton = actionBar.getCustomView().findViewById(R.id.backButtonActionBar);
             backButton.setOnClickListener(new View.OnClickListener() {
@@ -75,5 +76,11 @@ public class TimeZoneActivity extends AppCompatActivity {
 
     public void setTimeText(String time) {
         timeTextView.setText(time);
+    }
+    private void finishToMainActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
     }
 }

@@ -39,7 +39,8 @@
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusBottomEnd="12dp">
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:hintTextColor="@color/colorOnBackground">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titleTextView"
@@ -63,7 +64,8 @@
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusBottomEnd="12dp">
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:hintTextColor="@color/colorOnBackground">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/contentTextView"
